@@ -1,0 +1,6 @@
+covid
+flake8
+black
+pytest
+flask
+python-dotenv

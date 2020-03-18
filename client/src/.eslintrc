@@ -1,0 +1,22 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "react-app",
+    "airbnb",
+    "plugin:jsx-a11y/recommended",
+    "prettier",
+    "prettier/react"
+  ],
+  "plugins": ["jsx-a11y", "react-hooks", "prettier"],
+  "rules": {
+    // Allow single Named-export
+    "import/prefer-default-export": "off",
+    // Set react-hooks lint as error
+    "react-hooks/rules-of-hooks": "error",
+    // Disable jsx-filename rule
+    "react/jsx-filename-extension": [0],
+    "import/extensions": "off"
+   }
+}

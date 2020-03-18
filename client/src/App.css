@@ -1,0 +1,99 @@
+.appLogo {
+  height: 63px;
+  position: absolute;
+  left: 12px;
+  filter: drop-shadow(1px 1px 1px rgb(000, 000, 000, 1));
+  -webkit-filter: drop-shadow(1px 1px 1px rgb(000, 000, 000, 1));
+  -o-filter: drop-shadow(1px 1px 1px rgb(000, 000, 000, 1));
+}
+
+/* corona UI CSS Start */
+
+body {
+  background-color: #282c34 !important;
+}
+
+.corona-wrap {
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding-top: 3px;
+  margin-top: 7px;
+  border: 1px solid #fff;
+}
+
+.coronasRow {
+  background-color: rgb(40, 44, 52);
+}
+
+.coronaRow {
+  border: 2px #fff;
+}
+
+.corona {
+  box-shadow: 2px solid red;
+  /* this class will override col-md-6 default padding of 15px */
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  /* add some space below each corona 'panel' in corona ui */
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 14px;
+  margin-top: 1rem;
+}
+
+.corona p {
+  /* color: #5cd2ff; */
+  color: #F0FFFF;
+}
+
+.covidText p, .covidText {
+  font-size: 13px;
+  color: red;
+}
+.covidText {
+  background-color: #ccc;
+}
+
+#root > div > div > div > div.col-md-3.corona > div > p.corona-moving.True {
+  color: lightgreen;
+}
+
+#root > div > div > div > div.col-md-3.corona > div > p.corona-moving.False {
+  color: red;
+}
+
+/* corona CSS end */
+
+/* corona Map CSS start */
+
+.maxW {
+  max-width: 100% !important;
+}
+
+
+svg.rsm-svg {
+    margin-top: -5em;
+    max-height: 51em;
+    margin-bottom: -5em;
+}
+
+/* corona Map CSS end */
+/* Timer CSS end */
+/* mapKey */
+
+.container #mapKey {
+  position: absolute;
+  bottom: 40px;
+  left: 20px;
+  width: 25%;
+  color: #fff;
+}
