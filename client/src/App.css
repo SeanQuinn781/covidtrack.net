@@ -83,6 +83,7 @@ p.renderDesc {
   left: 20px;
   width: 25%;
   color: #fff;
+  top: 50%;
 }
 
 #mapControls p {
@@ -121,6 +122,10 @@ p.renderDesc {
     width: 30px;
     height: 30px;
 
+  }
+
+  .renderDesc, .instructions {
+    display: none;
   }
 
 }

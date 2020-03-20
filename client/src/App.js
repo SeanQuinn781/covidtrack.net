@@ -124,10 +124,6 @@ class App extends React.Component {
 
         <div id="mapControls">
 
-          <p className="instructions">
-            To view different metrics on the map click the corresponding buttons  
-          </p>
-
             <button
               type="renderCasualties"
               className={`${this.state.renderCasualties ? 'active' : ''}`}
@@ -157,19 +153,16 @@ class App extends React.Component {
               className={`${this.state.renderCountryNames ? 'active' : ''}`}
               onClick={this.renderCountryNames}
             >
-              Country Names
+              Countries over with over 5000 Cases
             </button>
-            <p className='renderDesc'>(Countries with > 5000)</p>
 
             <button
               type="renderConfirmedCount"
               className={`${this.state.renderConfirmedCount ? 'active' : ''}`}
               onClick={this.renderConfirmedCount}
             >
-              Confirmed Cases Count
+              Confirmed Cases over 100
             </button>
-            <p className='renderDesc'>(Countries with > 100)</p>
-
        </div>
         <ComposableMap>
         <Geographies geography="/world-110m.json">
@@ -294,10 +287,10 @@ class App extends React.Component {
             })
         }
       </ComposableMap>
-      <div class="appInfo">
+      <div className="appInfo">
         <p id="dataSource">Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
         <a href="https://github.com/seanquinn781/react-maps-flask-covid">
-          <img class="github" width="50px" height="50px" src="/GitHub-Mark.png" />
+          <img className="github" width="50px" height="50px" src="/GitHub-Mark.png" />
         </a>
       </div>
       </div>
