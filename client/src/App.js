@@ -110,8 +110,6 @@ class App extends React.Component {
   }
 
   render() {
-    let activeClass;
-
     // render the map of covid locations
     return (
       <div className="container maxW" id="main">
@@ -168,105 +166,109 @@ class App extends React.Component {
             ))
           }
         </Geographies>
-        // TODO: refactor to iterate over all data and generate all the markers in one go instead of once for each marker 
-        { this.state.renderCasualties == true && 
-            this.state.covidLocations.map((location) => 
-              <Marker
-                className="deaths"
-                className="covidMarkers currentCovidMarker"
-                // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-                coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
-              >
-                <circle
-                  // set the radius of the svg circle data point to the total death count divided by 50 
-                  // (using the total count makes them way too large)
-                  r={location.deaths/50}
-                  stroke="red"
-                  strokeWidth="1.5"
-                  fill="red"
-                  fillOpacity=".5"
-                  stroke="goldenrod" />
-              </Marker>
-            ) 
-          
-          }
-          { this.state.renderCasualtiesCount == true &&
-            this.state.covidLocations.map((location) => 
-              <Marker
-                className="deaths"
-                className="covidMarkers currentCovidMarker"
-                // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-                coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
-              >
-              <text
-                className="confirmedNumbers"
-                fill="#D32F2F"
-                stroke="#D32F2F"
-                y={20}
-                x={-10}>
-                { location.deaths > 0 ? location.deaths : '' }
-              </text>
-              </Marker>
-            ) 
-        }
-        {  this.state.renderConfirmed == true && 
-              this.state.covidLocations.map((location) => 
-            <Marker
-              className="confirmed"
-              className="covidMarkers currentCovidMarker"
-              // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-              coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
-            >
-              <circle
-                // set the radius of the svg circle data point to the total death count divided by 50 
-                // (using the total count makes them way too large)
-                r={location.confirmed/50}
-                stroke="#03A9F4"
-                strokeWidth="1.5"
-                fill="#03A9F4"
-                fillOpacity=".3"
-                stroke="goldenrod" />
-            </Marker>
-          )
-        }
-        {  this.state.renderConfirmedCount == true &&
-             this.state.covidLocations.map((location) => 
-            <Marker
-              className="confirmed"
-              className="covidMarkers currentCovidMarker"
-              // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-              coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
-            >
-              <text
-              className="confirmedCount"
-              y={20}
-              fill="blue"
-              stroke="blue"
-              // x offset for rendering confirmed count to the left of casualties count
-              x={-40}>
-                { location.confirmed > 0 ? location.confirmed : '' }
-              </text>
-              </Marker>
-            )
-        }
-        { this.state.renderCountryNames == true && 
-            this.state.covidLocations.map((location) => 
-            <Marker
-              className="confirmed"
-              className="covidMarkers currentCovidMarker"
-              // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-              coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
-            >
-              <text
-                className="countryName"
-                fill="goldenrod"
-                stroke="#000"
-                strokeWidth=".5px"
-                x={-10}>
-                { location.confirmed > 0 ? location.country : '' }
-              </text>
-            </Marker>
-          )
+        { 
+          this.state.covidLocations.map((location) => {
+              let markers = [];
+              if (this.state.renderCasualties) {
+                markers.push(
+                <Marker
+                  className="deaths"
+                  className="covidMarkers currentCovidMarker"
+                  // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
+                  coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
+                >
+                  <circle
+                    // set the radius of the svg circle data point to the total death count divided by 50 
+                    // (using the total count makes them way too large)
+                    r={location.deaths/50}
+                    stroke="red"
+                    strokeWidth="1.5"
+                    fill="red"
+                    fillOpacity=".5"
+                    stroke="goldenrod" />
+                </Marker>
+                )
+              }
+              if (this.state.renderCasualtiesCount) {
+                markers.push(
+                  <Marker
+                    className="deaths"
+                    className="covidMarkers currentCovidMarker"
+                    // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
+                    coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
+                  >
+                    <text
+                      className="confirmedNumbers"
+                      fill="#D32F2F"
+                      stroke="#D32F2F"
+                      y={20}
+                      x={-10}>
+                        { location.deaths > 0 ? location.deaths : '' }
+                    </text>
+                  </Marker>
+                )
+              }
+              if (this.state.renderConfirmed) {
+                markers.push(
+                  <Marker
+                    className="confirmed"
+                    className="covidMarkers currentCovidMarker"
+                    // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
+                    coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
+                  >
+                    <circle
+                      // set the radius of the svg circle data point to the total death count divided by 50 
+                      // (using the total count makes them way too large)
+                      r={location.confirmed/50}
+                      stroke="#03A9F4"
+                      strokeWidth="1.5"
+                      fill="#03A9F4"
+                      fillOpacity=".3"
+                      stroke="goldenrod" />
+                  </Marker>
+                )
+              }
+              if (this.state.renderConfirmedCount) {
+                markers.push(
+                  <Marker
+                    className="confirmed"
+                    className="covidMarkers currentCovidMarker"
+                    // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
+                    coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
+                  >
+                    <text
+                      className="confirmedCount"
+                      y={20}
+                      fill="blue"
+                      stroke="blue"
+                      // x offset for rendering confirmed count to the left of casualties count
+                      x={-40}>
+                      { location.confirmed > 0 ? location.confirmed : '' }
+                    </text>
+                  </Marker>
+                )
+              }
+              if(this.state.renderCountryNames) {
+                markers.push(
+                  <Marker
+                    className="confirmed"
+                    className="covidMarkers currentCovidMarker"
+                    // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
+                    coordinates={ location.country == "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
+                  >
+                    <text
+                      className="countryName"
+                      fill="goldenrod"
+                      stroke="#000"
+                      strokeWidth=".5px"
+                      x={-10}>
+                      { location.confirmed > 0 ? location.country : '' }
+                    </text>
+                  </Marker>
+                )
+              }
+              return(markers)
+            })
         }
       </ComposableMap>
       </div>
