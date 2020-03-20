@@ -32,6 +32,7 @@ p {
 
 .appInfo {
   position: fixed;
+  display: flex;
   bottom: 10px;
   right: 30px;
   font-size: 13px;
@@ -42,6 +43,12 @@ p {
   width: 25px;
   height: 25px;
 }
+
+.appInfo p#dataSource {
+  padding-top: 3px;
+  padding-right: 13px;
+}
+
 
 #logoContainer #logoWrap h5 {
   padding-left: 15px;
@@ -95,4 +102,25 @@ p.renderDesc {
 #mapControls button.active {
   color: #fff;
   background-color:#333842;
+}
+
+@media(max-width:800px) {
+
+  #logoContainer #logoWrap h5 {
+
+    color: rgb(232, 230, 227);
+    -webkit-text-stroke-color: rgb(207, 203, 196);
+    text-shadow: rgb(10, 10, 11) 1px 1px 1px;
+    font-size: 19px;
+
+  }
+
+  #logoContainer #logoWrap img {
+
+    border-color: rgba(100, 94, 94, 0.7);
+    width: 30px;
+    height: 30px;
+
+  }
+
 }

@@ -120,7 +120,6 @@ class App extends React.Component {
             <img id="logoImg" alt="covidLogo" width="5%" height="5%" src="/covidLogoCircular.png" />
             <h5>CovidTrack.net</h5>
           </div>
-          <p>Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
         </div>
 
         <div id="mapControls">
@@ -296,6 +295,7 @@ class App extends React.Component {
         }
       </ComposableMap>
       <div class="appInfo">
+        <p id="dataSource">Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
         <a href="https://github.com/seanquinn781/react-maps-flask-covid">
           <img class="github" width="50px" height="50px" src="/GitHub-Mark.png" />
         </a>
