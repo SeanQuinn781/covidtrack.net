@@ -1,6 +1,6 @@
 ---------------------------------------------------
 ##dTrack
-![](covid-tracker.gif)
+![](covidtrack.net.gif)
 
 React-Maps Flask-Covid:
 

@@ -1,99 +1,98 @@
-.appLogo {
-  height: 63px;
-  position: absolute;
-  left: 12px;
-  filter: drop-shadow(1px 1px 1px rgb(000, 000, 000, 1));
-  -webkit-filter: drop-shadow(1px 1px 1px rgb(000, 000, 000, 1));
-  -o-filter: drop-shadow(1px 1px 1px rgb(000, 000, 000, 1));
-}
-
-/* corona UI CSS Start */
-
 body {
   background-color: #282c34 !important;
 }
 
-.corona-wrap {
-  min-height: 30vh;
+#logoContainer {
+  margin:20px;
+  position: absolute;
+  color: #ccc;
+  font-weight: 300;
+}
+
+#logoContainer #logoWrap {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  padding-top: 3px;
-  margin-top: 7px;
-  border: 1px solid #fff;
-}
-
-.coronasRow {
-  background-color: rgb(40, 44, 52);
-}
-
-.coronaRow {
-  border: 2px #fff;
-}
-
-.corona {
-  box-shadow: 2px solid red;
-  /* this class will override col-md-6 default padding of 15px */
-  padding-left: 10px !important;
-  padding-right: 10px !important;
-  /* add some space below each corona 'panel' in corona ui */
-  margin-bottom: 20px;
-  font-size: 14px;
+  margin-bottom: 6px;
 }
 
 p {
-  margin-bottom: 1rem;
-  font-size: 14px;
-  margin-top: 1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 14px;
+    color: #a09a9a;
+    font-family: 'Roboto', sans-serif;
 }
 
-.corona p {
-  /* color: #5cd2ff; */
-  color: #F0FFFF;
+#logoContainer #logoWrap img {
+  width: 50px;
+  -webkit-filter: drop-shadow(.5px .5px .5px rgb(000, 000, 000, .8));
+  height: 50px;
+  margin: 0px;
+  border-radius: 102px;
 }
 
-.covidText p, .covidText {
+.appInfo {
+  position: fixed;
+  bottom: 10px;
+  right: 30px;
   font-size: 13px;
-  color: red;
-}
-.covidText {
-  background-color: #ccc;
 }
 
-#root > div > div > div > div.col-md-3.corona > div > p.corona-moving.True {
-  color: lightgreen;
+.appInfo img.github {
+  border-radius: 100px;
+  width: 25px;
+  height: 25px;
 }
 
-#root > div > div > div > div.col-md-3.corona > div > p.corona-moving.False {
-  color: red;
+#logoContainer #logoWrap h5 {
+  padding-left: 15px;
+  padding-top: 5px;
+  color: rgb(0,0,0) !important;
+  -webkit-text-stroke: 0.05em;
+  -webkit-text-stroke-color: rgb(207, 203, 196);
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  font-size: 31px;
+  text-shadow: rgb(10, 10, 11) 1px 1px 1px;
 }
 
-/* corona CSS end */
-
-/* corona Map CSS start */
-
-.maxW {
-  max-width: 100% !important;
-}
-
-
+/* covid Map CSS start */
 svg.rsm-svg {
-    margin-top: -5em;
-    max-height: 51em;
-    margin-bottom: -5em;
+    max-height: 100%;
+    margin-width: 100%;
 }
 
-/* corona Map CSS end */
-/* Timer CSS end */
+p.renderDesc {
+  margin-bottom: 0;
+  font-size: 11px !important;
+  padding-left: 90px !important;
+}
+
+/* covid Map CSS end */
 /* mapKey */
 
-.container #mapKey {
+#mapControls {
   position: absolute;
   bottom: 40px;
   left: 20px;
   width: 25%;
   color: #fff;
+}
+
+#mapControls p {
+  font-size: 16px;
+  padding-left: 6px;
+}
+
+#mapControls button {
+  border-radius: 2px;
+  width: 300px;
+  margin: 5px;
+  font-size: 17px;
+  background-color: #ccc;
+  color: #000;
+}
+
+#mapControls button.active {
+  color: #fff;
+  background-color:#333842;
 }
