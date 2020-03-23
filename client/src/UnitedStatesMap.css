@@ -4,6 +4,23 @@ body svg g {
 fill: #fff;
 }
 
-#unitedStatesMap {
-    margin-top: -216px;
+@media(max-width:800px) {
+    #unitedStatesMap {
+        margin-top: -56px;
+    }
+
+    #mapControls {
+        position: fixed;
+        bottom: 40px;
+        left: 20px;
+        width: 25%;
+        color: #fff;
+        top: 58%;
+    }
+}
+
+@media(min-width:800px) {
+    #unitedStatesMap {
+        margin-top: -216px;
+    }
 }

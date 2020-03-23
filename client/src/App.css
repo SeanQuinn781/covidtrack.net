@@ -6,6 +6,7 @@ body {
 .nav {
   right: 0;
   position: fixed;
+  margin-top: 10px;
 }
 
 a.active {
@@ -18,7 +19,7 @@ a {
 
 /* WORLD MAP UI CSS */
 #logoContainer {
-  margin:20px;
+  margin: 9px;
   position: absolute;
   color: #ccc;
   font-weight: 300;
