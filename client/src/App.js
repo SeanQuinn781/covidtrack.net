@@ -13,6 +13,7 @@ import {
 
 import Nav from 'react-bootstrap/Nav';
 import UnitedStatesMap from './UnitedStatesMap';
+import Logo from './covidLogoCircular.png';
 
 const geoUrl = "/world-100m.json";
 
@@ -157,7 +158,7 @@ class App extends React.Component {
       <div className="fluid-container" id="main">
         <div id="logoContainer">
           <div id="logoWrap">
-            <img id="logoImg" alt="covidLogo" width="5%" height="5%" src="/covidLogoCircular.png" />
+            <img id="logoImg" alt="covidLogo" width="5%" height="5%" src={Logo} />
             <h5>CovidTrack.net</h5>
           </div>
         </div>
@@ -327,7 +328,8 @@ class App extends React.Component {
         }
       </ComposableMap>
       <div className="appInfo">
-        <p id="dataSource">Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
+        <p className="dataSource">World Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
+	      <p className="dataSource">U.S. data from <a href="https://covidtracking.com">covidtracking.com/api/states</a></p>
         <a href="https://github.com/seanquinn781/react-maps-flask-covid">
           <img className="github" width="50px" height="50px" src="/GitHub-Mark.png" />
         </a>

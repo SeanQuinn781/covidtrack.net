@@ -60,7 +60,7 @@ p {
   height: 25px;
 }
 
-.appInfo p#dataSource {
+.appInfo p.dataSource {
   padding-top: 3px;
   padding-right: 13px;
 }
