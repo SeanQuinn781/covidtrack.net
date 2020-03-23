@@ -2,6 +2,21 @@ body {
   background-color: #282c34 !important;
 }
 
+/* App Nav */
+.nav {
+  right: 0;
+  position: fixed;
+}
+
+a.active {
+  color: #80bbfb !important;
+}
+
+a {
+  color: #fff !important;
+}
+
+/* WORLD MAP UI CSS */
 #logoContainer {
   margin:20px;
   position: absolute;
@@ -12,6 +27,7 @@ body {
 #logoContainer #logoWrap {
   display: flex;
   margin-bottom: 6px;
+  position: fixed;
 }
 
 p {
@@ -62,10 +78,39 @@ p {
   text-shadow: rgb(10, 10, 11) 1px 1px 1px;
 }
 
-/* covid Map CSS start */
-svg.rsm-svg {
+/* WORLD MAP CSS START */
+/* svg.rsm-svg aka #worldMap */
+#worldMap {
     max-height: 100%;
     margin-width: 100%;
+    /* negative margin to move map to top of window */
+    margin-top: -6%;
+}
+
+.casualtyNumbers {
+  fill:#de6565; 
+  stroke:#992020;
+}
+
+  /* fill:#134b91;
+  stroke:#0035fb 
+  */
+.confirmedCount {
+  fill:#80bbfb;
+  stroke:#7286cc;
+}
+.countryName {
+  fill:#e7bf5b;
+  stroke:#525252;
+}
+.rsm-geography {
+  fill: #222425;
+  stroke: #ffffff;
+}
+
+/* fluid container / #main wrapper around worldMap */
+#main {
+  overflow:hidden;
 }
 
 p.renderDesc {
@@ -78,7 +123,7 @@ p.renderDesc {
 /* mapKey */
 
 #mapControls {
-  position: absolute;
+  position: fixed;
   bottom: 40px;
   left: 20px;
   width: 25%;
@@ -103,6 +148,10 @@ p.renderDesc {
 #mapControls button.active {
   color: #fff;
   background-color:#333842;
+}
+
+svg.rsm g text {
+  color: #fff
 }
 
 @media(max-width:800px) {

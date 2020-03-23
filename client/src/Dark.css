@@ -49,18 +49,6 @@ html, body, input, textarea, select, button {
   border-color: #575757;
   color: #e8e6e3;
 }
-.confirmedNumbers {
-  fill:#de6565; 
-  stroke:#992020;
-}
-.countryName {
-  fill:#e7bf5b;
-  stroke:#525252;
-}
-.rsm-geography {
-  fill: #222425;
-  stroke: #ffffff;
-}
 a {
   color: #3391ff;
 }

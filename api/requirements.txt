@@ -4,3 +4,4 @@ black
 pytest
 flask
 python-dotenv
+requests

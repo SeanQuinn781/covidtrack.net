@@ -11,13 +11,21 @@ import {
   Marker
 } from "react-simple-maps";
 
+import Nav from 'react-bootstrap/Nav';
+import UnitedStatesMap from './UnitedStatesMap';
+
+const geoUrl = "/world-100m.json";
+
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     // set up the initial map state
     this.state = {
+      // global covid locations data
       covidLocations: [],
+      // United States covid locations data
+      unitedStatesData: [],
       // render casualty SVG marker
       renderCasualties: true,
       // render number of casualties
@@ -28,7 +36,8 @@ class App extends React.Component {
       renderConfirmedCount: false,
       // render country names
       renderCountryNames: true,
-
+      // state for selected map in bootstrap nav
+      mapSelected: '#worldMap',
     }
 
      // This binding is necessary to make `this` work in the callback
@@ -40,15 +49,17 @@ class App extends React.Component {
 
      this.renderCountryNames = this.renderCountryNames.bind(this);
 
+     this.onSelect = this.onSelect.bind(this);
+
   }
 
   componentDidMount() {
     // render the initial covid data
     this.buildcovidData();
-    setInterval(
+    // setInterval(
       // continue to call the api for covid data every 1000 seconds
-      () => this.buildcovidData(), 1000000
-    )
+    //  () => this.buildcovidData(), 1000000
+    //)
   }
 
   setCovidLocations(covidDataPoint) {
@@ -111,9 +122,38 @@ class App extends React.Component {
       this.setState({ renderCountryNames: true })
   }
 
+  onSelect() {
+    this.setState({ mapSelected : arguments[0]})
+  }
+
   render() {
-    // render the map of covid locations
     return (
+      <>
+      <Nav
+        className="navbar-right"
+        activeKey={this.state.mapSelected}
+        onSelect={this.onSelect}
+      >
+        <Nav.Item>
+        <Nav.Link 
+            eventKey="#worldMap" 
+            href="#worldMap"
+            className="mapNavLink"
+          >
+            World Map
+          </Nav.Link>
+        </Nav.Item>
+
+        <Nav.Item>
+          <Nav.Link 
+            eventKey="#unitedStatesMap" 
+            href="#unitedStatesMap"
+            className="mapNavLink"
+          >
+            United States
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
       <div className="fluid-container" id="main">
         <div id="logoContainer">
           <div id="logoWrap">
@@ -164,8 +204,9 @@ class App extends React.Component {
               Confirmed Cases over 100
             </button>
        </div>
-        <ComposableMap>
-        <Geographies geography="/world-110m.json">
+        <a name="worldMap"></a>
+        <ComposableMap id="worldMap">
+        <Geographies geography="world-110m.json">
           {({ geographies }) =>
             geographies.map(geo => (
               <Geography
@@ -193,7 +234,7 @@ class App extends React.Component {
                   <circle
                     // set the radius of the svg circle data point to the total death count divided by 50 
                     // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                    r={location.deaths/50}
+                    r={location.deaths/300}
                     stroke="red"
                     strokeWidth="1.5"
                     fill="red"
@@ -235,9 +276,9 @@ class App extends React.Component {
                     <text
                       x={6}
                       y={-10}
-                      className="confirmedNumbers"
-                      fill="#D32F2F"
-                      stroke="#D32F2F"
+                      className="casualtyNumbers"
+                      fill="rgb(55, 133, 230)"
+                      stroke="rgb(55, 133, 230)"
                     >
                         { location.deaths > 0 ? location.deaths : '' }
                     </text>
@@ -253,7 +294,7 @@ class App extends React.Component {
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <circle
-                      r={location.confirmed/500}
+                      r={location.confirmed/300}
                       stroke="#03A9F4"
                       strokeWidth="1.5"
                       fill="#03A9F4"
@@ -273,8 +314,6 @@ class App extends React.Component {
                     <text
                       className="confirmedCount"
                       y={20}
-                      fill="#134b91"
-                      stroke="#0035fb"
                       // x offset for rendering confirmed count to the left of casualties count
                       // only render cases count for countries with over 10 cases to avoid crowding data points
                       x={-20}>
@@ -293,7 +332,15 @@ class App extends React.Component {
           <img className="github" width="50px" height="50px" src="/GitHub-Mark.png" />
         </a>
       </div>
-      </div>
+      <UnitedStatesMap
+        renderCasualties={this.state.renderCasualties}
+        renderCasualtiesCount={this.state.renderCasualtiesCount}
+        renderConfirmed={this.state.renderConfirmed}
+        renderConfirmedCount={this.state.renderConfirmedCount}
+      />
+      <a name="unitedStatesMap"></a>
+    </div>
+    </>
     )
   }
 }

@@ -1,0 +1,7 @@
+
+
+https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json
+
+https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json
+
+http://bl.ocks.org/MaciejKus/raw/61e9ff1591355b00c1c1caf31e76a668/combined2.json
