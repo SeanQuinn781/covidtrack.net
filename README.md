@@ -1,19 +1,26 @@
 ---------------------------------------------------
-##dTrack
+## covidtrack.net
 ![](covidtrack.net.gif)
+
+View the live maps:
+
+https://covidtrack.net
 
 React-Maps Flask-Covid:
 
-Plot live Covid19 Data from John Hopkins on a live SVG map
+Plot live Covid19 Data from both the John Hopkins Covid API and the covidtracking.com API on SVG world map, and a U.S. map of all affected States
 
 A minimal app for viewing the latest Corona Virus data
 
 Quick summary:
 
-- The back end API ( Python flask ) reports back the latest Covid19 data as according to Johns Hopkins, using https://pypi.org/project/covid/ including long/lat locations of affected countries using
+World Map:
+- The back end API ( Python flask ) reports back the latest Covid19 data as according to Johns Hopkins, using https://pypi.org/project/covid/ including long/lat locations of affected countries
 
-- The front end SVG map ( React ) displays the covid data mapped to geolocation 
+United States Map:
+- A second API is used for getting United States Covid19 data from covidtrack.ing.com
 
+- The front end SVGs map ( React ) displays the covid data mapped to geolocation 
 - Buttons are used to add/ remove additional data from the map
 
 - React Middleware Proxy is used to connect the front/ back end
