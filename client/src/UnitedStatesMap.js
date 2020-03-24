@@ -1,6 +1,6 @@
 import React from "react";
 import { geoCentroid } from "d3-geo";
-import './UnitedStatesMap.css'
+import './UnitedStatesMap.css';
 import {
   ComposableMap,
   Geographies,
@@ -10,6 +10,7 @@ import {
 } from "react-simple-maps";
 
 import allStates from './allstates.json'
+
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
 const offsets = {
@@ -30,8 +31,6 @@ class UnitedStatesMap extends React.Component {
     super(props);
     this.state = {
       unitedStatesData: [],
-      unitedStatesDataMarkers: [],
-      allStates: allStates,
     }
   }
 
@@ -46,13 +45,22 @@ class UnitedStatesMap extends React.Component {
       )
     })
     .catch(function(error) {
-      console.log('error ', error)
+      // console.log('error ', error)
+      return error;
     });  
   }
 
   render() {
+
+    const { unitedStatesData } = this.state;
+    const { 
+      renderCasualties,
+      renderCasualtiesCount,
+      renderConfirmed,
+      renderConfirmedCount
+    } = this.props;
     
-    if(this.state.unitedStatesData.length < 2) {
+    if(unitedStatesData.length < 2) {
       return (<p>Data Pending...</p>)
     }
     return (
@@ -61,7 +69,6 @@ class UnitedStatesMap extends React.Component {
           id="unitedStatesMap"
         >
           <Geographies 
-
             geography={geoUrl}>
             {({ geographies }) => (
               <>
@@ -74,18 +81,17 @@ class UnitedStatesMap extends React.Component {
                   />
                 ))}
                 {geographies.map(geo => {
-                  const markers = [];
-                  // generate the state labels, and the state data markers
+                  // generate the state labels, annotations and the state svg markers
                   const centroid = geoCentroid(geo);
                   // set the current U.S. state
                   const cur = allStates.find(s => s.val === geo.id);
                   // use the current U.S. state (cur) id to find the corresponding 
                   // U.S. state data previosly returned from the API & saved to state
-                  const curStateData = this.state.unitedStatesData.find(s => s.state === cur.id);
+                  const curStateData = unitedStatesData.find(s => s.state === cur.id);
                   // generate the corresponding SVG marker and append to markersArray
 
                   return (
-                    <g key={geo.rsmKey + "-name"}>
+                    <g key={`${geo.rsmKey  }-name`}>
                       {cur &&
                         centroid[0] > -160 &&
                         centroid[0] < -67 &&
@@ -98,35 +104,35 @@ class UnitedStatesMap extends React.Component {
                               </text>
                             </Marker>
                             {
-                              this.props.renderCasualties ?
+                              renderCasualties ?
                                 <Marker
+                                  className="covidMarkers currentCovidMarker deaths"
                                   coordinates={centroid}
-                                  key={`deaths-${curStateData.id+curStateData.death}`}
-                                  className="deaths"
-                                  className="covidMarkers currentCovidMarker"
+                                  key={`deaths-${`${curStateData.id+curStateData.death}-svg`}`}
                                 >
                                     <circle
+                                      className="stateCircle"
                                       coordinates={centroid}
+                                      fill="red"
+                                      fillOpacity=".5"
                                       // set the radius of the svg circle data point to the total death count divided by 50 
                                       // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
                                       r={curStateData.death/25}
-                                      className="stateCircle"
-                                      stroke="red"
                                       strokeWidth="1.5"
-                                      fill="red"
-                                      fillOpacity=".5"
                                       stroke="goldenrod" 
                                     />
                                 </Marker>
                               : ''
                             }
                             {
-                              this.props.renderCasualtiesCount ? 
+                              renderCasualtiesCount ? 
                                 <Marker 
                                   className="deaths"
                                   coordinates={centroid}
+                                  key={`deaths-${curStateData.id+curStateData.death}`}
                                 >
                                   <text 
+                                    coordinates={centroid}
                                     y="20" 
                                     fontSize={14} 
                                     textAnchor="middle"
@@ -139,17 +145,15 @@ class UnitedStatesMap extends React.Component {
                               : ''  
                             }
                             { 
-                              this.props.renderConfirmed ? 
+                              renderConfirmed ? 
                                 <Marker
-                                  key={`confirmed-${curStateData.id + curStateData.total}`}
-                                  className="confirmed"
-                                  className="covidMarkers currentCovidMarker"
+                                  className="covidMarkers confirmed currentCovidMarker"
                                   coordinates={centroid}
+                                  key={`confirmed-${`${curStateData.id + curStateData.total  }-svg`}`}
                                 >
                                   <circle
                                     coordinates={centroid}
                                     r={curStateData.total/500}
-                                    stroke="#03A9F4"
                                     strokeWidth="1.5"
                                     fill="#03A9F4"
                                     fillOpacity=".3"
@@ -158,20 +162,19 @@ class UnitedStatesMap extends React.Component {
                               : ''
                             }
                             { 
-                              this.props.renderConfirmedCount ? 
+                              renderConfirmedCount ? 
                                 <Marker
-                                  key={`confirmed-${curStateData.id + curStateData.total}`}
-                                  className="confirmed"
-                                  className="covidMarkers currentCovidMarker"
+                                  className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
+                                  key={`confirmed-${curStateData.id + curStateData.total}`}
                                 >
                                  <text
                                   className="confirmedCount"
-                                  y={40}
+                                  y={-15}
                                   // x offset for rendering confirmed count to the left of casualties count
                                   // only render cases count for countries with over 10 cases to avoid crowding data points
                                   x={-20}>
-                                  { curStateData.total }
+                                  { curStateData.total > 5000 ? curStateData.total : '' }
                                 </text>
                                 </Marker>
                               : ''
@@ -191,20 +194,18 @@ class UnitedStatesMap extends React.Component {
                               </text>
                             </Annotation>
                             {
-                              this.props.renderCasualties ?
+                              renderCasualties ?
                                 <Marker
+                                  className="covidMarkers currentCovidMarker deaths"
                                   coordinates={centroid}
-                                  key={`deaths-${curStateData.id+curStateData.death}`}
-                                  className="deaths"
-                                  className="covidMarkers currentCovidMarker"
+                                  key={`deaths-${`${curStateData.id+curStateData.death}-svg`}`}
                                 >
                                   <circle
+                                    className="stateConfirmedSvg"
                                     coordinates={centroid}
                                     // set the radius of the svg circle data point to the total death count divided by 50 
                                     // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
                                     r={curStateData.death/25}
-                                    className="stateCircle"
-                                    stroke="red"
                                     strokeWidth="1.5"
                                     fill="red"
                                     fillOpacity=".5"
@@ -213,13 +214,13 @@ class UnitedStatesMap extends React.Component {
                               : ''
                             }
                             {
-                              this.props.renderCasualtiesCount ? 
+                              renderCasualtiesCount ? 
                                 <Marker 
-                                  className="deaths"
+                                  className="covidMarkers currentCovidMarker deathsCount"
                                   coordinates={centroid}
+                                  key={`deaths-${curStateData.id+curStateData.death}`}
                                 >
                                   <text 
-                                    y="20" 
                                     fontSize={14} 
                                     textAnchor="middle"
                                     fill="#D32F2F"
@@ -232,51 +233,45 @@ class UnitedStatesMap extends React.Component {
                               // End render State Annotations Labels
                             }
                             { 
-                              this.props.renderConfirmed ? 
+                              renderConfirmed ? 
                                 <Marker
-                                  key={`confirmed-${curStateData.id + curStateData.total}`}
-                                  className="confirmed"
-                                  className="covidMarkers currentCovidMarker"
+                                  className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
+                                  key={`confirmed-${`${curStateData.id + curStateData.total  }-svg`}`}
                                 >
                                   <circle
                                     coordinates={centroid}
-                                    r={curStateData.total/500}
-                                    stroke="#03A9F4"
-                                    strokeWidth="1.5"
                                     fill="#03A9F4"
                                     fillOpacity=".3"
+                                    r={curStateData.total/500}
+                                    strokeWidth="1.5"
                                     stroke="#40c4ff" />
                                 </Marker>
                               : ''
                             }
                             { 
-                              this.props.renderConfirmedCount ? 
+                              renderConfirmedCount ? 
                                 <Marker
                                   key={`confirmed-${curStateData.id + curStateData.total}`}
-                                  className="confirmed"
-                                  className="covidMarkers currentCovidMarker"
+                                  className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
                                 >
                                  <text
                                   className="confirmedCount"
-                                  y={40}
                                   // x offset for rendering confirmed count to the left of casualties count
                                   // only render cases count for countries with over 10 cases to avoid crowding data points
                                   x={-20}>
-                                  { curStateData.total }
+                                  { curStateData.total > 5000 ? curStateData.total : '' }
                                 </text>
                                 </Marker>
                               : ''
                             }
-                            
                           </>
                         
                         ))}
                     </g>
                   );
-                }
-                )}
+                })}
               </>
             )} 
           </Geographies>

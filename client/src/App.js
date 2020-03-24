@@ -3,19 +3,15 @@ import './App.css';
 // styles from DarkReader
 import './Dark.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import {
   ComposableMap,
   Geographies,
   Geography,
   Marker
 } from "react-simple-maps";
-
 import Nav from 'react-bootstrap/Nav';
 import UnitedStatesMap from './UnitedStatesMap';
 import Logo from './covidLogoCircular.png';
-
-const geoUrl = "/world-100m.json";
 
 class App extends React.Component {
 
@@ -25,8 +21,6 @@ class App extends React.Component {
     this.state = {
       // global covid locations data
       covidLocations: [],
-      // United States covid locations data
-      unitedStatesData: [],
       // render casualty SVG marker
       renderCasualties: true,
       // render number of casualties
@@ -60,7 +54,11 @@ class App extends React.Component {
     // setInterval(
       // continue to call the api for covid data every 1000 seconds
     //  () => this.buildcovidData(), 1000000
-    //)
+    // )
+  }
+
+  onSelect() {
+    this.setState({ mapSelected : arguments[0]})
   }
 
   setCovidLocations(covidDataPoint) {
@@ -123,16 +121,24 @@ class App extends React.Component {
       this.setState({ renderCountryNames: true })
   }
 
-  onSelect() {
-    this.setState({ mapSelected : arguments[0]})
-  }
 
   render() {
+
+    const {
+      covidLocations,
+      renderCasualties,
+      renderCasualtiesCount,
+      renderConfirmed,
+      renderConfirmedCount,
+      renderCountryNames,
+      mapSelected,
+    } = this.state;
+
     return (
       <>
       <Nav
         className="navbar-right"
-        activeKey={this.state.mapSelected}
+        activeKey={mapSelected}
         onSelect={this.onSelect}
       >
         <Nav.Item>
@@ -158,7 +164,7 @@ class App extends React.Component {
       <div className="fluid-container" id="main">
         <div id="logoContainer">
           <div id="logoWrap">
-            <img id="logoImg" alt="covidLogo" width="5%" height="5%" src={Logo} />
+            <img id="logoImg" alt="covidTrack.net Logo" width="5%" height="5%" src={Logo} />
             <h5>CovidTrack.net</h5>
           </div>
         </div>
@@ -166,46 +172,46 @@ class App extends React.Component {
         <div id="mapControls">
 
             <button
-              type="renderCasualties"
-              className={`${this.state.renderCasualties ? 'active' : ''}`}
+              type="submit"
+              className={`${renderCasualties ? 'active' : ''}`}
               onClick={this.renderCasualties}
             >
               Casualties
             </button>
 
             <button
-              type="renderCasualtiesCount"
-              className={`${this.state.renderCasualtiesCount ? 'active' : ''}`}
+              type="submit"
+              className={`${renderCasualtiesCount ? 'active' : ''}`}
               onClick={this.renderCasualtiesCount}
             >
-              Casualties Count
+              Casualties Count > 30
             </button>
 
             <button
-              type="renderConfirmed"
-              className={`${this.state.renderConfirmed ? 'active' : ''}`}
+              type="submit"
+              className={`${renderConfirmed ? 'active' : ''}`}
               onClick={this.renderConfirmed}
             >
               Confirmed Cases
             </button>
 
             <button
-              type="renderCountryNames"
-              className={`${this.state.renderCountryNames ? 'active' : ''}`}
+              type="submit"
+              className={`${renderCountryNames ? 'active' : ''}`}
               onClick={this.renderCountryNames}
             >
-              Countries over with over 5000 Cases
+              Countries over with over 10000 Cases
             </button>
 
             <button
-              type="renderConfirmedCount"
-              className={`${this.state.renderConfirmedCount ? 'active' : ''}`}
+              type="submit"
+              className={`${renderConfirmedCount ? 'active' : ''}`}
               onClick={this.renderConfirmedCount}
             >
-              Confirmed Cases over 100
+              Confirmed Cases over 5000
             </button>
        </div>
-        <a name="worldMap"></a>
+        <a name="worldMap" alt="worldMap" href="https://covidtrack.net#worldMap" />
         <ComposableMap id="worldMap">
         <Geographies geography="world-110m.json">
           {({ geographies }) =>
@@ -220,15 +226,13 @@ class App extends React.Component {
           }
         </Geographies>
         { 
-          this.state.covidLocations.map((location) => {
+          covidLocations.map((location) => {
               const markers = [];
-              if (this.state.renderCasualties) {
-                const markerKey = `${location.country  }-deaths`;
+              if (renderCasualties) {
                 markers.push(
                 <Marker
-                  key={`deaths-${location.country}`}
-                  className="deaths"
-                  className="covidMarkers currentCovidMarker"
+                  key={`deaths-${location.country}-svg`}
+                  className="covidMarkers currentCovidMarker deaths"
                   // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
                   coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                 >
@@ -236,7 +240,6 @@ class App extends React.Component {
                     // set the radius of the svg circle data point to the total death count divided by 50 
                     // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
                     r={location.deaths/300}
-                    stroke="red"
                     strokeWidth="1.5"
                     fill="red"
                     fillOpacity=".5"
@@ -244,12 +247,11 @@ class App extends React.Component {
                 </Marker>
                 )
               }
-              if(this.state.renderCountryNames) {
+              if(renderCountryNames) {
                 markers.push(
                   <Marker
                     key={`countryName-${location.country}`}
-                    className="countryNames"
-                    className="covidMarkers currentCovidMarker countryNameMarker"
+                    className="countryNames covidMarkers currentCovidMarker countryNameMarker"
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <text
@@ -260,43 +262,38 @@ class App extends React.Component {
                       strokeWidth=".4px"
                       x={-26}
                       y={-10}>
-                      { location.confirmed > 5000 ? location.country : '' }
+                      { location.confirmed > 10000 ? location.country : '' }
                     </text>
                   </Marker>
                 )
               }
-              if (this.state.renderCasualtiesCount) {
+              if (renderCasualtiesCount) {
                 markers.push(
                   <Marker
                     key={`deathsCount-${location.country}`}
-                    className="deaths"
-                    className="covidMarkers currentCovidMarker"
+                    className="covidMarkers deaths currentCovidMarker"
                     // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <text
-                      x={6}
-                      y={-10}
                       className="casualtyNumbers"
                       fill="rgb(55, 133, 230)"
                       stroke="rgb(55, 133, 230)"
                     >
-                        { location.deaths > 0 ? location.deaths : '' }
+                        { location.deaths > 30 ? location.deaths : '' }
                     </text>
                   </Marker>
                 )
               }
-              if (this.state.renderConfirmed) {
+              if (renderConfirmed) {
                 markers.push(
                   <Marker
                     key={`confirmed-${location.country}`}
-                    className="confirmed"
-                    className="covidMarkers currentCovidMarker"
+                    className="confirmed covidMarkers currentCovidMarker"
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <circle
                       r={location.confirmed/300}
-                      stroke="#03A9F4"
                       strokeWidth="1.5"
                       fill="#03A9F4"
                       fillOpacity=".3"
@@ -304,12 +301,11 @@ class App extends React.Component {
                   </Marker>
                 )
               }
-              if (this.state.renderConfirmedCount) {
+              if (renderConfirmedCount) {
                 markers.push(
                   <Marker
                     key={`confirmedCount-${location.country}`}
-                    className="confirmed"
-                    className="covidMarkers currentCovidMarker"
+                    className="confirmed covidMarkers currentCovidMarker"
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <text
@@ -318,7 +314,7 @@ class App extends React.Component {
                       // x offset for rendering confirmed count to the left of casualties count
                       // only render cases count for countries with over 10 cases to avoid crowding data points
                       x={-20}>
-                      { location.confirmed > 100 ? location.confirmed : '' }
+                      { location.confirmed > 5000 ? location.confirmed : '' }
                     </text>
                   </Marker>
                 )
@@ -331,20 +327,21 @@ class App extends React.Component {
         <p className="dataSource">World Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
 	      <p className="dataSource">U.S. data from <a href="https://covidtracking.com">covidtracking.com/api/states</a></p>
         <a href="https://github.com/seanquinn781/react-maps-flask-covid">
-          <img className="github" width="50px" height="50px" src="/GitHub-Mark.png" />
+          <img alt="githubLink" className="github" width="50px" height="50px" src="/GitHub-Mark.png" />
         </a>
       </div>
       <UnitedStatesMap
-        renderCasualties={this.state.renderCasualties}
-        renderCasualtiesCount={this.state.renderCasualtiesCount}
-        renderConfirmed={this.state.renderConfirmed}
-        renderConfirmedCount={this.state.renderConfirmedCount}
+        renderCasualties={renderCasualties}
+        renderCasualtiesCount={renderCasualtiesCount}
+        renderConfirmed={renderConfirmed}
+        renderConfirmedCount={renderConfirmedCount}
       />
-      <a name="unitedStatesMap"></a>
+      <a name="unitedStatesMap" alt="unitedStatesMap" href="https://covidtrack.net#unitedStatesMap" />
     </div>
     </>
     )
   }
 }
+
 
 export default App;

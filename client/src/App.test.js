@@ -6,7 +6,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import App from './App';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { logoUrl } from './constants'
 
 
 configure({ adapter: new Adapter() });
