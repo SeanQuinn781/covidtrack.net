@@ -2,16 +2,20 @@ import React from 'react';
 import './App.css';
 // styles from DarkReader
 import './Dark.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   ComposableMap,
   Geographies,
   Geography,
   Marker
 } from "react-simple-maps";
-import Nav from 'react-bootstrap/Nav';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import { Container, Navbar, Nav, MenuItem } from 'react-bootstrap';
+import { Button } from '@material-ui/core';
+import {jQuery} from 'jquery';
 import UnitedStatesMap from './UnitedStatesMap';
 import Logo from './covidLogoCircular.png';
+import QuestionMark from './questionMark.png'
 
 class App extends React.Component {
 
@@ -30,9 +34,8 @@ class App extends React.Component {
       // render number of confirmed cases 
       renderConfirmedCount: false,
       // render country names
-      renderCountryNames: true,
+      renderCountryNames: false,
       // state for selected map in bootstrap nav
-      mapSelected: '#worldMap',
     }
 
      // This binding is necessary to make `this` work in the callback
@@ -43,9 +46,6 @@ class App extends React.Component {
      this.renderConfirmedCount =  this.renderConfirmedCount.bind(this);
 
      this.renderCountryNames = this.renderCountryNames.bind(this);
-
-     this.onSelect = this.onSelect.bind(this);
-
   }
 
   componentDidMount() {
@@ -57,12 +57,7 @@ class App extends React.Component {
     // )
   }
 
-  onSelect() {
-    this.setState({ mapSelected : arguments[0]})
-  }
-
   setCovidLocations(covidDataPoint) {
-
     this.setState(
       state => {
         // store covidLocations in state
@@ -121,9 +116,7 @@ class App extends React.Component {
       this.setState({ renderCountryNames: true })
   }
 
-
   render() {
-
     const {
       covidLocations,
       renderCasualties,
@@ -131,86 +124,107 @@ class App extends React.Component {
       renderConfirmed,
       renderConfirmedCount,
       renderCountryNames,
-      mapSelected,
     } = this.state;
 
     return (
       <>
-      <Nav
-        className="navbar-right"
-        activeKey={mapSelected}
-        onSelect={this.onSelect}
-      >
-        <Nav.Item>
-        <Nav.Link 
-            eventKey="#worldMap" 
-            href="#worldMap"
-            className="mapNavLink"
-          >
-            World Map
-          </Nav.Link>
-        </Nav.Item>
-
-        <Nav.Item>
-          <Nav.Link 
-            eventKey="#unitedStatesMap" 
-            href="#unitedStatesMap"
-            className="mapNavLink"
-          >
-            United States
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
-      <div className="fluid-container" id="main">
+     <nav className="navbar navbar-expand-lg navbar-fixed-top">
+        <a className="navbar-brand navbar-right" href="/">
         <div id="logoContainer">
           <div id="logoWrap">
-            <img id="logoImg" alt="covidTrack.net Logo" width="5%" height="5%" src={Logo} />
+            <img id="logoImg" alt="covidTrack.net Logo" width="9%" height="9%" src={Logo} />
             <h5>CovidTrack.net</h5>
           </div>
         </div>
+        </a>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon" />
+        </button>
 
-        <div id="mapControls">
-
-            <button
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto">
+            <Button
+              variant="contained"
+              className="confirmedCount" 
+              color="primary"
               type="submit"
-              className={`${renderCasualties ? 'active' : ''}`}
-              onClick={this.renderCasualties}
-            >
-              Casualties
-            </button>
-
-            <button
-              type="submit"
-              className={`${renderCasualtiesCount ? 'active' : ''}`}
+              className={`mapControlButton ${renderCasualtiesCount ? 'active' : ''}`}
+              style={{ opacity: `${  renderCasualtiesCount ? '.9' : '.7'}`}}
               onClick={this.renderCasualtiesCount}
             >
-              Casualties Count > 30
-            </button>
+              Casualties over 1000
+            </Button>
 
-            <button
+            <Button
+              variant="contained"
+              className="confirmedCount" 
+              color="primary"
               type="submit"
-              className={`${renderConfirmed ? 'active' : ''}`}
-              onClick={this.renderConfirmed}
-            >
-              Confirmed Cases
-            </button>
-
-            <button
-              type="submit"
-              className={`${renderCountryNames ? 'active' : ''}`}
-              onClick={this.renderCountryNames}
-            >
-              Countries over with over 10000 Cases
-            </button>
-
-            <button
-              type="submit"
-              className={`${renderConfirmedCount ? 'active' : ''}`}
+              className={`mapControlButton ${ renderConfirmedCount ? "active" : ""}`}
+              style={{ opacity: `${  renderConfirmedCount ? '.9' : '.8'}`}}
               onClick={this.renderConfirmedCount}
             >
-              Confirmed Cases over 5000
-            </button>
-       </div>
+              Cases over 20000
+            </Button>
+
+            <Button 
+              variant="contained"
+              className="confirmedCount" 
+              color="primary"
+              type="submit"
+              className={`mapControlButton ${renderCasualties ? 'active' : ''}`}
+              style={{ opacity: `${  renderCasualties ? '.9' : '.8'}`}}
+              onClick={this.renderCasualties}
+            >
+              Casualties SVG
+            </Button>
+
+            <Button
+              variant="contained"
+              className="confirmedCount" 
+              color="primary"
+              type="submit"
+              className={`mapControlButton ${renderConfirmed ? 'active' : ''}`}
+              style={{ opacity: `${  renderConfirmed ? '.9' : '.8'}`}}
+              onClick={this.renderConfirmed}
+            >
+              Cases SVG
+            </Button>
+
+            <Button
+              variant="contained"
+              className="confirmedCount" 
+              color="primary"
+              type="submit"
+              className={`countryNameButton ${renderCountryNames ? 'active' : ''}`}
+              style={{ opacity: `${  renderCountryNames ? '.9' : '.8'}`}}
+              onClick={this.renderCountryNames}
+            >
+              Countries over with over 20000 Cases
+            </Button>
+
+            <Button
+              className="selectMap"
+              eventKey="#worldMap" 
+              type="submit"
+              href="#worldMap"
+            >
+              World Map
+            </Button>
+
+            <Button
+              className="selectMap"
+              eventKey="#unitedStatesMap" 
+              href="#unitedStatesMap"
+            >
+              United States
+            </Button>
+          </ul>
+        </div>
+      </nav>
+      
+      <div className="fluid-container" id="main">
+        
         <a name="worldMap" alt="worldMap" href="https://covidtrack.net#worldMap" />
         <ComposableMap id="worldMap">
         <Geographies geography="world-110m.json">
@@ -228,6 +242,7 @@ class App extends React.Component {
         { 
           covidLocations.map((location) => {
               const markers = [];
+            
               if (renderCasualties) {
                 markers.push(
                 <Marker
@@ -236,14 +251,23 @@ class App extends React.Component {
                   // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
                   coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                 >
-                  <circle
-                    // set the radius of the svg circle data point to the total death count divided by 50 
-                    // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                    r={location.deaths/300}
-                    strokeWidth="1.5"
-                    fill="red"
-                    fillOpacity=".5"
-                    stroke="goldenrod" />
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <defs>
+                      <radialGradient id="myGradient">
+                        <stop offset="10%" stopColor="red" />
+                        <stop offset="95%" stopColor="#fd7e14" />
+                      </radialGradient>
+                    </defs>
+                    <circle
+                      // set the radius of the svg circle data point to the total death count divided by 50 
+                      // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
+                      r={location.deaths/300}
+                      strokeWidth="1.5"
+                      fill="url('#myGradient')"
+                      fillOpacity=".5"
+                      stroke="#d62b2b"/>
+                    </svg>
                 </Marker>
                 )
               }
@@ -262,7 +286,7 @@ class App extends React.Component {
                       strokeWidth=".4px"
                       x={-26}
                       y={-10}>
-                      { location.confirmed > 10000 ? location.country : '' }
+                      { location.confirmed > 20000 ? location.country : '' }
                     </text>
                   </Marker>
                 )
@@ -276,11 +300,11 @@ class App extends React.Component {
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <text
-                      className="casualtyNumbers"
+                      className="casualtyCount"
                       fill="rgb(55, 133, 230)"
                       stroke="rgb(55, 133, 230)"
                     >
-                        { location.deaths > 30 ? location.deaths : '' }
+                        { location.deaths > 1000 ? location.deaths : '' }
                     </text>
                   </Marker>
                 )
@@ -293,7 +317,7 @@ class App extends React.Component {
                     coordinates={ location.country === "France" ? [ 2.3 , 48 ] : [ location.longitude, location.latitude ]}
                   >
                     <circle
-                      r={location.confirmed/300}
+                      r={location.confirmed/2000}
                       strokeWidth="1.5"
                       fill="#03A9F4"
                       fillOpacity=".3"
@@ -314,7 +338,7 @@ class App extends React.Component {
                       // x offset for rendering confirmed count to the left of casualties count
                       // only render cases count for countries with over 10 cases to avoid crowding data points
                       x={-20}>
-                      { location.confirmed > 5000 ? location.confirmed : '' }
+                      { location.confirmed > 20000 ? location.confirmed : '' }
                     </text>
                   </Marker>
                 )
@@ -323,6 +347,13 @@ class App extends React.Component {
             })
         }
       </ComposableMap>
+      <div className="instructions">
+        <div className="helpWrap">
+          <img id="helpIcon" alt="helpIcon" src={QuestionMark} />
+          <h5>Usage</h5>
+        </div>
+        <p>Click Navigation Buttons to Add/Remove Data from the Map</p>
+      </div>
       <div className="appInfo">
         <p className="dataSource">World Data from Johns Hopkins via <a href="https://pypi.org/project/covid/"> Covid SDK</a></p>
 	      <p className="dataSource">U.S. data from <a href="https://covidtracking.com">covidtracking.com/api/states</a></p>
@@ -342,6 +373,5 @@ class App extends React.Component {
     )
   }
 }
-
 
 export default App;

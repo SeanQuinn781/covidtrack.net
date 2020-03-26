@@ -103,8 +103,7 @@ class UnitedStatesMap extends React.Component {
                                 {cur.id}
                               </text>
                             </Marker>
-                            {
-                              renderCasualties ?
+                            { renderCasualties &&
                                 <Marker
                                   className="covidMarkers currentCovidMarker deaths"
                                   coordinates={centroid}
@@ -122,10 +121,8 @@ class UnitedStatesMap extends React.Component {
                                       stroke="goldenrod" 
                                     />
                                 </Marker>
-                              : ''
                             }
-                            {
-                              renderCasualtiesCount ? 
+                            { renderCasualtiesCount && 
                                 <Marker 
                                   className="deaths"
                                   coordinates={centroid}
@@ -142,10 +139,8 @@ class UnitedStatesMap extends React.Component {
                                     {curStateData.death}
                                   </text>
                                 </Marker>
-                              : ''  
                             }
-                            { 
-                              renderConfirmed ? 
+                            { renderConfirmed &&
                                 <Marker
                                   className="covidMarkers confirmed currentCovidMarker"
                                   coordinates={centroid}
@@ -153,31 +148,29 @@ class UnitedStatesMap extends React.Component {
                                 >
                                   <circle
                                     coordinates={centroid}
-                                    r={curStateData.total/500}
+                                    r={curStateData.total/1000}
                                     strokeWidth="1.5"
                                     fill="#03A9F4"
                                     fillOpacity=".3"
-                                    stroke="#40c4ff" />
+                                    stroke="#40c4ff" 
+                                  />
                                 </Marker>
-                              : ''
                             }
-                            { 
-                              renderConfirmedCount ? 
+                            { renderConfirmedCount &&
                                 <Marker
                                   className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
                                   key={`confirmed-${curStateData.id + curStateData.total}`}
                                 >
-                                 <text
-                                  className="confirmedCount"
-                                  y={-15}
-                                  // x offset for rendering confirmed count to the left of casualties count
-                                  // only render cases count for countries with over 10 cases to avoid crowding data points
-                                  x={-20}>
-                                  { curStateData.total > 5000 ? curStateData.total : '' }
-                                </text>
+                                  <text
+                                    className="confirmedCount"
+                                    y={-15}
+                                    // x offset for rendering confirmed count to the left of casualties count
+                                    // only render cases count for countries with over 10 cases to avoid crowding data points
+                                    x={-20}>
+                                    { curStateData.total > 5000 ? curStateData.total : '' }
+                                  </text>
                                 </Marker>
-                              : ''
                             }
                           </>
                           // End Render State Text Labels
@@ -193,8 +186,7 @@ class UnitedStatesMap extends React.Component {
                                 {cur.id}
                               </text>
                             </Annotation>
-                            {
-                              renderCasualties ?
+                            { renderCasualties &&
                                 <Marker
                                   className="covidMarkers currentCovidMarker deaths"
                                   coordinates={centroid}
@@ -211,10 +203,8 @@ class UnitedStatesMap extends React.Component {
                                     fillOpacity=".5"
                                     stroke="goldenrod" />
                                 </Marker>
-                              : ''
                             }
-                            {
-                              renderCasualtiesCount ? 
+                            { renderCasualtiesCount &&
                                 <Marker 
                                   className="covidMarkers currentCovidMarker deathsCount"
                                   coordinates={centroid}
@@ -229,11 +219,10 @@ class UnitedStatesMap extends React.Component {
                                     {curStateData.death}
                                   </text>
                                 </Marker>
-                              : ''  
                               // End render State Annotations Labels
                             }
                             { 
-                              renderConfirmed ? 
+                              renderConfirmed &&
                                 <Marker
                                   className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
@@ -243,14 +232,14 @@ class UnitedStatesMap extends React.Component {
                                     coordinates={centroid}
                                     fill="#03A9F4"
                                     fillOpacity=".3"
-                                    r={curStateData.total/500}
+                                    r={curStateData.total/1000}
                                     strokeWidth="1.5"
-                                    stroke="#40c4ff" />
+                                    stroke="#40c4ff" 
+                                  />
                                 </Marker>
-                              : ''
                             }
                             { 
-                              renderConfirmedCount ? 
+                              renderConfirmedCount &&
                                 <Marker
                                   key={`confirmed-${curStateData.id + curStateData.total}`}
                                   className="confirmed covidMarkers currentCovidMarker"
@@ -264,7 +253,6 @@ class UnitedStatesMap extends React.Component {
                                   { curStateData.total > 5000 ? curStateData.total : '' }
                                 </text>
                                 </Marker>
-                              : ''
                             }
                           </>
                         

@@ -1,50 +1,73 @@
 body {
   background-color: #282c34 !important;
 }
-
 /* App Nav */
+
 .nav {
   right: 0;
   position: fixed;
   margin-top: 10px;
 }
 
-a.active {
-  color: #80bbfb !important;
-}
-
 a {
   color: #fff !important;
 }
 
+a.active {
+  color: #80bbfb !important;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  color: #a09a9a;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Fixes dropdown menus placed on the right side */
+.ml-auto .dropdown-menu {
+  left: auto !important;
+  right: 0px;
+}
+
 /* WORLD MAP UI CSS */
+
 #logoContainer {
-  margin: 9px;
-  position: absolute;
   color: #ccc;
   font-weight: 300;
 }
 
 #logoContainer #logoWrap {
   display: flex;
-  margin-bottom: 6px;
-  position: fixed;
 }
 
-p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    font-size: 14px;
-    color: #a09a9a;
-    font-family: 'Roboto', sans-serif;
+#logoContainer #logoWrap h5 {
+  padding-left: 15px;
+  padding-top: 5px;
+  color: rgb(0, 0, 0) !important;
+  -webkit-text-stroke: 0.05em;
+  -webkit-text-stroke-color: rgb(207, 203, 196);
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  font-size: 31px;
+  text-shadow: rgb(10, 10, 11) 1px 1px 1px;
+}
+
+.navbar-toggler {
+  padding: .25rem .75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: #ccc !important;
+  border: 1px solid #000;
+  border-radius: .25rem;
 }
 
 #logoContainer #logoWrap img {
-  width: 50px;
   -webkit-filter: drop-shadow(.5px .5px .5px rgb(000, 000, 000, .8));
-  height: 50px;
-  margin: 0px;
   border-radius: 102px;
+  height: 45px;
+  width: 45px;
 }
 
 .appInfo {
@@ -53,6 +76,58 @@ p {
   bottom: 10px;
   right: 30px;
   font-size: 13px;
+}
+
+.instructions {
+  position: fixed;
+  bottom: 10px;
+  left: 30px;
+  opacity: 1 !important;
+  width: 186px;
+  text-align: center;
+  background-color: #aeadad;
+}
+
+#helpIcon {
+  width: 23px;
+  height: 23px;
+}
+
+svg {
+  overflow: visible !important;
+}
+
+.instructions h5 {
+  color: #ccc;
+  background-color: #000;
+  padding-top: 4px;
+  padding-left: 4px;
+}
+
+.instructions p {
+  font-size: 16px;
+  color: #000 !important;
+  padding: 4px;
+}
+
+#helpIcon {
+  width: 23px;
+  height: 23px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  height: 21px;
+  border-radius: 100px;
+  margin: 3px;
+  margin-top: 3px;
+  margin-left: 3px;
+  margin-left: 42px;
+  padding: 0px;
+  margin-top: 5px;
+}
+
+.helpWrap {
+  display: flex;
+  background-color: #000;
 }
 
 .appInfo img.github {
@@ -66,52 +141,104 @@ p {
   padding-right: 13px;
 }
 
-
-#logoContainer #logoWrap h5 {
-  padding-left: 15px;
-  padding-top: 5px;
-  color: rgb(0,0,0) !important;
-  -webkit-text-stroke: 0.05em;
-  -webkit-text-stroke-color: rgb(207, 203, 196);
-  font-weight: 700;
-  font-family: 'Roboto', sans-serif;
-  font-size: 31px;
-  text-shadow: rgb(10, 10, 11) 1px 1px 1px;
+.selectMap {
+  background-color: #333842 !important;
 }
 
 /* WORLD MAP CSS START */
-/* svg.rsm-svg aka #worldMap */
+
 #worldMap {
-    max-height: 100%;
-    margin-width: 100%;
-    /* negative margin to move map to top of window */
-    margin-top: -6%;
+  max-height: 100%;
+  margin-width: 100%;
+  /* negative margin to move map to top of window */
+  margin-top: -6%;
 }
 
-.casualtyNumbers {
-  fill:#de6565; 
-  stroke:#992020;
+.navbar-nav button span {
+  text-align: center !important;
 }
 
-  /* fill:#134b91;
-  stroke:#0035fb 
-  */
+@media(min-width: 800px) {
+  .navbar-nav button span {
+    width: 160px !important;
+  }
+  .MuiButton-text {
+    padding: 1px 8px !important;
+  }
+}
+
+.casualtyCount {
+  fill: #ffe711;
+  stroke: #de4501;
+}
+
+.navbar-nav .mr-auto {
+  opacity: .75!important;
+}
+
+.navbar-nav .mr-auto .active {
+  opacity: .9!important;
+}
+/*
+  background-color: rgb(255, 0, .7) !important;
+   background-color: rgb(42, 55, 122) !important;
+*/
+
+.mapControlButton {
+  color: #fff !important;
+  fill: #80bbfb;
+  stroke: #7286cc;
+}
+
+.mapControlButton .active {
+  color: #fff !important;
+  background-color: #007bff !important;
+}
+
+#navbarSupportedContent > ul > button.active {
+  fill: #80bbfb !important;
+  stroke: #7286cc !important;
+}
+
+#navbarSupportedContent > ul > button.active {
+  color: #fff !important;
+  background-color: #007bff !important;
+  background-color: #007bff !important;
+  opacity: .86 !important;
+}
+
+
+
+button.MuiButtonBase-root:nth-child(1), .navbar-nav button.MuiButtonBase-root, .MuiButton-root.MuiButton-text.casualtyCountButton {
+  box-shadow: rgb(27, 27, 30) 3px 3px 3px;
+}
+.MuiButton-label {
+  font-weight: 700;
+  box-shadow: 2px solid #ccc;
+  display: block;
+  line-height: 1.3;
+}
+
 .confirmedCount {
-  fill:#80bbfb;
-  stroke:#7286cc;
+  fill: #80bbfb;
+  stroke: #7286cc;
 }
+
 .countryName {
-  fill:#e7bf5b;
-  stroke:#525252;
+  fill: #02fff9;
+  stroke: #525252;
 }
+
 .rsm-geography {
   fill: #222425;
   stroke: #ffffff;
 }
 
 /* fluid container / #main wrapper around worldMap */
+
 #main {
-  overflow:hidden;
+  overflow: hidden;
+  min-height: 900px;
 }
 
 p.renderDesc {
@@ -122,14 +249,13 @@ p.renderDesc {
 
 /* covid Map CSS end */
 /* mapKey */
-
 #mapControls {
   position: fixed;
-  bottom: 40px;
-  left: 20px;
-  width: 25%;
+  bottom: 200px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
   color: #fff;
-  top: 50%;
 }
 
 #mapControls p {
@@ -139,7 +265,6 @@ p.renderDesc {
 
 #mapControls button {
   border-radius: 2px;
-  width: 300px;
   margin: 5px;
   font-size: 17px;
   background-color: #ccc;
@@ -148,7 +273,7 @@ p.renderDesc {
 
 #mapControls button.active {
   color: #fff;
-  background-color:#333842;
+  background-color: #333842;
 }
 
 svg.rsm g text {
@@ -156,26 +281,37 @@ svg.rsm g text {
 }
 
 @media(max-width:800px) {
-
   #logoContainer #logoWrap h5 {
-
     color: rgb(232, 230, 227);
     -webkit-text-stroke-color: rgb(207, 203, 196);
     text-shadow: rgb(10, 10, 11) 1px 1px 1px;
     font-size: 19px;
-
   }
-
   #logoContainer #logoWrap img {
-
     border-color: rgba(100, 94, 94, 0.7);
     width: 30px;
     height: 30px;
-
   }
-
-  .renderDesc, .instructions {
+  .renderDesc,
+  .instructions {
     display: none;
   }
+}
 
+.navbar-fixed-top {
+  top: 0;
+  border-width: 0 0 1px;
+}
+
+.navbar-fixed-bottom,
+.navbar-fixed-top {
+  border-radius: 0;
+}
+
+.navbar-fixed-bottom,
+.navbar-fixed-top {
+  position: fixed !important;
+  right: 0;
+  left: 0;
+  z-index: 1030;
 }
