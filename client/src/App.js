@@ -57,16 +57,9 @@ class App extends React.Component {
     // )
   }
 
-  setCovidLocations(covidDataPoint) {
-    this.setState(
-      state => {
-        // store covidLocations in state
-        const covidLocations = state.covidLocations.concat(covidDataPoint);
-        return {covidLocations};
-
-      }
-    ) 
-  }
+  //setCovidLocations(covidDataPoint) {
+    
+  //}
 
   clearPreviousCovidData() {
     this.setState({ covidLocations: [] })
@@ -76,8 +69,19 @@ class App extends React.Component {
     this.clearPreviousCovidData()
     fetch("/covid").then(res => res.json())
     .then(data => {
-      this.setCovidLocations(data)
+      this.setState(
+        state => {
+          // store covidLocations in state
+          const covidLocations = state.covidLocations.concat(data);
+          return {covidLocations};
+  
+        }
+      ) 
     })
+    .catch(function(error) {
+      console.log('error ', error)
+      return error;
+    });  
   }
 
   // TODO refactor click handlers

@@ -6,6 +6,7 @@ import requests
 import json
 app = Flask(__name__)
 
+
 @app.route("/covid", methods=["GET"])
 def covid_get_data():
     # Get global Covid data using Covid Pip

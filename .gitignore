@@ -117,6 +117,7 @@ env/
 # venv/
 ENV/
 env.bak/
+api/venv
 venv.bak/
 # Flask
 # Flask stuff:

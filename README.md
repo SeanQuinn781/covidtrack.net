@@ -103,6 +103,12 @@ python3 -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 ```
+Run the API
+
+```
+FLASK_ENV=development FLASK_APP=app/main.py flask run
+```
+```
 ----------------------------------------------------------------
 ## Testing
 

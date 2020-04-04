@@ -1,7 +1,7 @@
-covid
-flake8
-black
-pytest
-flask
-python-dotenv
-requests
+covid==2.1.6
+flake8==3.7.9
+black==19.10b0
+pytest==5.4.1
+flask==1.1.2
+python-dotenv==0.12.0
+requests==2.23.0
