@@ -1,4 +1,4 @@
-[
+const exampleWorldCovidData = [
   {
     "active": 4263,
     "confirmed": 81727,
@@ -1924,4 +1924,6 @@
     "longitude": 125.727539,
     "recovered": 0
   }
-]
+];
+
+export default exampleWorldCovidData;

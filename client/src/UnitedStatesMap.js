@@ -8,10 +8,9 @@ import {
   Marker,
   Annotation
 } from "react-simple-maps";
+import exampleUsCovidData from './exampleUsCovidData.js' 
 
 import allStates from './allstates.json'
-
-const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
 const offsets = {
   VT: [50, -8],
@@ -31,23 +30,36 @@ class UnitedStatesMap extends React.Component {
     super(props);
     this.state = {
       unitedStatesData: [],
+      offline: false,
+      testData: exampleUsCovidData,
     }
   }
 
   componentDidMount() {
-    fetch("/covidUnitedStates").then(res => res.json())
-    .then(data => {
+    
+    if (!this.state.offline)
+      fetch("/covidUnitedStates").then(res => res.json())
+      .then(data => {
+        this.setState(
+          state => {
+            const unitedStatesData = state.unitedStatesData.concat(data);
+            return {unitedStatesData}
+          }
+        )
+      })
+      .catch(function(error) {
+        console.log('error ', error)
+        return error;
+      });
+
+    else {
       this.setState(
         state => {
-          const unitedStatesData = state.unitedStatesData.concat(data);
+          const unitedStatesData = state.unitedStatesData.concat(this.state.testData);
           return {unitedStatesData}
         }
       )
-    })
-    .catch(function(error) {
-      // console.log('error ', error)
-      return error;
-    });  
+    }
   }
 
   render() {
@@ -69,7 +81,7 @@ class UnitedStatesMap extends React.Component {
           id="unitedStatesMap"
         >
           <Geographies 
-            geography={geoUrl}>
+            geography="states-10m.json">
             {({ geographies }) => (
               <>
                 {geographies.map(geo => (
@@ -116,7 +128,7 @@ class UnitedStatesMap extends React.Component {
                                       fillOpacity=".5"
                                       // set the radius of the svg circle data point to the total death count divided by 50 
                                       // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                                      r={curStateData.death/25}
+                                      r={curStateData.death/1200}
                                       strokeWidth="1.5"
                                       stroke="goldenrod" 
                                     />
@@ -135,6 +147,7 @@ class UnitedStatesMap extends React.Component {
                                     textAnchor="middle"
                                     fill="#D32F2F"
                                     stroke="#D32F2F"
+                                    
                                   >
                                     {curStateData.death}
                                   </text>
@@ -148,7 +161,7 @@ class UnitedStatesMap extends React.Component {
                                 >
                                   <circle
                                     coordinates={centroid}
-                                    r={curStateData.total/1000}
+                                    r={curStateData.total/1200}
                                     strokeWidth="1.5"
                                     fill="#03A9F4"
                                     fillOpacity=".3"
@@ -163,7 +176,7 @@ class UnitedStatesMap extends React.Component {
                                   key={`confirmed-${curStateData.id + curStateData.total}`}
                                 >
                                   <text
-                                    className="confirmedCount"
+                                    className="confirmedCount text"
                                     y={-15}
                                     // x offset for rendering confirmed count to the left of casualties count
                                     // only render cases count for countries with over 10 cases to avoid crowding data points
@@ -197,7 +210,7 @@ class UnitedStatesMap extends React.Component {
                                     coordinates={centroid}
                                     // set the radius of the svg circle data point to the total death count divided by 50 
                                     // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                                    r={curStateData.death/25}
+                                    r={curStateData.death/1200}
                                     strokeWidth="1.5"
                                     fill="red"
                                     fillOpacity=".5"
@@ -232,7 +245,7 @@ class UnitedStatesMap extends React.Component {
                                     coordinates={centroid}
                                     fill="#03A9F4"
                                     fillOpacity=".3"
-                                    r={curStateData.total/1000}
+                                    r={curStateData.total/1200}
                                     strokeWidth="1.5"
                                     stroke="#40c4ff" 
                                   />
@@ -246,7 +259,7 @@ class UnitedStatesMap extends React.Component {
                                   coordinates={centroid}
                                 >
                                  <text
-                                  className="confirmedCount"
+                                  className="confirmedCount text"
                                   // x offset for rendering confirmed count to the left of casualties count
                                   // only render cases count for countries with over 10 cases to avoid crowding data points
                                   x={-20}>
@@ -255,7 +268,6 @@ class UnitedStatesMap extends React.Component {
                                 </Marker>
                             }
                           </>
-                        
                         ))}
                     </g>
                   );

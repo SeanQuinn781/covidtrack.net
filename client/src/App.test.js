@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import { shallow , configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import App from './App';
+import Logo from './covidLogoCircular.png';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -82,7 +83,7 @@ describe('App', () => {
   });
   it('render with the app logo', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<img src={logoUrl} alt="appLogo" />, div);
+    ReactDOM.render(<img id="logoImg" alt="covidTrack.net Logo" width="9%" height="9%" src={Logo} />, div);
    ReactDOM.unmountComponentAtNode(div);
   });
 })

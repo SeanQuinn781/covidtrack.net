@@ -98,7 +98,7 @@ p {
   opacity: 1 !important;
   width: 186px;
   text-align: center;
-  background-color: #aeadad;
+  background-color: #fff;
 }
 
 #helpIcon {
@@ -231,11 +231,9 @@ button.MuiButtonBase-root:nth-child(1), .navbar-nav button.MuiButtonBase-root, .
   text-align: center;
 }
 
-.confirmedCount {
-  fill: #80bbfb;
-  stroke: #7286cc;
+.confirmedCount.text {
+  fill: #67a5e8;
 }
-
 .countryName {
   fill: #02fff9;
   stroke: #525252;
