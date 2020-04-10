@@ -157,11 +157,11 @@ class UnitedStatesMap extends React.Component {
                                 <Marker
                                   className="covidMarkers confirmed currentCovidMarker"
                                   coordinates={centroid}
-                                  key={`confirmed-${`${curStateData.id + curStateData.total  }-svg`}`}
+                                  key={`confirmed-${`${curStateData.id + curStateData.totalTestResults  }-svg`}`}
                                 >
                                   <circle
                                     coordinates={centroid}
-                                    r={curStateData.total/1200}
+                                    r={curStateData.totalTestResults/1200}
                                     strokeWidth="1.5"
                                     fill="#03A9F4"
                                     fillOpacity=".3"
@@ -173,7 +173,7 @@ class UnitedStatesMap extends React.Component {
                                 <Marker
                                   className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
-                                  key={`confirmed-${curStateData.id + curStateData.total}`}
+                                  key={`confirmed-${curStateData.id + curStateData.totalTestResults}`}
                                 >
                                   <text
                                     className="confirmedCount text"
@@ -181,7 +181,7 @@ class UnitedStatesMap extends React.Component {
                                     // x offset for rendering confirmed count to the left of casualties count
                                     // only render cases count for countries with over 10 cases to avoid crowding data points
                                     x={-20}>
-                                    { curStateData.total > 5000 ? curStateData.total : '' }
+                                    { curStateData.totalTestResults > 5000 ? curStateData.totalTestResults : '' }
                                   </text>
                                 </Marker>
                             }
@@ -239,13 +239,13 @@ class UnitedStatesMap extends React.Component {
                                 <Marker
                                   className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
-                                  key={`confirmed-${`${curStateData.id + curStateData.total  }-svg`}`}
+                                  key={`confirmed-${`${curStateData.id + curStateData.totalTestResults  }-svg`}`}
                                 >
                                   <circle
                                     coordinates={centroid}
                                     fill="#03A9F4"
                                     fillOpacity=".3"
-                                    r={curStateData.total/1200}
+                                    r={curStateData.totalTestResults/1200}
                                     strokeWidth="1.5"
                                     stroke="#40c4ff" 
                                   />
@@ -254,7 +254,7 @@ class UnitedStatesMap extends React.Component {
                             { 
                               renderConfirmedCount &&
                                 <Marker
-                                  key={`confirmed-${curStateData.id + curStateData.total}`}
+                                  key={`confirmed-${curStateData.id + curStateData.totalTestResults}`}
                                   className="confirmed covidMarkers currentCovidMarker"
                                   coordinates={centroid}
                                 >
@@ -263,7 +263,7 @@ class UnitedStatesMap extends React.Component {
                                   // x offset for rendering confirmed count to the left of casualties count
                                   // only render cases count for countries with over 10 cases to avoid crowding data points
                                   x={-20}>
-                                  { curStateData.total > 5000 ? curStateData.total : '' }
+                                  { curStateData.totalTestResults > 5000 ? curStateData.totalTestResults : '' }
                                 </text>
                                 </Marker>
                             }

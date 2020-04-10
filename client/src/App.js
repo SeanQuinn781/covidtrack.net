@@ -84,9 +84,7 @@ class App extends React.Component {
     const isMetricActive =  this.state[`${id}`];
 
     // toggle the metrics active or inactive
-    const newMetricState = isMetricActive ? 
-      false : true
-
+    const newMetricState = !isMetricActive
     // save the toggled metric state
     this.setState({ [id]: newMetricState })
   }
@@ -226,8 +224,9 @@ class App extends React.Component {
             </Geographies>
             { 
               covidLocations.map((location) => {
+
                   const markers = [];
-                
+ 
                   if (renderCasualties) {
                     markers.push(
                       <Marker
@@ -247,7 +246,7 @@ class App extends React.Component {
                           <circle
                             // set the radius of the svg circle data point to the total death count divided by 50 
                             // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                            r={location.deaths/300}
+                            r={location.deaths/2000}
                             strokeWidth="1.5"
                             fill="url('#redGradient')"
                             fillOpacity=".5"
@@ -328,6 +327,7 @@ class App extends React.Component {
                       </Marker>
                     )
                   }
+
                   return(markers)
                 })
             }
