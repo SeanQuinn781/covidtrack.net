@@ -1,10 +1,17 @@
 ---------------------------------------------------
 ## covidtrack.net
-![](covidtrack.net.gif)
+![CovidTrack Gif](covidtrack.net.gif)
 
 View the live maps:
 
 https://covidtrack.net
+
+Tooltip Demos:
+
+![CovidTrack Tooltip Demo](/demoImages/kansasTooltip.png)
+![CovidTrack Tooltip Demo](/demoImages/coloradoTooltip.png)
+![CovidTrack Tooltip Demo](/demoImages/californiaTooltip.png)
+
 
 React-Maps Flask-Covid:
 
