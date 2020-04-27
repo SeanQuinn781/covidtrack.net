@@ -34,7 +34,7 @@ class App extends React.Component {
       renderConfirmedCount: false,
       // render country names
       renderCountryNames: false,
-      // offline mode for testing
+      // offline mode for testing (offline mode only requires the front end to be running)
       offline: false,
       testData: worldData,
     }
@@ -70,10 +70,6 @@ class App extends React.Component {
     }
   }
 
-  clearPreviousCovidData() {
-    this.setState({ covidLocations: [] })
-  }
-
   // Based on click, toggle corresponding metric in App state so its applied to the map
   handleClick = (event) => {
 
@@ -87,6 +83,10 @@ class App extends React.Component {
     const newMetricState = !isMetricActive
     // save the toggled metric state
     this.setState({ [id]: newMetricState })
+  }
+
+  clearPreviousCovidData() {
+    this.setState({ covidLocations: [] })
   }
 
   render() {
@@ -339,6 +339,8 @@ class App extends React.Component {
               <h5>Usage</h5>
             </div>
             <p>Click Navigation Buttons to Add/Remove Data from the Map</p>
+            <p>Scroll Down to view the United States Map</p>
+            <p>Hover over U.S. States to view more U.S. Covid Data State by State</p>
           </div>
 
           <div className="appInfo">
