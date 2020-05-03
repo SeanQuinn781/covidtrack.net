@@ -1,6 +1,7 @@
 import React from "react";
 import { geoCentroid } from "d3-geo";
 import './UnitedStatesMap.css';
+import format from './Format';
 import {
   ComposableMap,
   Geographies,
@@ -32,7 +33,7 @@ class UnitedStatesMap extends React.Component {
     this.state = {
       unitedStatesData: [],
       // offline mode for testing (offline mode only requires the front end to be running)
-      offline: false,
+      offline: true,
       testData: exampleUsCovidData,
     }
 
@@ -74,31 +75,27 @@ class UnitedStatesMap extends React.Component {
   handleMouseMove(evt, stateData) {
 
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
-    
-    // inserts whitespace + linebreaks so tooltip data isn't in one long string
-    function format(dataPoint) { 
-      return `<span className="dataPoint">${  dataPoint  } ` + `</span>` + `<br />`;
-    }
-
-    // TODO refactor
+    // TODO refactor w/ object.entries for label/val
     this.tip.show(
-      `commercialScore: ${  format(stateData.commercialScore) 
-      }death: ${  format(stateData.death) 
-      }fips: ${  format(stateData.fips) 
-      }Grade: ${  format(stateData.grade) 
-      }Hospitalized: ${  format(stateData.hospitalized) 
-      }inIcuCumulative: ${  format(stateData.inIcuCumulative) 
-      }inIcuCurrently: ${  format(stateData.inIcuCurrently) 
-      }negative: ${  format(stateData.negative) 
-      }onVentilatorCumulative: ${  format(stateData.onVentilatorCumulative) 
-      }onVentilatorCurrently: ${  format(stateData.onVentilatorCurrently) 
-      }pending: ${  format(stateData.pending) 
-      }posNeg: ${  format(stateData.posNeg) 
-      }positive: ${  format(stateData.positive) 
-      }positiveScore: ${  format(stateData.positiveScore) 
-      }recovered: ${  format(stateData.recovered) 
-      }score: ${  format(stateData.score)  
-      }totalTestResults: ${  stateData.totalTestResults}`,
+      `
+      State: ${ format(stateData.state)}
+      commercialScore: ${  format(stateData.commercialScore)}
+      death: ${  format(stateData.death)}
+      fips: ${  format(stateData.fips)}
+      Grade: ${  format(stateData.grade)} 
+      Hospitalized: ${  format(stateData.hospitalized)}
+      inIcuCumulative: ${  format(stateData.inIcuCumulative)}
+      inIcuCurrently: ${  format(stateData.inIcuCurrently)}
+      negative: ${  format(stateData.negative)}
+      onVentilatorCumulative: ${  format(stateData.onVentilatorCumulative)}
+      onVentilatorCurrently: ${  format(stateData.onVentilatorCurrently)}
+      pending: ${  format(stateData.pending)}
+      posNeg: ${  format(stateData.posNeg)}
+      positive: ${  format(stateData.positive)}
+      positiveScore: ${  format(stateData.positiveScore)}
+      recovered: ${  format(stateData.recovered)}
+      score: ${  format(stateData.score)}
+      totalTestResults: ${  stateData.totalTestResults}`,
     )
   }
 
@@ -119,6 +116,7 @@ class UnitedStatesMap extends React.Component {
     if(unitedStatesData.length < 2) {
       return (<p>Data Pending...</p>)
     }
+
     return (
         <ComposableMap 
           projection="geoAlbersUsa"
@@ -126,7 +124,7 @@ class UnitedStatesMap extends React.Component {
         >
           <Geographies 
             geography="states-10m.json">
-            {({ geographies, projection }) => (
+            {({ geographies }) => (
               <>
                 {geographies.map((geo, i) => {
                    // generate the state labels, annotations and the state svg markers
@@ -158,10 +156,15 @@ class UnitedStatesMap extends React.Component {
                           centroid[0] > -160 &&
                           centroid[0] < -67 &&
                           // Either render a text marker or annotation for each state
+                          // TODO refactor ternary
                           (Object.keys(offsets).indexOf(cur.id) === -1 ? (
                             <>
                               <Marker coordinates={centroid}>
-                                <text y="2" fontSize={14} textAnchor="middle">
+                                <text 
+                                  y="2" 
+                                  fontSize={14} 
+                                  textAnchor="middle"
+                                  className="stateLabel">
                                   {cur.id}
                                 </text>
                               </Marker>
@@ -197,7 +200,6 @@ class UnitedStatesMap extends React.Component {
                                       textAnchor="middle"
                                       fill="#D32F2F"
                                       stroke="#D32F2F"
-                                      
                                     >
                                       {curStateData.death}
                                     </text>

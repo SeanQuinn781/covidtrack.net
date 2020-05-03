@@ -240,8 +240,8 @@ button.MuiButtonBase-root:nth-child(1), .navbar-nav button.MuiButtonBase-root, .
 }
 
 .rsm-geography {
-  fill: #222425;
-  stroke: #ffffff;
+  fill: #e0deda;
+  stroke: #ccc;
 }
 
 /* fluid container / #main wrapper around worldMap */

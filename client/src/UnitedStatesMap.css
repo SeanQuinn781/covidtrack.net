@@ -1,6 +1,10 @@
 body svg g {
     fill: #fff;
   }
+
+  .stateLabel {
+    fill: #000;
+  }
   
   @media(max-width:800px) {
     #unitedStatesMap {
