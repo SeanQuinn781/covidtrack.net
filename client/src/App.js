@@ -38,7 +38,7 @@ class App extends React.Component {
       // render country names
       renderCountryNames: false,
       // offline mode for testing (offline mode only requires the front end to be running)
-      offline: true,
+      offline: false,
       testData: worldData,
     }
 
