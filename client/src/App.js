@@ -3,7 +3,6 @@ import { geoCentroid } from "d3-geo";
 import './App.css';
 // styles from DarkReader
 import './Dark.css';
-import format from './Format';
 import {
   ComposableMap,
   Geographies,
@@ -14,7 +13,9 @@ import tooltip from "wsdm-tooltip"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { Button } from '@material-ui/core';
-import worldData from './exampleWorldCovidData.js' 
+import format from './Format';
+import worldData from './exampleWorldCovidData';
+import WorldMapMarkers from './WorldMapMarkers';
 import UnitedStatesMap from './UnitedStatesMap';
 import Logo from './covidLogoCircular.png';
 import QuestionMark from './questionMark.png'
@@ -38,7 +39,7 @@ class App extends React.Component {
       // render country names
       renderCountryNames: false,
       // offline mode for testing (offline mode only requires the front end to be running)
-      offline: false,
+      offline: true,
       testData: worldData,
     }
 
@@ -52,25 +53,22 @@ class App extends React.Component {
 
     this.tip = tooltip()
     this.tip.create()
-    // render the initial covid data
     this.clearPreviousCovidData()
+    // call the covid api and store data, or store testData in state
     if (!offline)
       fetch("/covid")
         .then(res => res.json())
         .then(data => {
           this.setState(
             state => {
-              // store covidCountries in state
               const covidCountries = state.covidCountries.concat(data);
               return {covidCountries};
             }
           ) 
         })
-      
     else {
       this.setState(
         state => {
-          // store covidCountries in state
           const covidCountries = state.covidCountries.concat(this.state.testData);
           return {covidCountries};
         }
@@ -95,23 +93,20 @@ class App extends React.Component {
   // renders data in tooltip
   handleMouseMove(evt, countryData) {
     
-    // TODO rm this workaround
-    if (countryData === undefined) {
-      countryData = {};
-    }
-
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
 
-    // TODO refactor
-    this.tip.show(
-      `
-      Country: ${format(countryData.country)}
-      Active: ${format(countryData.active)}
-      Confirmed: ${format(countryData.confirmed)}
-      Deaths: ${format(countryData.deaths)}
-      Recovered: ${format(countryData.recovered)}
-      `
-    )
+    if (countryData === undefined)
+      this.tip.show('Data Unavailable')
+    else
+      this.tip.show(
+        `
+        Country: ${format(countryData.country)}
+        Active: ${format(countryData.active)}
+        Confirmed: ${format(countryData.confirmed)}
+        Deaths: ${format(countryData.deaths)}
+        Recovered: ${format(countryData.recovered)}
+        `
+      )
   }
 
   handleMouseLeave() {
@@ -170,19 +165,7 @@ class App extends React.Component {
                 style={{ opacity: `${  renderCasualtiesCount ? '.9' : '.7'}`}}
                 onClick={e => this.handleClick(e)}
               >
-                Casualty count over 1000
-              </Button>
-
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                id="renderConfirmedCount"
-                className={`mapControlButton ${ renderConfirmedCount ? "active" : ""}`}
-                style={{ opacity: `${  renderConfirmedCount ? '.9' : '.8'}`}}
-                onClick={e => this.handleClick(e)}
-              >
-                Cases count over 50000
+                Casualty count over 2500
               </Button>
 
               <Button 
@@ -207,6 +190,18 @@ class App extends React.Component {
                 onClick={e => this.handleClick(e)}
               >
                 Cases Data Point
+              </Button>
+
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                id="renderConfirmedCount"
+                className={`mapControlButton ${ renderConfirmedCount ? "active" : ""}`}
+                style={{ opacity: `${  renderConfirmedCount ? '.9' : '.8'}`}}
+                onClick={e => this.handleClick(e)}
+              >
+                Cases count over 50000
               </Button>
 
               <Button
@@ -250,23 +245,25 @@ class App extends React.Component {
                       {
                         geographies.map((geo, i) => {
                         const centroid = geoCentroid(geo);
-                        // find the corresponding covid data for each geographic location while iterating over all geographies
+                        // find the covid data for each geographic location 
                         // match on country name, or abbreviated name (found in geo.properties['Alpha-2'])
                         const curLocationData = covidCountries.find(c => c.country === geo.properties.name) ? 
                           covidCountries.find(c => c.country === geo.properties.name) : 
                           covidCountries.find(c => c.country === geo.properties['Alpha-2'])
                        
                         if(!curLocationData)
-                          return(<Geography
-                            key={geo.rsmKey}
-                            onMouseMove={(e,props) => this.handleMouseMove(e,curLocationData)}
-                            onMouseLeave={this.handleMouseLeave}
-                            style={{
-                              hover: { fill: "#DDD", outline: "none" },
-                              pressed: { fill: "#AAA", outline: "none" },
-                            }}
-                            geography={geo}
-                          />)
+                          return(
+                            <Geography
+                              key={geo.rsmKey}
+                              onMouseMove={(e,props) => this.handleMouseMove(e,curLocationData)}
+                              onMouseLeave={this.handleMouseLeave}
+                              style={{
+                                hover: { fill: "#DDD", outline: "none" },
+                                pressed: { fill: "#AAA", outline: "none" },
+                              }}
+                              geography={geo}
+                            />
+                          )
 
                         return(
                           <>
@@ -282,102 +279,20 @@ class App extends React.Component {
                               stroke="#ccc"
                               geography={geo}
                             />
-                            <g key={`${geo.rsmKey  }-name`}>
-                              <Marker coordinates={centroid}>
-                                <text y="2" fontSize={14} textAnchor="middle" />
-                              </Marker>
-                            </g>
+                              <g key={`${geo.rsmKey  }-name`}>
+                                <Marker coordinates={centroid}>
+                                  <text y="2" fontSize={14} textAnchor="middle" />
+                                </Marker>
+                              </g>
 
-                            { renderCasualties &&
-                                <Marker
-                                  key={`deaths-${curLocationData.country}-svg`}
-                                  className="covidMarkers currentCovidMarker deaths"
-                                  // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-                                  coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
-                                >
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                  xmlnsXlink="http://www.w3.org/1999/xlink">
-                                  <defs>
-                                    <radialGradient id="redGradient">
-                                      <stop offset="10%" stopColor="darkred" />
-                                      <stop offset="95%" stopColor="red" />
-                                    </radialGradient>
-                                  </defs>
-                                  <circle
-                                    // set the radius of the svg circle data point to the total death count divided by 50 
-                                    // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                                    r={curLocationData.deaths/2300}
-                                    strokeWidth="1.5"
-                                    fill="url('#redGradient')"
-                                    fillOpacity=".5"
-                                    stroke="#d3212d"/>
-                                  </svg>
-                              </Marker>
-                            }
-                            { renderCountryNames &&
-                              <Marker
-                                key={`countryName-${curLocationData.country}`}
-                                className="countryNames covidMarkers currentCovidMarker countryNameMarker"
-                                coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
-                              >
-                                <text
-                                  className="countryName"
-                                  fill="rgb(231, 191, 91)"
-                                  color="#ffc107"
-                                  stroke="#000"
-                                  strokeWidth=".4px"
-                                  x={-26}
-                                  y={-10}>
-                                  { curLocationData.confirmed > 50000 ? curLocationData.country : '' }
-                                </text>
-                              </Marker>
-                            }
-                            { renderCasualtiesCount && 
-                                <Marker
-                                  key={`deathsCount-${curLocationData.country}`}
-                                  className="covidMarkers deaths currentCovidMarker"
-                                  // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-                                  coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
-                                >
-                                  <text
-                                    className="casualtyCount"
-                                    fill="rgb(55, 133, 230)"
-                                    stroke="rgb(55, 133, 230)"
-                                  >
-                                      { curLocationData.deaths > 1000 ? curLocationData.deaths : '' }
-                                  </text>
-                                </Marker>
-                            }
-                            { renderConfirmed &&
-                                <Marker
-                                  key={`confirmed-${curLocationData.country}`}
-                                  className="confirmed covidMarkers currentCovidMarker"
-                                  coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
-                                >
-                                  <circle
-                                    r={curLocationData.confirmed/2300}
-                                    strokeWidth="1.5"
-                                    fill="#03A9F4"
-                                    fillOpacity=".3"
-                                    stroke="#40c4ff" />
-                                </Marker>
-                            }
-                            { renderConfirmedCount &&
-                               <Marker
-                                 key={`confirmedCount-${curLocationData.country}`}
-                                 className="confirmed covidMarkers currentCovidMarker"
-                                 coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
-                               >
-                                 <text
-                                   className="confirmedCount text"
-                                   y={20}
-                                   // x offset for rendering confirmed count to the left of casualties count
-                                   // only render cases count for countries with over 10 cases to avoid crowding data points
-                                   x={-20}>
-                                   { curLocationData.confirmed > 50000 ? curLocationData.confirmed : '' }
-                                 </text>
-                               </Marker>
-                            }
+                              <WorldMapMarkers
+                                curLocationData={curLocationData}
+                                renderCasualties={renderCasualties}
+                                renderCasualtiesCount={renderCasualtiesCount}
+                                renderConfirmed={renderConfirmed}
+                                renderConfirmedCount={renderConfirmedCount}
+                                renderCountryNames={renderCountryNames}
+                              />
                           </>
                         )
                       })
