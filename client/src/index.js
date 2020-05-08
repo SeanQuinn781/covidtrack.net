@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+// manually include local jquery (workaround for offline mode)
+import '../node_modules/jquery/src/jquery.js';
 import App from './App';
 // import * as serviceWorker from './serviceWorker';
 

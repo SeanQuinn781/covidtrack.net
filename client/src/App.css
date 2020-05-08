@@ -1,8 +1,8 @@
 body {
-  background-color: #282c34 !important;
+  background-color: #3d3d40 !important;
+  color: #000;
 }
 /* App Nav */
-
 .nav {
   right: 0;
   position: fixed;
@@ -10,7 +10,7 @@ body {
 }
 
 a {
-  color: #fff !important;
+  color: #fff;
 }
 
 a.active {
@@ -21,7 +21,7 @@ p {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 14px;
-  color: #a09a9a;
+  color: #000;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -43,8 +43,11 @@ p {
 /* WORLD MAP UI CSS */
 
 #logoContainer {
+  color: rgb(209, 206, 199);
   color: #ccc;
+  margin-left: -6px !important;
   font-weight: 300;
+  margin-top: -15px;
 }
 
 #logoContainer #logoWrap {
@@ -54,9 +57,10 @@ p {
 #logoContainer #logoWrap h5 {
   padding-left: 15px;
   padding-top: 5px;
-  color: rgb(0, 0, 0) !important;
-  -webkit-text-stroke: 0.05em;
+  -webkit-text-stroke: 0.04em;
+  color: rgb(44, 35, 171) !important;
   -webkit-text-stroke-color: rgb(207, 203, 196);
+  text-shadow: rgb(103, 103, 113) 1px 1px 1px;
   font-weight: 700;
   font-family: 'Roboto', sans-serif;
   font-size: 31px;
@@ -171,18 +175,10 @@ svg {
   text-align: center !important;
 }
 
-@media(min-width: 800px) {
-  .navbar-nav button span {
-    width: 160px !important;
-  }
-  .MuiButton-text {
-    padding: 1px 8px !important;
-  }
-}
 
 .casualtyCount {
-  fill: #ffe711;
-  stroke: #de4501;
+  stroke: red;
+  fill: #000;
 }
 
 .navbar-nav .mr-auto {
@@ -214,14 +210,17 @@ svg {
 }
 
 #navbarSupportedContent > ul > button.active {
-  color: #fff !important;
+  color: #fff;
   background-color: #007bff !important;
-  background-color: #007bff !important;
-  opacity: .86 !important;
 }
 
-button.MuiButtonBase-root:nth-child(1), .navbar-nav button.MuiButtonBase-root, .MuiButton-root.MuiButton-text.casualtyCountButton {
+button.MuiButtonBase-root {
   box-shadow: rgb(27, 27, 30) 3px 3px 3px;
+}
+.MuiButton-containedPrimary .active {
+  color: #fff;
+  background-color: #3f51b5;
+  border: 1px solid white;
 }
 .MuiButton-label {
   font-weight: 700;
@@ -233,16 +232,26 @@ button.MuiButtonBase-root:nth-child(1), .navbar-nav button.MuiButtonBase-root, .
 
 .confirmedCount.text {
   fill: #67a5e8;
-}
-.countryName {
-  fill: #02fff9;
-  stroke: #525252;
+  stroke: #55abff;
 }
 
-.rsm-geography {
-  fill: #e0deda;
-  stroke: #ccc;
+.countryName {
+  fill: #feffff;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 999 !important;
+  stroke: #565454;
 }
+
+/* 
+  geography SVG colors are now generated based on metrics.
+  Uncomment this block to override dynamically generated color
+
+  .rsm-geography {
+    fill: #e0deda;
+    stroke: #ccc;
+  }
+*/
 
 /* fluid container / #main wrapper around worldMap */
 
@@ -291,6 +300,10 @@ svg.rsm g text {
 }
 
 @media(max-width:800px) {
+  .MuiButton-contained {
+    width: 100%;
+  }
+
   #logoContainer #logoWrap h5 {
     color: rgb(232, 230, 227);
     -webkit-text-stroke-color: rgb(207, 203, 196);
@@ -320,8 +333,80 @@ svg.rsm g text {
 
 .navbar-fixed-bottom,
 .navbar-fixed-top {
-  position: fixed !important;
+  position: fixed;
   right: 0;
   left: 0;
   z-index: 1030;
+}
+
+@media (min-width:800px) {
+  /* (MUI) Material styles */
+  /* desktop buttons */
+  .MuiButton-root {
+    height: 82px;
+  }
+  .MuiButtonBase-root {
+    box-shadow: rgb(27, 27, 30) 3px 3px 3px;
+    width:90px;
+    height: 100%;
+    padding: 3px;
+    border: 1px solid #403f42;
+    height: 75px;
+    font-size: 11px;
+  }
+  .MuiButton-text {
+    padding: 1px 8px !important;
+  }
+  .MuiButton-label {
+    font-weight: 700;
+    box-shadow: 2px solid #ccc;
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase !important;
+    text-align: center;
+  }
+  .navbar-nav button span {
+    width: 160px !important;
+  }
+  
+  #logoContainer #logoWrap h5 {
+    padding-left: 15px;
+    line-height: .9;
+    padding-top: 0px;
+    color: rgb(44, 35, 171) !important;
+  }
+
+  #logoContainer #logoWrap img {
+    -webkit-filter: drop-shadow(.5px .5px .5px rgb(000, 000, 000, .8));
+    border-radius: 102px;
+    height: 47px;
+    width: 47px;
+  }
+  /* logo and app title */
+  .navbar-left {
+    float: left!important;
+    margin: 0;
+    padding: 10px 6px !important;
+    height: 80px;
+  }
+
+  .navbar-nav {
+    /* bootstrap overrides */
+    float: right !important;
+    margin: 0;
+    margin-right: 0px;
+  }
+  .navbar-expand-lg .navbar-nav {
+    -ms-flex-direction: row;
+    /* bootstrap overrides */
+    flex-direction: row !important;
+    display: flex !important;
+  }
+   /* Fixes dropdown menus placed on the right side */
+ .ml-auto .dropdown-menu {
+    /* bootstrap overrides */
+    left: auto !important;
+    right: 0px;
+  }
+
 }

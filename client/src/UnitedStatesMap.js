@@ -8,46 +8,54 @@ import {
 } from "react-simple-maps";
 import tooltip from "wsdm-tooltip"
 import PropTypes from 'prop-types';
-import format from './Format';
-import UnitedStatesTextMarkers from './UnitedStatesTextMarkers';
-import UnitedStatesAnnotations from './UnitedStatesAnnotations';
-import exampleUsCovidData from './exampleUsCovidData' 
+import exampleUsCovidData from './utils/testData/exampleUsData' 
 import allStates from './allstates.json';
-
-
-const offsets = {
-  VT: [50, -8],
-  NH: [34, 2],
-  MA: [30, -1],
-  RI: [28, 2],
-  CT: [35, 10],
-  NJ: [34, 1],
-  DE: [33, 0],
-  MD: [47, 10],
-  DC: [49, 21]
-};
+// utils
+import format from './utils/format';
+import { offsets } from './utils/Constants';
+import randomGeographyColor from './utils/randomGeographyColor';
+import stateColorPalette from './utils/stateColorPalette'
+import sortLocation from './utils/sortLocation'
+import relativeIndexScale from './utils/relativeIndexScale';
+// markers
+import USMapTextMarkers from './components/svgMarkers/US/USMapTextMarkers';
+import USMapAnnotations from './components/svgMarkers/US/USMapAnnotations';
 
 class UnitedStatesMap extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      // U.S. state data
       unitedStatesData: [],
       // offline mode for testing (offline mode only requires the front end to be running)
       offline: true,
       testData: exampleUsCovidData,
+      geographyColor: '#ddd',
+      renderCasualties: true,
+      renderConfirmed: false,
     }
 
-    this.handleMouseMove = this.handleMouseMove.bind(this)
-    this.handleMouseLeave = this.handleMouseLeave.bind(this)
+    this.handleMouseMove   = this.handleMouseMove.bind(this);
+    this.handleMouseLeave  = this.handleMouseLeave.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount() {
 
-    this.tip = tooltip()
-    this.tip.create()
+    const {
+      props: {
+        renderCasesHeatmap,
+        renderCasualtiesHeatmap,
+      }
+    } = this;
+
+
+    this.tip = tooltip();
+    this.tip.create();
     
-    if (!this.state.offline)
+
+    if (!this.state.offline) {
       fetch("/covidUnitedStates").then(res => res.json())
       .then(data => {
         this.setState(
@@ -61,11 +69,33 @@ class UnitedStatesMap extends React.Component {
         // console.log('error ', error)
         return error;
       });
-
+    }
+    // check for active metrics and sort geographic locations by 
+    // their coresponding metric and how it ranks in relation to 
+    // reach other location. This allows for varying brightness 
+    // of the color as they correspond with their relative rankings
+    /*
+     */
     else {
+
+      let data = this.state.testData;
+      // TODO: export
+      // pre sort data in order by any active metrics before saving to state
+      if (renderCasualtiesHeatmap) {
+        data.sort(function(a,b) {
+          return a.death - b.death;
+        }).reverse()
+      }
+      else if (renderCasesHeatmap) {
+        data = data.slice(0)
+        data.sort(function(a,b) {
+          return a.positive - b.positive;
+        }).reverse()
+      }
+
       this.setState(
         state => {
-          const unitedStatesData = state.unitedStatesData.concat(this.state.testData);
+          const unitedStatesData = state.unitedStatesData.concat(data);
           return {unitedStatesData}
         }
       )
@@ -73,35 +103,40 @@ class UnitedStatesMap extends React.Component {
   }
 
   // renders data in tooltip 
-  handleMouseMove(evt, curStateData) {
+  handleMouseMove(evt, stateData) {
 
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
 
-    if (typeof curStateData.state !== "string")
+    if (typeof stateData.state !== "string") {
       this.tip.show('Data Unavailable')
-    else
-      // TODO refactor 
+    }
+    else {
+      // TODO refactor set keys
       this.tip.show(
         `
-        State: ${ format(curStateData.state)}
-        commercialScore: ${ format(curStateData.commercialScore)}
-        death: ${ format(curStateData.death)}
-        fips: ${ format(curStateData.fips)}
-        Grade: ${ format(curStateData.grade)} 
-        Hospitalized: ${  format(curStateData.hospitalized)}
-        inIcuCumulative: ${  format(curStateData.inIcuCumulative)}
-        inIcuCurrently: ${  format(curStateData.inIcuCurrently)}
-        negative: ${  format(curStateData.negative)}
-        onVentilatorCumulative: ${  format(curStateData.onVentilatorCumulative)}
-        onVentilatorCurrently: ${  format(curStateData.onVentilatorCurrently)}
-        pending: ${  format(curStateData.pending)}
-        posNeg: ${  format(curStateData.posNeg)}
-        positive: ${  format(curStateData.positive)}
-        positiveScore: ${  format(curStateData.positiveScore)}
-        recovered: ${  format(curStateData.recovered)}
-        score: ${  format(curStateData.score)}
-        totalTestResults: ${  curStateData.totalTestResults}`,
+        <key=${ stateData.id }>
+          State: ${ format(stateData.state)}
+          commercialScore: ${ format(stateData.commercialScore)}
+          death: ${ format(stateData.death)}
+          fips: ${ format(stateData.fips)}
+          Grade: ${ format(stateData.grade)} 
+          Hospitalized: ${  format(stateData.hospitalized)}
+          inIcuCumulative: ${  format(stateData.inIcuCumulative)}
+          inIcuCurrently: ${  format(stateData.inIcuCurrently)}
+          negative: ${  format(stateData.negative)}
+          onVentilatorCumulative: ${  format(stateData.onVentilatorCumulative)}
+          onVentilatorCurrently: ${  format(stateData.onVentilatorCurrently)}
+          pending: ${  format(stateData.pending)}
+          posNeg: ${  format(stateData.posNeg)}
+          positive: ${  format(stateData.positive)}
+          positiveScore: ${  format(stateData.positiveScore)}
+          recovered: ${  format(stateData.recovered)}
+          score: ${  format(stateData.score)}
+          totalTestResults: ${ stateData.totalTestResults}
+        </>
+        `
       )
+    }
   }
 
   handleMouseLeave() {
@@ -111,7 +146,9 @@ class UnitedStatesMap extends React.Component {
   render() {
 
     const { unitedStatesData } = this.state;
-    const { 
+    const {
+      renderCasesHeatmap,
+      renderCasualtiesHeatmap,
       renderCasualties,
       renderCasualtiesCount,
       renderConfirmed,
@@ -138,49 +175,79 @@ class UnitedStatesMap extends React.Component {
                    const currentState = allStates.find(s => s.val === geo.id);
                    // use the current U.S. state (cur) id to find the corresponding 
                    // U.S. state data previosly returned from the API & saved to state
-                   const curStateData = unitedStatesData.find(s => s.state === currentState.id);
+                   const locationData = unitedStatesData.find(s => s.state === currentState.id);
                    // generate the corresponding SVG marker and append to markersArray
-                  return (
-                    <>
+
+                   if(!locationData) {
+                     console.log('no loc' , centroid[0])
+                     return (
                       <Geography
-                        key={geo.rsmKey}
-                        onMouseMove={(e,props) => this.handleMouseMove(e,curStateData)}
+                        key={geo.rsmKey+centroid[0]}
+                        onMouseMove={(e,props) => this.handleMouseMove(e,locationData,geo.properties.name)}
                         onMouseLeave={this.handleMouseLeave}
                         style={{
-                          default: { fill: "#EEE", outline: "none" },
                           hover: { fill: "#DDD", outline: "none" },
                           pressed: { fill: "#AAA", outline: "none" },
                         }}
-                        stroke="#FFF"
+                        fill="darkgray"
                         geography={geo}
-                        fill="#DDD"
+                      />
+                     )
+                   }
+                  
+                   let sortedMetric = [];
+                   let relativeIndex; 
+                   let stateColor;
+                  // assign the state geography a color based on the value of total cases or deaths 
+                  if (renderCasualtiesHeatmap) {
+                    relativeIndex = relativeIndexScale('death', locationData.death, unitedStatesData)
+                    stateColor   = stateColorPalette(unitedStatesData, relativeIndex, 'death');
+                  } else if(renderCasesHeatmap) {
+                    relativeIndex = relativeIndexScale('positive', locationData.positive, unitedStatesData)
+                    stateColor   = stateColorPalette(unitedStatesData, relativeIndex, 'positive')
+                  } else {
+                    stateColor = randomGeographyColor();
+                  }
+
+                  return (
+                    <>
+                      <Geography
+                        className="locationData"
+                        key={geo.rsmKey}
+                        onMouseMove={(e,props) => this.handleMouseMove(e,locationData)}
+                        onMouseLeave={this.handleMouseLeave}
+                        style={{
+                          hover: { fill: "darkgray" },
+                          pressed: { fill: "#aaa", outline: "none" },
+                        }}
+                        fill={stateColor}
+                        stroke="#fff"
+                        geography={geo}
                       />
                       <g key={`${geo.rsmKey  }-name`}>
                         {currentState &&
                           centroid[0] > -160 &&
                           centroid[0] < -67 &&
-
-                          /* Either render a text marker or a annotation for each state
-                             Annotations (floating state labels) are used when the state is too small
-                             for a text label to fit. States that need annotations are listed in the
-                             offsets array.
+                          
+                          /* Render a text marker or an annotation for each U.S. state name
+                             Annotations are used when the state is too small for a text label.
+                             States that need annotations are listed in the offsets array.
                           */
+
                           (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
-                            <UnitedStatesTextMarkers 
+                            <USMapTextMarkers 
                               currentState={currentState}
-                              curStateData={curStateData}
+                              locationData={locationData}
                               centroid={centroid}
                               renderCasualties={renderCasualties}
                               renderCasualtiesCount={renderCasualtiesCount}
                               renderConfirmed={renderConfirmed}
                               renderConfirmedCount={renderConfirmedCount}
                             />
-                            // End Render State Text Labels
-                            // ------------------------------------------------------------------
                           ) : (
-                            <UnitedStatesAnnotations 
+                            <USMapAnnotations 
                               currentState={currentState}
-                              curStateData={curStateData}
+                              locationData={locationData}
                               centroid={centroid}
                               renderCasualties={renderCasualties}
                               renderCasualtiesCount={renderCasualtiesCount}
@@ -200,36 +267,25 @@ class UnitedStatesMap extends React.Component {
   }
 };
 
+UnitedStatesMap.defaultProps = {
+  renderCasualties: true,
+  renderCasualtiesCount: true,
+  renderCasualtiesHeatmap: true,
+  stateData: {
+    state: 'pending'
+  },
+  currentState: {
+    name: 'pending'
+  }
+};
+
 UnitedStatesMap.propTypes = {
-  currentState: PropTypes.shape({
-    id: PropTypes.string,
-    val: PropTypes.string,
-    name: PropTypes.string
-  }),
-  curStateData: PropTypes.shape({
-    state: PropTypes.string,
-    commercialScore: PropTypes.number,
-    death: PropTypes.number,
-    fips: PropTypes.number,
-    grade: PropTypes.string,
-    hostipitalized: PropTypes.number,
-    inIcuCumulative: PropTypes.number,
-    inIcuCurrently: PropTypes.number,
-    negative: PropTypes.number,
-    onVentilatorCumulative: PropTypes.number,
-    onVentilatorCurrently: PropTypes.number,
-    pending: PropTypes.number,
-    posNeg: PropTypes.number,
-    positive: PropTypes.number,
-    positiveScore: PropTypes.number,
-    recovered: PropTypes.number,
-    score: PropTypes.string,
-    totalTestResults: PropTypes.number
-}).isRequired,
+  currentState: PropTypes.object,
+  stateData: PropTypes.object,
   centroid: PropTypes.arrayOf(PropTypes.number),
-  renderCasualties: PropTypes.bool.isRequired,
+  renderCasualties: PropTypes.bool,
   renderCasualtiesCount: PropTypes.bool.isRequired,
-  renderConfirmed: PropTypes.bool.isRequired,
+  renderConfirmed: PropTypes.bool,
   renderConfirmedCount: PropTypes.bool.isRequired,
 };
 

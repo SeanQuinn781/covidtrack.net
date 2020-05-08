@@ -1,11 +1,16 @@
-body svg g {
-    fill: #fff;
-  }
 
+  
   .stateLabel {
     fill: #000;
   }
-  
+  svg.rsm g text {
+    color: #fff
+  }
+
+  svg {
+    overflow: visible !important;
+  }
+
   @media(max-width:800px) {
     #unitedStatesMap {
       margin-top: -56px;

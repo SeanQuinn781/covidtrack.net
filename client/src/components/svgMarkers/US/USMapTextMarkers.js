@@ -1,15 +1,14 @@
 import React from "react";
-import './UnitedStatesMap.css';
 import {
   Marker,
 } from "react-simple-maps";
 import PropTypes from 'prop-types';
 
-function UnitedStatesTextMarkers (props) {
+function USMapTextMarkers (props) {
 
     const {
         currentState,
-        curStateData,
+        locationData,
         centroid,
         renderCasualties,
         renderCasualtiesCount,
@@ -35,7 +34,7 @@ function UnitedStatesTextMarkers (props) {
                 <Marker
                     className="covidMarkers currentCovidMarker deaths"
                     coordinates={centroid}
-                    key={`deaths-${`${currentState.id+curStateData.death}-svg`}`}
+                    key={`deaths-${`${currentState.id+locationData.death}-svg`}`}
                 >
                     <circle
                       className="stateCircle"
@@ -44,7 +43,7 @@ function UnitedStatesTextMarkers (props) {
                       fillOpacity=".5"
                       // set the radius of the svg circle data point to the total death count divided by 50 
                       // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                      r={curStateData.death/1500}
+                      r={locationData.death/1500}
                       strokeWidth="1.5"
                       stroke="goldenrod" 
                     />
@@ -54,7 +53,7 @@ function UnitedStatesTextMarkers (props) {
                 <Marker 
                     className="deaths"
                 coordinates={centroid}
-                key={`deaths-${currentState.id+curStateData.death}`}
+                key={`deaths-${currentState.id+locationData.death}`}
                 >
                 <text 
                     coordinates={centroid}
@@ -64,7 +63,7 @@ function UnitedStatesTextMarkers (props) {
                     fill="#D32F2F"
                     stroke="#D32F2F"
                 >
-                    {curStateData.death}
+                    {locationData.death}
                 </text>
                 </Marker>
             }
@@ -72,11 +71,11 @@ function UnitedStatesTextMarkers (props) {
                 <Marker
                 className="covidMarkers confirmed currentCovidMarker"
                 coordinates={centroid}
-                key={`confirmed-${`${currentState.id + curStateData.totalTestResults  }-svg`}`}
+                key={`confirmed-${`${currentState.id + locationData.positive  }-svg`}`}
                 >
                 <circle
                     coordinates={centroid}
-                    r={curStateData.totalTestResults/1500}
+                    r={locationData.positive/1500}
                     strokeWidth="1.5"
                     fill="#03A9F4"
                     fillOpacity=".3"
@@ -88,7 +87,7 @@ function UnitedStatesTextMarkers (props) {
                 <Marker
                 className="confirmed covidMarkers currentCovidMarker"
                 coordinates={centroid}
-                key={`confirmed-${currentState.id + curStateData.totalTestResults}`}
+                key={`confirmed-${currentState.id + locationData.positive}`}
                 >
                 <text
                     className="confirmedCount text"
@@ -96,7 +95,7 @@ function UnitedStatesTextMarkers (props) {
                     // x offset for rendering confirmed count to the left of casualties count
                     // only render cases count for countries with over 10 cases to avoid crowding data points
                     x={-20}>
-                    { curStateData.totalTestResults > 5000 ? curStateData.totalTestResults : '' }
+                    { locationData.positive> 5000 ? locationData.positive : '' }
                 </text>
                 </Marker>
             }
@@ -104,13 +103,9 @@ function UnitedStatesTextMarkers (props) {
     )
 }
 
-
-UnitedStatesTextMarkers.propTypes = {
-    currentState: PropTypes.objectOf(PropTypes.string).isRequired,
-    curStateData: PropTypes.shape({
-       totalTestResults: PropTypes.number,
-       death: PropTypes.number,
-    }),
+USMapTextMarkers.propTypes = {
+    currentState: PropTypes.objectOf(PropTypes.string),
+    locationData: PropTypes.objectOf(PropTypes.number),
     centroid: PropTypes.arrayOf(PropTypes.number).isRequired,
     renderCasualties: PropTypes.bool.isRequired,
     renderCasualtiesCount: PropTypes.bool.isRequired,
@@ -118,4 +113,4 @@ UnitedStatesTextMarkers.propTypes = {
     renderConfirmedCount: PropTypes.bool.isRequired,
 };
 
-export default UnitedStatesTextMarkers;
+export default USMapTextMarkers;

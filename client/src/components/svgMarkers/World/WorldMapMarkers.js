@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css';
+import '../../../App.css';
 // styles from DarkReader
-import './Dark.css';
+import '../../../Dark.css';
 import {
   Marker
 } from "react-simple-maps";
@@ -12,66 +12,70 @@ import PropTypes from 'prop-types';
 function WorldMapMarkers (props) {
 
     const {
-        curLocationData,
+        locationData,
         renderCasualties,
         renderCasualtiesCount,
         renderConfirmed,
         renderConfirmedCount,
-        renderCountryNames
+        renderCountryNames,
+        onClick,
+        onMouseEnter,
     } = props;
 
-    // console.log('conf count ', renderConfirmedCount)
+    // TODO export marker components
 
     return(
         <>
             { renderCasualties &&
                 <Marker
-                    key={`deaths-${curLocationData.country}-svg`}
                     className="covidMarkers currentCovidMarker deaths"
                     // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-                    coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
+                    coordinates={ locationData.country === "France" ? [ 2.3 , 48 ] : [ locationData.longitude, locationData.latitude ]}
+                    key={`deaths-${locationData.country}-svg`}
+                    onClick={e => onClick(e)}
+                    onMouseEnter={e => onMouseEnter(e)}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg"
                         xmlnsXlink="http://www.w3.org/1999/xlink"
                     >
                         <defs>
                             <radialGradient id="redGradient">
-                            <stop offset="10%" stopColor="darkred" />
+                            <stop offset="10%" stopColor="tangerine" />
                             <stop offset="95%" stopColor="red" />
                             </radialGradient>
                         </defs>
                         <circle
                             // set the radius of the svg circle data point to the total death count divided by 50 
                             // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                            r={curLocationData.deaths/3500}
+                            r={locationData.deaths/3500}
                             strokeWidth="1.5"
                             fill="url('#redGradient')"
                             fillOpacity=".5"
-                            stroke="#d3212d"/>
+                            stroke="#d03847"/>
                     </svg>
                 </Marker>
             }
             { renderCasualtiesCount && 
                 <Marker
-                    key={`deathsCount-${curLocationData.country}`}
+                    key={`deathsCount-${locationData.country}`}
                     className="covidMarkers deaths currentCovidMarker"
                     // NOTE: France seems to return the incorrect long/lat.  This is a temporary fix ) 
-                    coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
+                    coordinates={ locationData.country === "France" ? [ 2.3 , 48 ] : [ locationData.longitude, locationData.latitude ]}
                 >
                     <text
                         className="casualtyCount"
                         fill="rgb(55, 133, 230)"
                         stroke="rgb(55, 133, 230)"
                     >
-                        { curLocationData.deaths > 2500 ? curLocationData.deaths : '' }
+                        { locationData.deaths > 2500 ? locationData.deaths : '' }
                     </text>
                 </Marker>
             }
             { renderCountryNames &&
                 <Marker
-                    key={`countryName-${curLocationData.country}`}
+                    key={`countryName-${locationData.country}`}
                     className="countryNames covidMarkers currentCovidMarker countryNameMarker"
-                    coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
+                    coordinates={ locationData.country === "France" ? [ 2.3 , 48 ] : [ locationData.longitude, locationData.latitude ]}
                 >
                     <text
                         className="countryName"
@@ -81,19 +85,19 @@ function WorldMapMarkers (props) {
                         strokeWidth=".4px"
                         x={-26}
                         y={-10}>
-                        { curLocationData.confirmed > 50000 ? curLocationData.country : '' }
+                        { locationData.confirmed > 50000 ? locationData.country : '' }
                     </text>
                 </Marker>
             }
 
             { renderConfirmed &&
                 <Marker
-                    key={`confirmed-${curLocationData.country}`}
+                    key={`confirmed-${locationData.country}`}
                     className="confirmed covidMarkers currentCovidMarker"
-                    coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
+                    coordinates={ locationData.country === "France" ? [ 2.3 , 48 ] : [ locationData.longitude, locationData.latitude ]}
                 >
                     <circle
-                        r={curLocationData.confirmed/3500}
+                        r={locationData.confirmed/3500}
                         strokeWidth="1.5"
                         fill="#03A9F4"
                         fillOpacity=".3"
@@ -103,9 +107,9 @@ function WorldMapMarkers (props) {
             }
             { renderConfirmedCount &&
                 <Marker
-                    key={`confirmedCount-${curLocationData.country}`}
+                    key={`confirmedCount-${locationData.country}`}
                     className="confirmed covidMarkers currentCovidMarker"
-                    coordinates={ curLocationData.country === "France" ? [ 2.3 , 48 ] : [ curLocationData.longitude, curLocationData.latitude ]}
+                    coordinates={ locationData.country === "France" ? [ 2.3 , 48 ] : [ locationData.longitude, locationData.latitude ]}
                 >
                     <text
                         className="confirmedCount text"
@@ -113,7 +117,7 @@ function WorldMapMarkers (props) {
                         // x offset for rendering confirmed count to the left of casualties count
                         // only render cases count for countries with over 10 cases to avoid crowding data points
                         x={-20}>
-                        { curLocationData.confirmed > 50000 ? curLocationData.confirmed : '' }
+                        { locationData.confirmed > 50000 ? locationData.confirmed : '' }
                     </text>
                 </Marker>
             }
@@ -122,7 +126,7 @@ function WorldMapMarkers (props) {
 }
 
 WorldMapMarkers.propTypes = {
-    curLocationData: PropTypes.shape({
+    locationData: PropTypes.shape({
         country: PropTypes.string,
         longitude: PropTypes.number,
         latitude: PropTypes.number,

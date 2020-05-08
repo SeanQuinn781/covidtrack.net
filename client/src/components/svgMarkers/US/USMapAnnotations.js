@@ -4,22 +4,19 @@ import {
   Annotation
 } from "react-simple-maps";
 import PropTypes from 'prop-types';
-import offsets from './Constants'
+import { offsets } from '../../../utils/Constants'
 
-function UnitedStatesAnnotations (props) {
+function USMapAnnotations (props) {
 
     const {
         currentState,
-        curStateData,
+        locationData,
         centroid,
         renderCasualties,
         renderCasualtiesCount,
         renderConfirmed,
         renderConfirmedCount
     } = props;
-
-    if (currentState.id === undefined)
-        return <text className="dataUnavailable">Data Unavailable</text>;
 
     return(
         <>
@@ -39,14 +36,14 @@ function UnitedStatesAnnotations (props) {
                 <Marker
                 className="covidMarkers currentCovidMarker deaths"
                 coordinates={centroid}
-                key={`deaths-${`${currentState.id+curStateData.death}-svg`}`}
+                key={`deaths-${`${currentState.id+locationData.death}-svg`}`}
                 >
                 <circle
                     className="stateConfirmedSvg"
                     coordinates={centroid}
                     // set the radius of the svg circle data point to the total death count divided by 50 
                     // TODO: dynamic scaling based on window size (using the total count as radius makes them way too large)
-                    r={curStateData.death/1500}
+                    r={locationData.death/1500}
                     strokeWidth="1.5"
                     fill="red"
                     fillOpacity=".5"
@@ -57,7 +54,7 @@ function UnitedStatesAnnotations (props) {
                 <Marker 
                 className="covidMarkers currentCovidMarker deathsCount"
                 coordinates={centroid}
-                key={`deaths-${currentState.id+curStateData.death}`}
+                key={`deaths-${currentState.id+locationData.death}`}
                 >
                 <text 
                     fontSize={14} 
@@ -65,7 +62,7 @@ function UnitedStatesAnnotations (props) {
                     fill="#D32F2F"
                     stroke="#D32F2F"
                 >
-                    {curStateData.death}
+                    {locationData.death}
                 </text>
                 </Marker>
             // End render State Annotations Labels
@@ -75,13 +72,13 @@ function UnitedStatesAnnotations (props) {
                 <Marker
                 className="confirmed covidMarkers currentCovidMarker"
                 coordinates={centroid}
-                key={`confirmed-${`${currentState.id + curStateData.totalTestResults  }-svg`}`}
+                key={`confirmed-${`${currentState.id + locationData.totalTestResults  }-svg`}`}
                 >
                 <circle
                     coordinates={centroid}
                     fill="#03A9F4"
                     fillOpacity=".3"
-                    r={curStateData.totalTestResults/1500}
+                    r={locationData.totalTestResults/1500}
                     strokeWidth="1.5"
                     stroke="#40c4ff" 
                 />
@@ -90,7 +87,7 @@ function UnitedStatesAnnotations (props) {
             { 
             renderConfirmedCount &&
                 <Marker
-                key={`confirmed-${currentState.id + curStateData.totalTestResults}`}
+                key={`confirmed-${currentState.id + locationData.totalTestResults}`}
                 className="confirmed covidMarkers currentCovidMarker"
                 coordinates={centroid}
                 >
@@ -99,7 +96,7 @@ function UnitedStatesAnnotations (props) {
                 // x offset for rendering confirmed count to the left of casualties count
                 // only render cases count for countries with over 10 cases to avoid crowding data points
                 x={-20}>
-                { curStateData.totalTestResults > 5000 ? curStateData.totalTestResults : '' }
+                { locationData.totalTestResults > 5000 ? locationData.totalTestResults : '' }
                 </text>
                 </Marker>
             }
@@ -107,10 +104,10 @@ function UnitedStatesAnnotations (props) {
     )
 }
 
-UnitedStatesAnnotations.propTypes = {
+USMapAnnotations.propTypes = {
     currentState: PropTypes.objectOf(PropTypes.string).isRequired,
-    // curStateData: PropTypes.objectOf(PropTypes.string).isRequired,
-    curStateData: PropTypes.shape({
+    // locationData: PropTypes.objectOf(PropTypes.string).isRequired,
+    locationData: PropTypes.shape({
         positive: PropTypes.number,
         death: PropTypes.number,
         totalTestResults: PropTypes.number
@@ -122,4 +119,4 @@ UnitedStatesAnnotations.propTypes = {
     renderConfirmedCount: PropTypes.bool.isRequired,
 };
 
-export default UnitedStatesAnnotations;
+export default USMapAnnotations;
