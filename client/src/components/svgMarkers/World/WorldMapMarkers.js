@@ -1,7 +1,4 @@
 import React from 'react';
-import '../../../App.css';
-// styles from DarkReader
-import '../../../Dark.css';
 import {
   Marker
 } from "react-simple-maps";
@@ -23,7 +20,6 @@ function WorldMapMarkers (props) {
     } = props;
 
     // TODO export marker components
-
     return(
         <>
             { renderCasualties &&
@@ -63,9 +59,10 @@ function WorldMapMarkers (props) {
                     coordinates={ locationData.country === "France" ? [ 2.3 , 48 ] : [ locationData.longitude, locationData.latitude ]}
                 >
                     <text
-                        className="casualtyCount"
-                        fill="rgb(55, 133, 230)"
-                        stroke="rgb(55, 133, 230)"
+                        fontSize={14} 
+                        textAnchor="middle"
+                        fill="#D32F2F"
+                        stroke="#D32F2F"
                     >
                         { locationData.deaths > 2500 ? locationData.deaths : '' }
                     </text>

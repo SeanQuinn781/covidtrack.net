@@ -18,15 +18,16 @@ import Instructions from './components/Instructions';
 import DefaultGeography from './components/DefaultGeography';
 import NavToggle from './components/NavToggle';
 import MapControlButtons from './components/MapControlButtons';
+//  component markers
+import WorldMapMarkers from './components/svgMarkers/World/WorldMapMarkers';
+import Logo from './covidLogoCircular.png';
 // utils
 import format from './utils/format';
 import randomGeographyColor from './utils/randomGeographyColor';
-import stateColorPalette from './utils/stateColorPalette'
-import sortLocation from './utils/sortLocation'
+import geographyColorPalette from './utils/geographyColorPallete';
+import sortLocation from './utils/sortLocation';
 import relativeIndexScale from './utils/relativeIndexScale';
-//  markers
-import WorldMapMarkers from './components/svgMarkers/World/WorldMapMarkers';
-import Logo from './covidLogoCircular.png';
+
 
 class App extends React.Component {
 
@@ -181,7 +182,7 @@ class App extends React.Component {
         </nav>
         
         <div className="fluid-container" id="main">
-          <a name="worldMap" alt="worldMap" href="https://covidtrack.net#worldMap"></a>
+          <a name="worldMap" alt="worldMap" href="https://covidtrack.net#worldMap" />
           <ComposableMap id="worldMap">
             <Geographies 
               geography="world-110m.json">
@@ -216,11 +217,11 @@ class App extends React.Component {
                     if (renderCasualtiesHeatmap) {
                       sortedMetric  = sortLocation(worldData, 'deaths');
                       relativeIndex = relativeIndexScale('deaths', locationData.deaths, sortedMetric);
-                      countryColor   = stateColorPalette(sortedMetric, relativeIndex,'deaths');
+                      countryColor   = geographyColorPalette(sortedMetric, relativeIndex,'deaths');
                     } else if (renderCasesHeatmap) {
                       sortedMetric  = sortLocation(worldData, 'confirmed');
                       relativeIndex = relativeIndexScale('confirmed', locationData.confirmed, sortedMetric);
-                      countryColor   = stateColorPalette(sortedMetric, relativeIndex,'confirmed');
+                      countryColor   = geographyColorPalette(sortedMetric, relativeIndex,'confirmed');
                     } else {
                       countryColor = randomGeographyColor();
                     }

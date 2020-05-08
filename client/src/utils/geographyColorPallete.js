@@ -1,7 +1,7 @@
 import redFill from './redFill';
 import blueFill from './blueFill';
 
-const stateColorPalette = (sortedMetric, relativeIndex, dataPoint) => {
+const geographyColorPalette = (sortedMetric, relativeIndex, dataPoint) => {
   let chosenColor;
 
   // hsla color range
@@ -35,4 +35,4 @@ const stateColorPalette = (sortedMetric, relativeIndex, dataPoint) => {
   return chosenColor;
 }
 
-export default stateColorPalette;
+export default geographyColorPalette;

@@ -6,20 +6,20 @@ import {
   Geographies,
   Geography,
 } from "react-simple-maps";
-import tooltip from "wsdm-tooltip"
+import tooltip from "wsdm-tooltip";
 import PropTypes from 'prop-types';
-import exampleUsCovidData from './utils/testData/exampleUsData' 
+import exampleUsCovidData from './utils/testData/exampleUsData';
 import allStates from './allstates.json';
+// component markers
+import USMapTextMarkers from './components/svgMarkers/US/USMapTextMarkers';
+import USMapAnnotations from './components/svgMarkers/US/USMapAnnotations';
 // utils
 import format from './utils/format';
 import { offsets } from './utils/Constants';
 import randomGeographyColor from './utils/randomGeographyColor';
-import stateColorPalette from './utils/stateColorPalette'
-import sortLocation from './utils/sortLocation'
+import geographyColorPalette from './utils/geographyColorPallete';
 import relativeIndexScale from './utils/relativeIndexScale';
-// markers
-import USMapTextMarkers from './components/svgMarkers/US/USMapTextMarkers';
-import USMapAnnotations from './components/svgMarkers/US/USMapAnnotations';
+
 
 class UnitedStatesMap extends React.Component {
 
@@ -28,7 +28,7 @@ class UnitedStatesMap extends React.Component {
     this.state = {
       // U.S. state data
       unitedStatesData: [],
-      // offline mode for testing (offline mode only requires the front end to be running)
+      // offline mode for testing
       offline: true,
       testData: exampleUsCovidData,
       geographyColor: '#ddd',
@@ -43,17 +43,8 @@ class UnitedStatesMap extends React.Component {
 
   componentDidMount() {
 
-    const {
-      props: {
-        renderCasesHeatmap,
-        renderCasualtiesHeatmap,
-      }
-    } = this;
-
-
     this.tip = tooltip();
     this.tip.create();
-    
 
     if (!this.state.offline) {
       fetch("/covidUnitedStates").then(res => res.json())
@@ -70,32 +61,11 @@ class UnitedStatesMap extends React.Component {
         return error;
       });
     }
-    // check for active metrics and sort geographic locations by 
-    // their coresponding metric and how it ranks in relation to 
-    // reach other location. This allows for varying brightness 
-    // of the color as they correspond with their relative rankings
-    /*
-     */
+
     else {
-
-      let data = this.state.testData;
-      // TODO: export
-      // pre sort data in order by any active metrics before saving to state
-      if (renderCasualtiesHeatmap) {
-        data.sort(function(a,b) {
-          return a.death - b.death;
-        }).reverse()
-      }
-      else if (renderCasesHeatmap) {
-        data = data.slice(0)
-        data.sort(function(a,b) {
-          return a.positive - b.positive;
-        }).reverse()
-      }
-
       this.setState(
         state => {
-          const unitedStatesData = state.unitedStatesData.concat(data);
+          const unitedStatesData = state.unitedStatesData.concat(this.state.testData);
           return {unitedStatesData}
         }
       )
@@ -159,6 +129,18 @@ class UnitedStatesMap extends React.Component {
       return (<p>Data Pending...</p>)
     }
 
+    if (renderCasualtiesHeatmap) {
+      unitedStatesData.sort(function(a,b) {
+        return a.death - b.death;
+      }).reverse()
+    }
+    else if (renderCasesHeatmap) {
+      //data = data.slice(0)
+      unitedStatesData.sort(function(a,b) {
+        return a.positive - b.positive;
+      }).reverse()
+    }
+
     return (
         <ComposableMap 
           projection="geoAlbersUsa"
@@ -195,16 +177,16 @@ class UnitedStatesMap extends React.Component {
                      )
                    }
                   
-                   let sortedMetric = [];
+                   const sortedMetric = [];
                    let relativeIndex; 
                    let stateColor;
                   // assign the state geography a color based on the value of total cases or deaths 
                   if (renderCasualtiesHeatmap) {
                     relativeIndex = relativeIndexScale('death', locationData.death, unitedStatesData)
-                    stateColor   = stateColorPalette(unitedStatesData, relativeIndex, 'death');
+                    stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'death');
                   } else if(renderCasesHeatmap) {
                     relativeIndex = relativeIndexScale('positive', locationData.positive, unitedStatesData)
-                    stateColor   = stateColorPalette(unitedStatesData, relativeIndex, 'positive')
+                    stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'positive')
                   } else {
                     stateColor = randomGeographyColor();
                   }
