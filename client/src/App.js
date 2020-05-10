@@ -35,7 +35,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       dataSortedByMetric: null,
-      offline: true,
+      offline: false,
       renderCasualties: true,
       renderCasualtiesCount: true,
       renderConfirmed: false,

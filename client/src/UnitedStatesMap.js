@@ -25,7 +25,7 @@ class UnitedStatesMap extends React.Component {
     super(props);
     this.state = {
       unitedStatesData: [],
-      offline: true,
+      offline: false,
       testData: exampleUsCovidData,
     }
 
