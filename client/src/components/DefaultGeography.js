@@ -2,9 +2,10 @@ import React from 'react';
 import {
   Geography,
 }
-from "react-simple-maps";
+  from "react-simple-maps";
 
 const DefaultGeography = (props) => {
+
   const {
     onMouseLeave,
     onMouseMove,
@@ -13,7 +14,7 @@ const DefaultGeography = (props) => {
   } = props;
   return(
     <Geography
-      key={geo.rsmKey}
+      key={geo.rsmKey + geo.properties.name}
       onMouseMove={(e,props) => onMouseMove(e,locationData,geo.properties.name)}
       onMouseLeave={onMouseLeave}
       style={{

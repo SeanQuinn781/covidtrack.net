@@ -342,6 +342,15 @@ svg.rsm g text {
 @media (min-width:800px) {
   /* (MUI) Material styles */
   /* desktop buttons */
+  .navbar-expand-lg .navbar-nav {
+    flex-direction: row !important;
+    display: flex !important;
+    max-width: 75% !important;
+    margin-left: 0 !important;
+    margin-top: -5px;
+    padding-left: 0 !important;
+    width: 868px !important;
+  }
   .MuiButton-root {
     height: 82px;
   }
@@ -365,14 +374,24 @@ svg.rsm g text {
     text-transform: uppercase !important;
     text-align: center;
   }
+
+  /* nav button width */
+  .map-nav .map-control > li, 
+  .navbar-nav > li {
+    margin: 2px;
+  }
+
   .navbar-nav button span {
     width: 160px !important;
   }
   
+  #logoContainer {
+    padding-top: 25px !important;
+    padding-left: 10px;
+  }
+
   #logoContainer #logoWrap h5 {
-    padding-left: 15px;
     line-height: .9;
-    padding-top: 0px;
     color: rgb(44, 35, 171) !important;
   }
 
@@ -385,15 +404,12 @@ svg.rsm g text {
   /* logo and app title */
   .navbar-left {
     float: left!important;
-    margin: 0;
-    padding: 10px 6px !important;
     height: 80px;
   }
 
   .navbar-nav {
     /* bootstrap overrides */
     float: right !important;
-    margin: 0;
     margin-right: 0px;
   }
   .navbar-expand-lg .navbar-nav {

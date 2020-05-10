@@ -84,6 +84,6 @@ describe('App', () => {
   it('render with the app logo', () => {
     const div = document.createElement('div');
     ReactDOM.render(<img id="logoImg" alt="covidTrack.net Logo" width="9%" height="9%" src={Logo} />, div);
-   ReactDOM.unmountComponentAtNode(div);
+    ReactDOM.unmountComponentAtNode(div);
   });
 })

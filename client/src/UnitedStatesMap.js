@@ -7,7 +7,6 @@ import {
   Geography,
 } from "react-simple-maps";
 import tooltip from "wsdm-tooltip";
-import PropTypes from 'prop-types';
 import exampleUsCovidData from './utils/testData/exampleUsData';
 import allStates from './allstates.json';
 // component markers
@@ -17,23 +16,17 @@ import USMapAnnotations from './components/svgMarkers/US/USMapAnnotations';
 import format from './utils/format';
 import { offsets } from './utils/Constants';
 import randomGeographyColor from './utils/randomGeographyColor';
-import geographyColorPalette from './utils/geographyColorPallete';
+import geographyColorPalette from './utils/geographyColorPalette';
 import relativeIndexScale from './utils/relativeIndexScale';
-
 
 class UnitedStatesMap extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      // U.S. state data
       unitedStatesData: [],
-      // offline mode for testing
       offline: true,
       testData: exampleUsCovidData,
-      geographyColor: '#ddd',
-      renderCasualties: true,
-      renderConfirmed: false,
     }
 
     this.handleMouseMove   = this.handleMouseMove.bind(this);
@@ -48,18 +41,17 @@ class UnitedStatesMap extends React.Component {
 
     if (!this.state.offline) {
       fetch("/covidUnitedStates").then(res => res.json())
-      .then(data => {
-        this.setState(
-          state => {
-            const unitedStatesData = state.unitedStatesData.concat(data);
-            return {unitedStatesData}
-          }
-        )
-      })
-      .catch(function(error) {
-        // console.log('error ', error)
-        return error;
-      });
+        .then(data => {
+          this.setState(
+            state => {
+              const unitedStatesData = state.unitedStatesData.concat(data);
+              return {unitedStatesData}
+            }
+          )
+        })
+        .catch(function(error) {
+          return error;
+        });
     }
 
     else {
@@ -81,7 +73,7 @@ class UnitedStatesMap extends React.Component {
       this.tip.show('Data Unavailable')
     }
     else {
-      // TODO refactor set keys
+      // TODO refactor
       this.tip.show(
         `
         <key=${ stateData.id }>
@@ -135,86 +127,77 @@ class UnitedStatesMap extends React.Component {
       }).reverse()
     }
     else if (renderCasesHeatmap) {
-      //data = data.slice(0)
       unitedStatesData.sort(function(a,b) {
         return a.positive - b.positive;
       }).reverse()
     }
 
     return (
-        <ComposableMap 
-          projection="geoAlbersUsa"
-          id="unitedStatesMap"
-        >
-          <Geographies 
-            geography="states-10m.json">
-            {({ geographies }) => (
-              <>
-                {geographies.map((geo, i) => {
-                   // generate the state labels, annotations and the state svg markers
-                   const centroid = geoCentroid(geo);
-                   // set the current U.S. state
-                   const currentState = allStates.find(s => s.val === geo.id);
-                   // use the current U.S. state (cur) id to find the corresponding 
-                   // U.S. state data previosly returned from the API & saved to state
-                   const locationData = unitedStatesData.find(s => s.state === currentState.id);
-                   // generate the corresponding SVG marker and append to markersArray
+      <ComposableMap 
+        projection="geoAlbersUsa"
+        id="unitedStatesMap"
+      >
+        <Geographies 
+          geography="states-10m.json">
+          {({ geographies }) => (
+            <>
+              {geographies.map((geo, i) => {
+                // create state labels, annotations and U.S. state svg markers
+                const centroid = geoCentroid(geo);
+                // set current U.S. state
+                const currentState = allStates.find(s => s.val === geo.id);
+                // match currentState with corresponding data 
+                const locationData = unitedStatesData.find(s => s.state === currentState.id);
 
-                   if(!locationData) {
-                     console.log('no loc' , centroid[0])
-                     return (
-                      <Geography
-                        key={geo.rsmKey+centroid[0]}
-                        onMouseMove={(e,props) => this.handleMouseMove(e,locationData,geo.properties.name)}
-                        onMouseLeave={this.handleMouseLeave}
-                        style={{
-                          hover: { fill: "#DDD", outline: "none" },
-                          pressed: { fill: "#AAA", outline: "none" },
-                        }}
-                        fill="darkgray"
-                        geography={geo}
-                      />
-                     )
-                   }
-                  
-                   const sortedMetric = [];
-                   let relativeIndex; 
-                   let stateColor;
-                  // assign the state geography a color based on the value of total cases or deaths 
-                  if (renderCasualtiesHeatmap) {
-                    relativeIndex = relativeIndexScale('death', locationData.death, unitedStatesData)
-                    stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'death');
-                  } else if(renderCasesHeatmap) {
-                    relativeIndex = relativeIndexScale('positive', locationData.positive, unitedStatesData)
-                    stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'positive')
-                  } else {
-                    stateColor = randomGeographyColor();
-                  }
-
+                if(!locationData) {
                   return (
-                    <>
-                      <Geography
-                        className="locationData"
-                        key={geo.rsmKey}
-                        onMouseMove={(e,props) => this.handleMouseMove(e,locationData)}
-                        onMouseLeave={this.handleMouseLeave}
-                        style={{
-                          hover: { fill: "darkgray" },
-                          pressed: { fill: "#aaa", outline: "none" },
-                        }}
-                        fill={stateColor}
-                        stroke="#fff"
-                        geography={geo}
-                      />
-                      <g key={`${geo.rsmKey  }-name`}>
-                        {currentState &&
+                    <Geography
+                      key={geo.rsmKey+centroid[0]}
+                      onMouseMove={(e,props) => this.handleMouseMove(e,locationData,geo.properties.name)}
+                      onMouseLeave={this.handleMouseLeave}
+                      style={{
+                        hover: { fill: "#DDD", outline: "none" },
+                        pressed: { fill: "#AAA", outline: "none" },
+                      }}
+                      fill="darkgray"
+                      geography={geo}
+                    />
+                  )
+                }
+                  
+                let relativeIndex; 
+                let stateColor;
+                // assign the state a color based on the value of total cases or deaths heatmap
+                if (renderCasualtiesHeatmap) {
+                  relativeIndex = relativeIndexScale('death', locationData.death, unitedStatesData)
+                  stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'death');
+                } else if(renderCasesHeatmap) {
+                  relativeIndex = relativeIndexScale('positive', locationData.positive, unitedStatesData)
+                  stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'positive')
+                } else {
+                  stateColor = randomGeographyColor();
+                }
+
+                return (
+                  <>
+                    <Geography
+                      className="locationData"
+                      key={geo.rsmKey + locationData.state}
+                      onMouseMove={(e,props) => this.handleMouseMove(e,locationData)}
+                      onMouseLeave={this.handleMouseLeave}
+                      style={{
+                        hover: { fill: "darkgray" },
+                        pressed: { fill: "#aaa", outline: "none" },
+                      }}
+                      fill={stateColor}
+                      stroke="#fff"
+                      geography={geo}
+                    />
+                    <g key={`${geo.rsmKey  + locationData.id}-name`}>
+                      {currentState &&
                           centroid[0] > -160 &&
                           centroid[0] < -67 &&
-                          
-                          /* Render a text marker or an annotation for each U.S. state name
-                             Annotations are used when the state is too small for a text label.
-                             States that need annotations are listed in the offsets array.
-                          */
+                         //  Render text marker or an annotation for each state
 
                           (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
                             <USMapTextMarkers 
@@ -237,38 +220,16 @@ class UnitedStatesMap extends React.Component {
                               renderConfirmedCount={renderConfirmedCount}
                             />
                           ))}
-                      </g>
-                    </>
-                  );
-                })}
-              </>
-            )} 
-          </Geographies>
-        </ComposableMap>
-      )
+                    </g>
+                  </>
+                );
+              })}
+            </>
+          )} 
+        </Geographies>
+      </ComposableMap>
+    )
   }
-};
-
-UnitedStatesMap.defaultProps = {
-  renderCasualties: true,
-  renderCasualtiesCount: true,
-  renderCasualtiesHeatmap: true,
-  stateData: {
-    state: 'pending'
-  },
-  currentState: {
-    name: 'pending'
-  }
-};
-
-UnitedStatesMap.propTypes = {
-  currentState: PropTypes.object,
-  stateData: PropTypes.object,
-  centroid: PropTypes.arrayOf(PropTypes.number),
-  renderCasualties: PropTypes.bool,
-  renderCasualtiesCount: PropTypes.bool.isRequired,
-  renderConfirmed: PropTypes.bool,
-  renderConfirmedCount: PropTypes.bool.isRequired,
 };
 
 export default UnitedStatesMap;

@@ -24,7 +24,7 @@ import Logo from './covidLogoCircular.png';
 // utils
 import format from './utils/format';
 import randomGeographyColor from './utils/randomGeographyColor';
-import geographyColorPalette from './utils/geographyColorPallete';
+import geographyColorPalette from './utils/geographyColorPalette';
 import sortLocation from './utils/sortLocation';
 import relativeIndexScale from './utils/relativeIndexScale';
 
@@ -33,28 +33,24 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    // set up the initial map state
     this.state = {
+      dataSortedByMetric: null,
       offline: true,
-      renderCasualties: false,
-      renderCasualtiesCount: false,
-      // render confirmed SVG marker
+      renderCasualties: true,
+      renderCasualtiesCount: true,
       renderConfirmed: false,
-      renderCasesHeatmap: true,
-      renderCasualtiesHeatmap: false,
-      // render number of confirmed cases 
+      renderCasesHeatmap: false,
+      renderCasualtiesHeatmap: true,
       renderConfirmedCount: false,
-      // render country names
       renderCountryNames: false,
-      // offline mode for testing
       testData: exampleWorldData,
-      // global covid locations data
       worldData: [],
+
     }
 
-     this.handleClick = this.handleClick.bind(this);
-     this.handleMouseMove = this.handleMouseMove.bind(this);
-     this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
   componentDidMount() {
@@ -73,24 +69,22 @@ class App extends React.Component {
     }
     else {
       fetch("/covid")
-      .then(res => res.json())
-      .then(data => {
-        this.setState(
-          state => {
-            const worldData = state.worldData.concat(data);
-            return {worldData};
-          }
-        ) 
-      })
+        .then(res => res.json())
+        .then(data => {
+          this.setState(
+            state => {
+              const worldData = state.worldData.concat(data);
+              return {worldData};
+            }
+          ) 
+        })
     }
   }
 
-  // Based on click, toggle corresponding metric in App state so its applied to the map
   handleClick = (event) => {
     const { state } = this;
     // get the metric currently clicked by button ID
     const { currentTarget: { id } } = event;
-    // TODO refactor
     const isMetricActive =  state[`${id}`];
     // Toggle the metrics active or inactive      
     const newMetricState = !isMetricActive;
@@ -156,12 +150,12 @@ class App extends React.Component {
       <>
         <nav className="navbar navbar-expand-lg navbar-fixed-top">
           <a className="navbar-brand navbar-left" href="/">
-          <div id="logoContainer">
-            <div id="logoWrap">
-              <img id="logoImg" alt="covidTrack.net Logo" width="9%" height="9%" src={Logo} />
-              <h5>CovidTrack.net</h5>
+            <div id="logoContainer">
+              <div id="logoWrap">
+                <img id="logoImg" alt="covidTrack.net Logo" width="9%" height="9%" src={Logo} />
+                <h5>CovidTrack.net</h5>
+              </div>
             </div>
-          </div>
           </a>
 
           <NavToggle />
@@ -190,53 +184,56 @@ class App extends React.Component {
                 <>
                   {
                     geographies.map((geo, i) => {
-                    const centroid = geoCentroid(geo);
-                    // find the covid data for each geographic location 
-                    // match on country name, or abbreviated name (found in geo.properties['Alpha-2'])
-                    const locationData = worldData.find(c => c.country === geo.properties.name) ? 
-                      worldData.find(c => c.country === geo.properties.name) : 
-                      worldData.find(c => c.country === geo.properties['Alpha-2'])
+                      const centroid = geoCentroid(geo);
+                      // match covid data for each country with svg for that country
+                      // matches on country name, or abbreviated name (found in geo.properties['Alpha-2'])
+                      const locationData = worldData.find(c => c.country === geo.properties.name) ? 
+                        worldData.find(c => c.country === geo.properties.name) : 
+                        worldData.find(c => c.country === geo.properties['Alpha-2'])
                     
-                    // render the country without svg markers
-                    if(!locationData) {
-                      return (
-                        <DefaultGeography 
-                          onMouseMove={this.handleMouseMove}
-                          onMouseLeave={this.handleMouseLeave}
-                          geo={geo}
-                          locationData={locationData}
-                        />
-                      )
-                    }
+                      if(!locationData) {
+                      // render the country without svg markers
+                        return (
+                          <DefaultGeography 
+                            onMouseMove={this.handleMouseMove}
+                            onMouseLeave={this.handleMouseLeave}
+                            geo={geo}
+                            locationData={locationData}
+                          />
+                        )
+                      }
 
-                    // Assign a geography color based on heatmap
-                    let sortedMetric; 
-                    let relativeIndex; 
-                    let countryColor;
-                
-                    if (renderCasualtiesHeatmap) {
-                      sortedMetric  = sortLocation(worldData, 'deaths');
-                      relativeIndex = relativeIndexScale('deaths', locationData.deaths, sortedMetric);
-                      countryColor   = geographyColorPalette(sortedMetric, relativeIndex,'deaths');
-                    } else if (renderCasesHeatmap) {
-                      sortedMetric  = sortLocation(worldData, 'confirmed');
-                      relativeIndex = relativeIndexScale('confirmed', locationData.confirmed, sortedMetric);
-                      countryColor   = geographyColorPalette(sortedMetric, relativeIndex,'confirmed');
-                    } else {
-                      countryColor = randomGeographyColor();
-                    }
+                      let relativeIndex; 
+                      let countryColor;
+                      let dataSorted;
+                      // assign a geography color based on a location's metric rank relative to the rest
+                      if (renderCasualtiesHeatmap) {
+                        dataSorted = sortLocation(worldData, 'deaths');
+                        relativeIndex = relativeIndexScale('deaths', locationData.deaths, dataSorted);
+                        countryColor   = geographyColorPalette(dataSorted, relativeIndex,'deaths');
+                      } 
 
-                    return(
-                      <>
-                        <Geography
-                          className="locationData"
-                          key={geo.rsmKey}
-                          onMouseMove={(e,props) => this.handleMouseMove(e,locationData, geo.properties.name)}
-                          onMouseLeave={this.handleMouseLeave}
-                          fill={countryColor}
-                          stroke="#fff"
-                          geography={geo}
-                        />
+                      else if (renderCasesHeatmap) {
+                        dataSorted = sortLocation(worldData, 'confirmed');
+                        relativeIndex = relativeIndexScale('confirmed', locationData.confirmed, dataSorted);
+                        countryColor   = geographyColorPalette(dataSorted, relativeIndex,'confirmed');
+                      }
+
+                      else {
+                        countryColor = randomGeographyColor();
+                      }
+
+                      return(
+                        <>
+                          <Geography
+                            className="locationData"
+                            key={geo.rsmKey + locationData.country}
+                            onMouseMove={(e,props) => this.handleMouseMove(e,locationData, geo.properties.name)}
+                            onMouseLeave={this.handleMouseLeave}
+                            fill={countryColor}
+                            stroke="#fff"
+                            geography={geo}
+                          />
                           <g key={`${geo.rsmKey}-name`}>
                             <Marker coordinates={centroid}>
                               <text y="2" fontSize={14} textAnchor="middle" />
@@ -252,10 +249,10 @@ class App extends React.Component {
                             renderConfirmedCount={renderConfirmedCount}
                             renderCountryNames={renderCountryNames}
                           />
-                      </>
-                    )
-                  })
-                }
+                        </>
+                      )
+                    })
+                  }
                 </>  
               )}
             </Geographies>
@@ -275,5 +272,4 @@ class App extends React.Component {
     )
   }
 }
-
 export default App;

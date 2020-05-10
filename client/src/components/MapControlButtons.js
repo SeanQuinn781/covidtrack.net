@@ -16,7 +16,7 @@ const MapControlButtons = (props) => {
   } = props;
 
   return (
-    <ul className="navbar-nav mr-auto">
+    <ul className="navbar-nav mr-auto map-nav map-controls">
       <li>
         <Button
           variant="contained"
@@ -57,56 +57,56 @@ const MapControlButtons = (props) => {
         </Button>
       </li>
       <li>
-      <Button 
-        variant="contained"
-        color="primary"
-        type="submit"
-        id="renderCasualties"
-        className={`mapControlButton ${renderCasualties ? 'active' : ''}`}
-        style={{ opacity: `${renderCasualties ? '.98' : '.8'}`}}
-        onClick={e => handleClick(e)}
-      >
+        <Button 
+          variant="contained"
+          color="primary"
+          type="submit"
+          id="renderCasualties"
+          className={`mapControlButton ${renderCasualties ? 'active' : ''}`}
+          style={{ opacity: `${renderCasualties ? '.98' : '.8'}`}}
+          onClick={e => handleClick(e)}
+        >
         Casualty Data Point
-      </Button>
+        </Button>
       </li>
       <li>
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        id="renderConfirmed"
-        className={`mapControlButton ${renderConfirmed ? 'active' : ''}`}
-        style={{ opacity: `${renderConfirmed ? '.98' : '.8'}`}}
-        onClick={e => handleClick(e)}
-      >
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          id="renderConfirmed"
+          className={`mapControlButton ${renderConfirmed ? 'active' : ''}`}
+          style={{ opacity: `${renderConfirmed ? '.98' : '.8'}`}}
+          onClick={e => handleClick(e)}
+        >
         Cases Data Point
-      </Button>
+        </Button>
       </li>
       <li>
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        id="renderConfirmedCount"
-        className={`mapControlButton ${renderConfirmedCount ? "active" : ""}`}
-        style={{ opacity: `${renderConfirmedCount ? '.98' : '.8'}`}}
-        onClick={e => handleClick(e)}
-      >
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          id="renderConfirmedCount"
+          className={`mapControlButton ${renderConfirmedCount ? "active" : ""}`}
+          style={{ opacity: `${renderConfirmedCount ? '.98' : '.8'}`}}
+          onClick={e => handleClick(e)}
+        >
         Cases count over 50000
-      </Button>
+        </Button>
       </li>
       <li>
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        id="renderCountryNames"
-        className={`mapControlButton ${renderCountryNames ? 'active' : ''}`}
-        style={{ opacity: `${renderCountryNames ? '.98' : '.8'}`}}
-        onClick={e => handleClick(e)}
-      >
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          id="renderCountryNames"
+          className={`mapControlButton ${renderCountryNames ? 'active' : ''}`}
+          style={{ opacity: `${renderCountryNames ? '.98' : '.8'}`}}
+          onClick={e => handleClick(e)}
+        >
         Locations over 50000 Cases
-      </Button>
+        </Button>
       </li>
       <li>
         <Button

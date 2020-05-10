@@ -17,6 +17,7 @@
     "react-hooks/rules-of-hooks": "error",
     // Disable jsx-filename rule
     "react/jsx-filename-extension": [0],
+    "indent": ["error", 2],
     "import/extensions": "off"
    }
 }
