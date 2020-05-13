@@ -197,7 +197,7 @@ class UnitedStatesMap extends React.Component {
                       {currentState &&
                           centroid[0] > -160 &&
                           centroid[0] < -67 &&
-                         //  Render text marker or an annotation for each state
+                      //  Render text marker or an annotation for each state
 
                           (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
                             <USMapTextMarkers 

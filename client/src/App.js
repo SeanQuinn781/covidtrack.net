@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import worldMapTestData from './utils/testData/worldMapTestData';
 import UnitedStatesMap from './UnitedStatesMap';
+import UnitedStatesCountyMap from './UnitedStatesCountyMap';
 // components
 import Instructions from './components/Instructions';
 import DefaultGeography from './components/DefaultGeography';
@@ -258,7 +259,7 @@ class App extends React.Component {
             </Geographies>
           </ComposableMap>
           <Instructions />
-          <UnitedStatesMap
+          <UnitedStatesCountyMap
             renderCasesHeatmap={renderCasesHeatmap}
             renderCasualtiesHeatmap={renderCasualtiesHeatmap}
             renderCasualties={renderCasualties}
