@@ -26,12 +26,12 @@ const geographyColorPalette = (sortedMetric, relativeIndex, dataPoint) => {
 
   // make sure the first and last are set to a unique color
   // outside the typical color range
-  if (isRankedFirst)
+  // if (isRankedFirst)
     // chrome displays hsl 0 100 20 as a light color. To workaround
     // use rgb 102 0 0 which is equivalent to hsl 0 100 20
-    return `rgb(102, 0, 0)`;
-  if(isRankedLast)
-    return `hsl(0, 100%, 18%)`;
+    // return `rgb(102, 0, 0)`;
+  // if(isRankedLast)
+    // return `hsl(0, 100%, 18%)`;
   
   const chosenColor = dataPoint === 'confirmed' || dataPoint === 'positive' ?
     blueFill(indexToColor) :

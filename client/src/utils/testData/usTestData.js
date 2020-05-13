@@ -1,4 +1,5 @@
-const exampleUsCovidData = [
+// updated 5-9-2020
+const usTestData = [
   {
     "state": "NY",
     "positive": 333122,
@@ -1769,4 +1770,4 @@ const exampleUsCovidData = [
   }
 ]
 
-export default exampleUsCovidData;
+export default usTestData;

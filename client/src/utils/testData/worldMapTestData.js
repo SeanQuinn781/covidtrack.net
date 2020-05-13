@@ -1,4 +1,4 @@
-const exampleWorldData = [
+const worldMapTestData = [
 
   {
     "active": 1044950,
@@ -2060,4 +2060,4 @@ const exampleWorldData = [
 ];
 
 
-export default exampleWorldData;
+export default worldMapTestData;

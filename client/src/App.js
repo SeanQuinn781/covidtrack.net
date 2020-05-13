@@ -11,7 +11,7 @@ import {
 import tooltip from "wsdm-tooltip"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import exampleWorldData from './utils/testData/exampleWorldData';
+import worldMapTestData from './utils/testData/worldMapTestData';
 import UnitedStatesMap from './UnitedStatesMap';
 // components
 import Instructions from './components/Instructions';
@@ -35,7 +35,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       dataSortedByMetric: null,
-      offline: false,
+      offline: true,
       renderCasualties: true,
       renderCasualtiesCount: true,
       renderConfirmed: false,
@@ -43,7 +43,7 @@ class App extends React.Component {
       renderCasualtiesHeatmap: true,
       renderConfirmedCount: false,
       renderCountryNames: false,
-      testData: exampleWorldData,
+      testData: worldMapTestData,
       worldData: [],
 
     }
