@@ -6,9 +6,9 @@ module.exports = function(app) {
     createProxyMiddleware(
       '/covid', 
       { 
-        // target : 'http://api/', 
-        target : 'http://localhost:5000',
-	      changeOrigin: true
+        target : 'http://api/', 
+        // target : 'http://localhost:5000',
+        changeOrigin: true
       }
     )
   );
@@ -16,8 +16,8 @@ module.exports = function(app) {
     createProxyMiddleware(
       '/covidUnitedStates', 
       { 
-        // target : 'http://api/',
-        target : 'http://localhost:5000',
+        target : 'http://api/',
+        // target : 'http://localhost:5000',
         changeOrigin: true 
       }
     )
@@ -26,8 +26,8 @@ module.exports = function(app) {
     createProxyMiddleware(
       '/covidUnitedStatesCounties', 
       { 
-        // target : 'http://api/',
-        target : 'http://localhost:5000',
+        target : 'http://api/',
+        // target : 'http://localhost:5000',
         changeOrigin: true 
       }
     )
