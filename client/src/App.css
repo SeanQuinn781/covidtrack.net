@@ -339,18 +339,9 @@ svg.rsm g text {
   z-index: 1030;
 }
 
-@media (min-width:800px) {
-  /* (MUI) Material styles */
+@media(min-width:800px) {
+    /* (MUI) Material styles */
   /* desktop buttons */
-  .navbar-expand-lg .navbar-nav {
-    flex-direction: row !important;
-    display: flex !important;
-    max-width: 75% !important;
-    margin-left: 0 !important;
-    margin-top: -5px;
-    padding-left: 0 !important;
-    width: 868px !important;
-  }
   .MuiButton-root {
     height: 82px;
   }
@@ -386,12 +377,14 @@ svg.rsm g text {
   }
   
   #logoContainer {
-    padding-top: 25px !important;
     padding-left: 10px;
+    padding-top: 0px !important;
+    padding-left: 10px;
+    margin-top: -22px;
   }
 
   #logoContainer #logoWrap h5 {
-    line-height: .9;
+    line-height: .57;
     color: rgb(44, 35, 171) !important;
   }
 
@@ -417,6 +410,7 @@ svg.rsm g text {
     /* bootstrap overrides */
     flex-direction: row !important;
     display: flex !important;
+    width: 100% auto !important;
   }
    /* Fixes dropdown menus placed on the right side */
  .ml-auto .dropdown-menu {
@@ -424,5 +418,26 @@ svg.rsm g text {
     left: auto !important;
     right: 0px;
   }
+}
 
+.usMapControls {
+  position: fixed;
+  left: 0;
+  bottom: 287px;
+  left: 22px;
+}
+/* US Map control buttons */
+.usMapControls button {
+  background-color: #ccc;
+  margin: 5px;
+  color: #fff;
+}
+.usMapControls button:hover {
+  background-color: #0598ff;
+  color: #000;
+}
+@media(max-width:800px) {
+  .usMapControls {
+    margin-bottom: 49px;
+  }
 }

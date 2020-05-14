@@ -12,7 +12,7 @@
   }
 
   @media(max-width:800px) {
-    #unitedStatesMap {
+    #unitedStatesMap, #unitedStatesCountyMap {
       margin-top: -56px;
     }
     #mapControls {
@@ -26,7 +26,7 @@
   }
   
   @media(min-width:800px) {
-    #unitedStatesMap {
+    #unitedStatesMap, #unitedStatesCountyMap {
       margin-top: -216px;
     }
   }
@@ -64,4 +64,8 @@
     border-left: 0.5rem solid transparent;
     border-right: 0.5rem solid transparent;
     border-top: 0.5rem solid rgba(255, 255, 255, 0.95);
+  }
+
+  h3#dataPending {
+    color: #fff;
   }

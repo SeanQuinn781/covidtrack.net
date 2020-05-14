@@ -1,9 +1,42 @@
 import React from "react";
+import { Button  } from '@material-ui/core';
 import QuestionMark from './questionMark.png'
 
-function Instructions () {
+function Instructions (props) {
+  const {
+    countyMap,
+    statesMap,
+    selectUsMap,
+  } = props;
   return (
     <>
+      <div 
+        className="usMapControls"
+        style={{ textAlign: 'center' }}
+      >
+        <Button
+          id="countyMap"
+          className="countyMapButton"
+          style={{ 
+              opacity: countyMap ? 1 : .75,
+              backgroundColor: countyMap ? '#0598ff' : '#ccc'
+            }}
+          onClick={selectUsMap}
+        >
+          {'View U.S. County Map'}
+        </Button>
+        <Button
+          id="stateMap"
+          className="stateMapButton"
+          style={{ 
+            opacity: statesMap ? 1 : .75,  
+            backgroundColor: statesMap ? '#0598ff' : '#ccc'
+          }}
+          onClick={selectUsMap}
+        >
+          {'View U.S. States Map'}
+        </Button>
+      </div>
       <div className="instructions">
         <div className="helpWrap">
           <img id="helpIcon" alt="helpIcon" src={QuestionMark} />

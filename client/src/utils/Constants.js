@@ -45,7 +45,12 @@ const pastelColors=[
   "#ffffff",
 ];
 
+// hsla color range used for states /countries (dozens of states, hundreds of countries)
 const darkest = 22;
 const lightest = 90;
 
+// hsla color range used for counties (there are thousands of counties )
+// const countyDarkest = 16;
+// const countyLightest = 96;
+// countyDarkest, countyLightest,
 export { offsets, pastelColors, darkest, lightest };

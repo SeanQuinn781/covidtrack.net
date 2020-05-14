@@ -12,8 +12,8 @@ import tooltip from "wsdm-tooltip"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import worldMapTestData from './utils/testData/worldMapTestData';
-import UnitedStatesMap from './UnitedStatesMap';
-import UnitedStatesCountyMap from './UnitedStatesCountyMap';
+import UnitedStatesMap from './maps/UnitedStatesMap';
+import UnitedStatesCountyMap from './maps/UnitedStatesCountyMap';
 // components
 import Instructions from './components/Instructions';
 import DefaultGeography from './components/DefaultGeography';
@@ -35,8 +35,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      countyMap: false,
       dataSortedByMetric: null,
-      offline: true,
+      offline: false,
       renderCasualties: true,
       renderCasualtiesCount: true,
       renderConfirmed: false,
@@ -44,6 +45,7 @@ class App extends React.Component {
       renderCasualtiesHeatmap: true,
       renderConfirmedCount: false,
       renderCountryNames: false,
+      statesMap: true,
       testData: worldMapTestData,
       worldData: [],
 
@@ -107,6 +109,23 @@ class App extends React.Component {
     this.setState({ [id]: newMetricState });
   }
 
+  selectUsMap (event) {
+    const { state } = this;
+    const { currentTarget: { id } } = event;
+    const isMetricActive =  state[`${id}`];
+    // only update if needed
+    const newMetricState = !isMetricActive;
+
+    if (id === 'countyMap') {
+      this.setState({ statesMap: false });
+      this.setState({ countyMap: true });
+    } else {
+      this.setState({ statesMap: true });
+      this.setState({ countyMap: false });
+    }
+    this.setState({ [id]: newMetricState });
+  }
+
   handleMouseMove(evt, countryData,name) {
     
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
@@ -137,6 +156,8 @@ class App extends React.Component {
 
   render() {
     const {
+      countyMap,
+      statesMap,
       renderCasesHeatmap,
       renderCasualtiesHeatmap,
       renderCasualties,
@@ -207,22 +228,26 @@ class App extends React.Component {
                       let relativeIndex; 
                       let countryColor;
                       let dataSorted;
+                      const metricMax = worldData.length -1;
                       // assign a geography color based on a location's metric rank relative to the rest
                       if (renderCasualtiesHeatmap) {
                         dataSorted = sortLocation(worldData, 'deaths');
                         relativeIndex = relativeIndexScale('deaths', locationData.deaths, dataSorted);
                         countryColor   = geographyColorPalette(dataSorted, relativeIndex,'deaths');
-                      } 
-
-                      else if (renderCasesHeatmap) {
+                      } else if (renderCasesHeatmap) {
                         dataSorted = sortLocation(worldData, 'confirmed');
                         relativeIndex = relativeIndexScale('confirmed', locationData.confirmed, dataSorted);
                         countryColor   = geographyColorPalette(dataSorted, relativeIndex,'confirmed');
-                      }
-
-                      else {
+                      } else {
                         countryColor = randomGeographyColor();
                       }
+
+                      const isRankedFirst = relativeIndex === metricMax
+
+                      // override for countries ranked first receive darkest color #660000
+                      // needed because chrome and FF display  hsl 0 100 20 completely differently (bug?)
+                      if(isRankedFirst)
+                        countryColor = '#660000';
 
                       return(
                         <>
@@ -258,15 +283,26 @@ class App extends React.Component {
               )}
             </Geographies>
           </ComposableMap>
-          <Instructions />
-          <UnitedStatesCountyMap
-            renderCasesHeatmap={renderCasesHeatmap}
-            renderCasualtiesHeatmap={renderCasualtiesHeatmap}
-            renderCasualties={renderCasualties}
-            renderCasualtiesCount={renderCasualtiesCount}
-            renderConfirmed={renderConfirmed}
-            renderConfirmedCount={renderConfirmedCount}
+          <Instructions
+            statesMap={statesMap}
+            countyMap={countyMap}
+            selectUsMap={(e) => this.selectUsMap(e)}
           />
+          { statesMap ?
+              <UnitedStatesMap
+                renderCasesHeatmap={renderCasesHeatmap}
+                renderCasualtiesHeatmap={renderCasualtiesHeatmap}
+                renderCasualties={renderCasualties}
+                renderCasualtiesCount={renderCasualtiesCount}
+                renderConfirmed={renderConfirmed}
+                renderConfirmedCount={renderConfirmedCount}
+              />
+            :
+              <UnitedStatesCountyMap
+                renderCasesHeatmap={renderCasesHeatmap}
+                renderCasualtiesHeatmap={renderCasualtiesHeatmap}
+              />
+          }
           <a name="unitedStatesMap" content="unitedStatesMap" alt="unitedStatesMap" href="https://covidtrack.net#unitedStatesMap" />
         </div>
       </>

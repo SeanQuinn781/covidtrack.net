@@ -7,17 +7,17 @@ import {
   Geography,
 } from "react-simple-maps";
 import tooltip from "wsdm-tooltip";
-import usTestData from './utils/testData/usTestData';
-import allStates from './allstates.json';
+import usTestData from '../utils/testData/usTestData';
+import allStates from '../allstates.json';
 // component markers
-import USMapTextMarkers from './components/svgMarkers/US/USMapTextMarkers';
-import USMapAnnotations from './components/svgMarkers/US/USMapAnnotations';
+import USMapTextMarkers from '../components/svgMarkers/US/USMapTextMarkers';
+import USMapAnnotations from '../components/svgMarkers/US/USMapAnnotations';
 // utils
-import format from './utils/format';
-import { offsets } from './utils/Constants';
-import randomGeographyColor from './utils/randomGeographyColor';
-import geographyColorPalette from './utils/geographyColorPalette';
-import relativeIndexScale from './utils/relativeIndexScale';
+import format from '../utils/format';
+import { offsets } from '../utils/Constants';
+import randomGeographyColor from '../utils/randomGeographyColor';
+import geographyColorPalette from '../utils/geographyColorPalette';
+import relativeIndexScale from '../utils/relativeIndexScale';
 
 class UnitedStatesMap extends React.Component {
 
@@ -197,7 +197,7 @@ class UnitedStatesMap extends React.Component {
                       {currentState &&
                           centroid[0] > -160 &&
                           centroid[0] < -67 &&
-                      //  Render text marker or an annotation for each state
+                          //  Render text marker or an annotation for each state
 
                           (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
                             <USMapTextMarkers 
