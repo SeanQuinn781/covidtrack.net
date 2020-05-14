@@ -8,6 +8,9 @@ https://covidtrack.net
 
 Tooltip Demos:
 
+![CovidTrack Demo](/demoImages/covidtrack.net.1.png)
+![CovidTrack Demo](/demoImages/covidtrack.net.2.png)
+
 ![CovidTrack Tooltip Demo](/demoImages/kansasTooltip.png)
 ![CovidTrack Tooltip Demo](/demoImages/coloradoTooltip.png)
 ![CovidTrack Tooltip Demo](/demoImages/californiaTooltip.png)
