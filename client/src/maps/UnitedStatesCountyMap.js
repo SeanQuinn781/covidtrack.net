@@ -30,10 +30,20 @@ class UnitedStatesCountyMap extends React.Component {
 
   componentDidMount() {
 
+    const {
+      state: {
+        offline,
+        renderCasualtiesHeatmap,
+        renderCasesHeatmap,
+      },
+      state,
+    } = this;
+
     this.tip = tooltip();
     this.tip.create();
 
-    if (this.state.offline) {
+    if (offline) {
+      // TODO refactor state update
       this.setState(
         state => {
           const unitedStatesCountyData = state.unitedStatesCountyData.concat(usCountiesTestData);
@@ -43,7 +53,7 @@ class UnitedStatesCountyMap extends React.Component {
     }
     else {
       // get data for U.S. or U.S. Counties Map
-      fetch("/covidUnitedStatesCounties").then(res => res.json())
+      fetch("/locations/uscounties").then(res => res.json())
         .then(data => {
           this.setState(
             state => {
@@ -55,9 +65,9 @@ class UnitedStatesCountyMap extends React.Component {
         .catch(function(error) {
           return error;
         });
+
     }
   }
-
   defaultGeography (geo,centroid) {
     return (
       <Geography
@@ -130,11 +140,13 @@ class UnitedStatesCountyMap extends React.Component {
       }).reverse()
     }
 
-    // Many US counties are still missing data. 
-    // Last checked 5-13-2020 
-    // Total Counties : 3231
-    // Counties with data : 2965
-    
+    else if (renderCasesHeatmap) {
+      unitedStatesCountyData.sort(function(a,b) {
+        return a.confirmed - b.confirmed;
+      }).reverse()
+    } 
+
+
     return (
       <ComposableMap 
         projection="geoAlbersUsa"

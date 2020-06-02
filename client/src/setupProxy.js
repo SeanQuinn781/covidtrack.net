@@ -4,32 +4,32 @@ module.exports = function(app) {
   // for non-dockerized development change both targets to use http://localhost:5000/  instead of  http://api/
   app.use(
     createProxyMiddleware(
-      '/covid', 
+      '/locations/world', 
       { 
-        target : 'http://api/', 
-        // target : 'http://localhost:5000',
+        // target : 'http://api/', 
+        target : 'http://localhost:5000',
         changeOrigin: true
       }
     )
-  );
+  ),
   app.use(
     createProxyMiddleware(
-      '/covidUnitedStates', 
+      '/locations/us', 
       { 
-        target : 'http://api/',
-        // target : 'http://localhost:5000',
+        // target : 'http://api/',
+        target : 'http://localhost:5000',
         changeOrigin: true 
       }
     )
-  );
+  ),
   app.use(
     createProxyMiddleware(
-      '/covidUnitedStatesCounties', 
+      '/locations/uscounties', 
       { 
-        target : 'http://api/',
-        // target : 'http://localhost:5000',
+        // target : 'http://api/',
+        target : 'http://localhost:5000',
         changeOrigin: true 
       }
     )
-  );
+  )
 };

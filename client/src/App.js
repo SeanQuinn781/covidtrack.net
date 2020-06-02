@@ -35,7 +35,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      countyMap: false,
+      countyMap: true,
       dataSortedByMetric: null,
       offline: false,
       renderCasualties: true,
@@ -45,7 +45,7 @@ class App extends React.Component {
       renderCasualtiesHeatmap: true,
       renderConfirmedCount: false,
       renderCountryNames: false,
-      statesMap: true,
+      statesMap: false,
       testData: worldMapTestData,
       worldData: [],
 
@@ -71,9 +71,13 @@ class App extends React.Component {
       ) 
     }
     else {
-      fetch("/covid")
+      fetch("/locations/world")
         .then(res => res.json())
         .then(data => {
+
+          if (data.status===500)
+            console.log('todo err handling')
+
           this.setState(
             state => {
               const worldData = state.worldData.concat(data);
@@ -81,6 +85,12 @@ class App extends React.Component {
             }
           ) 
         })
+        .catch(function(error) {
+          return error;
+        });
+
+      const sortMetrics = false;
+      let metric;
     }
   }
 

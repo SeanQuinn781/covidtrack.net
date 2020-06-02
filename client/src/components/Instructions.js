@@ -18,12 +18,12 @@ function Instructions (props) {
           id="countyMap"
           className="countyMapButton"
           style={{ 
-              opacity: countyMap ? 1 : .75,
-              backgroundColor: countyMap ? '#0598ff' : '#ccc'
-            }}
+            opacity: countyMap ? 1 : .75,
+            backgroundColor: countyMap ? '#0598ff' : '#ccc'
+          }}
           onClick={selectUsMap}
         >
-          {'View U.S. County Map'}
+          View U.S. County Map
         </Button>
         <Button
           id="stateMap"
@@ -34,7 +34,7 @@ function Instructions (props) {
           }}
           onClick={selectUsMap}
         >
-          {'View U.S. States Map'}
+          View U.S. States Map
         </Button>
       </div>
       <div className="instructions">

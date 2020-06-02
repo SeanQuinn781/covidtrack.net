@@ -78,7 +78,7 @@ Start the front end:
 
 Start the back end in another terminal:
 ```
-cd api && FLASK_APP=app/main.py FLASK_ENV=development flask run
+cd api && FLASK_APP=app/app.py FLASK_ENV=development flask run
 ```
 (FLASK_ENV=development is optional)
 
@@ -116,7 +116,7 @@ pip3 install -r requirements.txt
 Run the API
 
 ```
-FLASK_ENV=development FLASK_APP=app/main.py flask run
+FLASK_ENV=development FLASK_APP=app flask run
 ```
 ```
 ----------------------------------------------------------------

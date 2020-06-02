@@ -36,11 +36,34 @@ class UnitedStatesMap extends React.Component {
 
   componentDidMount() {
 
+
+    const {
+      state: {
+        offline,
+        testData,
+        renderCasesHeatmap,
+        renderCasualtiesHeatmap,
+      },
+      state,
+    } = this;
+
     this.tip = tooltip();
     this.tip.create();
 
-    if (!this.state.offline) {
-      fetch("/covidUnitedStates").then(res => res.json())
+
+    if (offline) {
+      this.setState(
+        state => {
+          const unitedStatesData = state.unitedStatesData.concat(testData);
+          return {unitedStatesData}
+        }
+      )
+    }
+
+    else {
+      // get us covid data state by state
+      fetch("/locations/us")
+        .then(res => res.json())
         .then(data => {
           this.setState(
             state => {
@@ -51,22 +74,12 @@ class UnitedStatesMap extends React.Component {
         })
         .catch(function(error) {
           return error;
-        });
-    }
-
-    else {
-      this.setState(
-        state => {
-          const unitedStatesData = state.unitedStatesData.concat(this.state.testData);
-          return {unitedStatesData}
-        }
-      )
+      });
     }
   }
-
   // renders data in tooltip 
   handleMouseMove(evt, stateData) {
-
+    
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
 
     if (typeof stateData.state !== "string") {
@@ -102,7 +115,10 @@ class UnitedStatesMap extends React.Component {
   }
 
   handleMouseLeave() {
-    this.tip.hide()
+    const {
+      tip,
+    } =  this;
+    tip.hide()
   }
 
   render() {
@@ -130,7 +146,7 @@ class UnitedStatesMap extends React.Component {
       unitedStatesData.sort(function(a,b) {
         return a.positive - b.positive;
       }).reverse()
-    }
+    } 
 
     return (
       <ComposableMap 
@@ -197,7 +213,7 @@ class UnitedStatesMap extends React.Component {
                       {currentState &&
                           centroid[0] > -160 &&
                           centroid[0] < -67 &&
-                          //  Render text marker or an annotation for each state
+                      //  Render text marker or an annotation for each state
 
                           (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
                             <USMapTextMarkers 
