@@ -6,8 +6,8 @@ module.exports = function(app) {
     createProxyMiddleware(
       '/locations/world', 
       { 
-        // target : 'http://api/', 
-        target : 'http://localhost:5000',
+        target : 'http://api/', 
+        // target : 'http://localhost:5000',
         changeOrigin: true
       }
     )
@@ -16,8 +16,8 @@ module.exports = function(app) {
     createProxyMiddleware(
       '/locations/us', 
       { 
-        // target : 'http://api/',
-        target : 'http://localhost:5000',
+        target : 'http://api/',
+        // target : 'http://localhost:5000',
         changeOrigin: true 
       }
     )
