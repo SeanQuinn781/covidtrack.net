@@ -26,8 +26,8 @@ module.exports = function(app) {
     createProxyMiddleware(
       '/locations/uscounties', 
       { 
-        // target : 'http://api/',
-        target : 'http://localhost:5000',
+        target : 'http://api/',
+        // target : 'http://localhost:5000',
         changeOrigin: true 
       }
     )
