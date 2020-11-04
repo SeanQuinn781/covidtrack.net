@@ -41,8 +41,8 @@ function Instructions (props) {
         <div className="helpWrap">
           <img id="helpIcon" alt="helpIcon" src={QuestionMark} />
           <h5>Usage</h5>
-        </div>
-        <p>Hover over Countries or U.S. States to view Covid Data by location</p>
+        </div>	  
+        <p>(Desktop only) Hover over Countries or U.S. States to view Covid Data by location</p>
         <p>Click Navigation Buttons to Add/Remove Data from the Map</p>
         <p>Scroll Down to view the United States Map</p>
       </div>
