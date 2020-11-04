@@ -116,9 +116,9 @@ pip3 install -r requirements.txt
 Run the API
 
 ```
-FLASK_ENV=development FLASK_APP=app flask run
+FLASK_ENV=development FLASK_APP=app/app.py flask run
 ```
-```
+
 ----------------------------------------------------------------
 ## Testing
 

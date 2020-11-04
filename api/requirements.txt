@@ -1,9 +1,9 @@
-covid==2.3.0
+covid==2.4.0
 flask_caching
-flake8==3.8.3
+flake8==3.8.4
 black==19.10b0
-pytest==5.4.3
+pytest==6.1.2
 flask==1.1.2
-python-dotenv==0.13.0
+python-dotenv==0.15.0
 requests==2.24.0
-pandas==1.0.5
+pandas==1.1.4

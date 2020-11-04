@@ -57,7 +57,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { state : { offline, testData } } = this;
+    const { state: { offline, testData } } = this;
     this.tip = tooltip()
     this.tip.create()
     this.clearPreviousCovidData()
@@ -66,26 +66,26 @@ class App extends React.Component {
       this.setState(
         state => {
           const worldData = state.worldData.concat(testData);
-          return {worldData};
+          return { worldData };
         }
-      ) 
+      )
     }
     else {
       fetch("/locations/world")
         .then(res => res.json())
         .then(data => {
 
-          if (data.status===500)
+          if (data.status === 500)
             console.log('todo err handling')
 
           this.setState(
             state => {
               const worldData = state.worldData.concat(data);
-              return {worldData};
+              return { worldData };
             }
-          ) 
+          )
         })
-        .catch(function(error) {
+        .catch(function (error) {
           return error;
         });
 
@@ -98,7 +98,7 @@ class App extends React.Component {
     const { state } = this;
     // get the metric currently clicked by button ID
     const { currentTarget: { id } } = event;
-    const isMetricActive =  state[`${id}`];
+    const isMetricActive = state[`${id}`];
     // Toggle the metrics active or inactive      
     const newMetricState = !isMetricActive;
     // save the toggled metric state
@@ -108,21 +108,21 @@ class App extends React.Component {
   handleHeatmap = (event) => {
     const { state } = this;
     const { currentTarget: { id } } = event;
-    const isMetricActive =  state[`${id}`];
+    const isMetricActive = state[`${id}`];
     const newMetricState = !isMetricActive;
 
     if (id === 'renderCasesHeatmap') {
-      this.setState({ renderCasualtiesHeatmap : false  })
+      this.setState({ renderCasualtiesHeatmap: false })
     } else {
-      this.setState({ renderCasesHeatmap : false  })
+      this.setState({ renderCasesHeatmap: false })
     }
     this.setState({ [id]: newMetricState });
   }
 
-  selectUsMap (event) {
+  selectUsMap(event) {
     const { state } = this;
     const { currentTarget: { id } } = event;
-    const isMetricActive =  state[`${id}`];
+    const isMetricActive = state[`${id}`];
     // only update if needed
     const newMetricState = !isMetricActive;
 
@@ -136,8 +136,8 @@ class App extends React.Component {
     this.setState({ [id]: newMetricState });
   }
 
-  handleMouseMove(evt, countryData,name) {
-    
+  handleMouseMove(evt, countryData, name) {
+
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
 
     if (countryData === undefined) {
@@ -192,7 +192,7 @@ class App extends React.Component {
 
           <NavToggle />
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <MapControlButtons 
+            <MapControlButtons
               handleClick={this.handleClick}
               handleHeatmap={this.handleHeatmap}
               mouseOver={this.handleClick}
@@ -206,11 +206,11 @@ class App extends React.Component {
             />
           </div>
         </nav>
-        
+
         <div className="fluid-container" id="main">
           <a name="worldMap" alt="worldMap" href="https://covidtrack.net#worldMap" />
           <ComposableMap id="worldMap">
-            <Geographies 
+            <Geographies
               geography="world-110m.json">
               {({ geographies }) => (
                 <>
@@ -219,14 +219,14 @@ class App extends React.Component {
                       const centroid = geoCentroid(geo);
                       // match covid data for each country with svg for that country
                       // matches on country name, or abbreviated name (found in geo.properties['Alpha-2'])
-                      const locationData = worldData.find(c => c.country === geo.properties.name) ? 
-                        worldData.find(c => c.country === geo.properties.name) : 
+                      const locationData = worldData.find(c => c.country === geo.properties.name) ?
+                        worldData.find(c => c.country === geo.properties.name) :
                         worldData.find(c => c.country === geo.properties['Alpha-2'])
-                    
-                      if(!locationData) {
-                      // render the country without svg markers
+
+                      if (!locationData) {
+                        // render the country without svg markers
                         return (
-                          <DefaultGeography 
+                          <DefaultGeography
                             onMouseMove={this.handleMouseMove}
                             onMouseLeave={this.handleMouseLeave}
                             geo={geo}
@@ -235,19 +235,19 @@ class App extends React.Component {
                         )
                       }
 
-                      let relativeIndex; 
+                      let relativeIndex;
                       let countryColor;
                       let dataSorted;
-                      const metricMax = worldData.length -1;
+                      const metricMax = worldData.length - 1;
                       // assign a geography color based on a location's metric rank relative to the rest
                       if (renderCasualtiesHeatmap) {
                         dataSorted = sortLocation(worldData, 'deaths');
                         relativeIndex = relativeIndexScale('deaths', locationData.deaths, dataSorted);
-                        countryColor   = geographyColorPalette(dataSorted, relativeIndex,'deaths');
+                        countryColor = geographyColorPalette(dataSorted, relativeIndex, 'deaths');
                       } else if (renderCasesHeatmap) {
                         dataSorted = sortLocation(worldData, 'confirmed');
                         relativeIndex = relativeIndexScale('confirmed', locationData.confirmed, dataSorted);
-                        countryColor   = geographyColorPalette(dataSorted, relativeIndex,'confirmed');
+                        countryColor = geographyColorPalette(dataSorted, relativeIndex, 'confirmed');
                       } else {
                         countryColor = randomGeographyColor();
                       }
@@ -256,15 +256,15 @@ class App extends React.Component {
 
                       // override for countries ranked first receive darkest color #660000
                       // needed because chrome and FF display  hsl 0 100 20 completely differently (bug?)
-                      if(isRankedFirst)
+                      if (isRankedFirst)
                         countryColor = '#660000';
 
-                      return(
+                      return (
                         <>
                           <Geography
                             className="locationData"
                             key={geo.rsmKey + locationData.country}
-                            onMouseMove={(e,props) => this.handleMouseMove(e,locationData, geo.properties.name)}
+                            onMouseMove={(e, props) => this.handleMouseMove(e, locationData, geo.properties.name)}
                             onMouseLeave={this.handleMouseLeave}
                             fill={countryColor}
                             stroke="#fff"
@@ -289,7 +289,7 @@ class App extends React.Component {
                       )
                     })
                   }
-                </>  
+                </>
               )}
             </Geographies>
           </ComposableMap>
@@ -298,20 +298,20 @@ class App extends React.Component {
             countyMap={countyMap}
             selectUsMap={(e) => this.selectUsMap(e)}
           />
-          { statesMap ?
-              <UnitedStatesMap
-                renderCasesHeatmap={renderCasesHeatmap}
-                renderCasualtiesHeatmap={renderCasualtiesHeatmap}
-                renderCasualties={renderCasualties}
-                renderCasualtiesCount={renderCasualtiesCount}
-                renderConfirmed={renderConfirmed}
-                renderConfirmedCount={renderConfirmedCount}
-              />
+          {statesMap ?
+            <UnitedStatesMap
+              renderCasesHeatmap={renderCasesHeatmap}
+              renderCasualtiesHeatmap={renderCasualtiesHeatmap}
+              renderCasualties={renderCasualties}
+              renderCasualtiesCount={renderCasualtiesCount}
+              renderConfirmed={renderConfirmed}
+              renderConfirmedCount={renderConfirmedCount}
+            />
             :
-              <UnitedStatesCountyMap
-                renderCasesHeatmap={renderCasesHeatmap}
-                renderCasualtiesHeatmap={renderCasualtiesHeatmap}
-              />
+            <UnitedStatesCountyMap
+              renderCasesHeatmap={renderCasesHeatmap}
+              renderCasualtiesHeatmap={renderCasualtiesHeatmap}
+            />
           }
           <a name="unitedStatesMap" content="unitedStatesMap" alt="unitedStatesMap" href="https://covidtrack.net#unitedStatesMap" />
         </div>
