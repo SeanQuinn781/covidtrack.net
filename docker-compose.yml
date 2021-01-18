@@ -2,6 +2,7 @@ version: '3'
 
 services:
   frontend:
+    tty: true
     container_name: covid_client
     build:
         context: ./client
