@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button  } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 const MapControlButtons = (props) => {
 
@@ -24,7 +24,7 @@ const MapControlButtons = (props) => {
           type="submit"
           id="renderCasesHeatmap"
           className={`mapControlButton ${renderCasesHeatmap ? 'active' : ''}`}
-          style={{ opacity: `${renderCasesHeatmap ? '.98' : '.7'}`}}
+          style={{ opacity: `${renderCasesHeatmap ? '.98' : '.7'}` }}
           onClick={e => handleHeatmap(e)}
         >
           Cases Heatmap
@@ -37,7 +37,7 @@ const MapControlButtons = (props) => {
           type="submit"
           id="renderCasualtiesHeatmap"
           className={`mapControlButton ${renderCasualtiesHeatmap ? 'active' : ''}`}
-          style={{ opacity: `${renderCasualtiesHeatmap ? '.98' : '.7'}`}}
+          style={{ opacity: `${renderCasualtiesHeatmap ? '.98' : '.7'}` }}
           onClick={e => handleHeatmap(e)}
         >
           Casualties Heatmap
@@ -50,23 +50,23 @@ const MapControlButtons = (props) => {
           type="submit"
           id="renderCasualtiesCount"
           className={`mapControlButton ${renderCasualtiesCount ? 'active' : ''}`}
-          style={{ opacity: `${renderCasualtiesCount ? '.98' : '.7'}`}}
+          style={{ opacity: `${renderCasualtiesCount ? '.98' : '.7'}` }}
           onClick={e => handleClick(e)}
         >
-          Casualty count over 2500
+          Casualty count over 5000
         </Button>
       </li>
       <li>
-        <Button 
+        <Button
           variant="contained"
           color="primary"
           type="submit"
           id="renderCasualties"
           className={`mapControlButton ${renderCasualties ? 'active' : ''}`}
-          style={{ opacity: `${renderCasualties ? '.98' : '.8'}`}}
+          style={{ opacity: `${renderCasualties ? '.98' : '.8'}` }}
           onClick={e => handleClick(e)}
         >
-        Casualty Data Point
+          Casualty Data Point
         </Button>
       </li>
       <li>
@@ -76,10 +76,10 @@ const MapControlButtons = (props) => {
           type="submit"
           id="renderConfirmed"
           className={`mapControlButton ${renderConfirmed ? 'active' : ''}`}
-          style={{ opacity: `${renderConfirmed ? '.98' : '.8'}`}}
+          style={{ opacity: `${renderConfirmed ? '.98' : '.8'}` }}
           onClick={e => handleClick(e)}
         >
-        Cases Data Point
+          Cases Data Point
         </Button>
       </li>
       <li>
@@ -89,10 +89,10 @@ const MapControlButtons = (props) => {
           type="submit"
           id="renderConfirmedCount"
           className={`mapControlButton ${renderConfirmedCount ? "active" : ""}`}
-          style={{ opacity: `${renderConfirmedCount ? '.98' : '.8'}`}}
+          style={{ opacity: `${renderConfirmedCount ? '.98' : '.8'}` }}
           onClick={e => handleClick(e)}
         >
-        Cases count over 50000
+          Cases count over 50000
         </Button>
       </li>
       <li>
@@ -102,10 +102,10 @@ const MapControlButtons = (props) => {
           type="submit"
           id="renderCountryNames"
           className={`mapControlButton ${renderCountryNames ? 'active' : ''}`}
-          style={{ opacity: `${renderCountryNames ? '.98' : '.8'}`}}
+          style={{ opacity: `${renderCountryNames ? '.98' : '.8'}` }}
           onClick={e => handleClick(e)}
         >
-        Locations over 50000 Cases
+          Locations over 50000 Cases
         </Button>
       </li>
       <li>

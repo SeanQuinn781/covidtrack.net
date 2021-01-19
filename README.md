@@ -163,3 +163,10 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### Note regarding the casualties and cases svg data points (The radial circles in blue and red behind the various countries): 
+
+In order to fit on the map the Casualties data point (SVG radial circle) and Deaths data point (SVG radial circle) are scaled down greatly. Because the confirmed cases data point (SVG circle) is so much larger than casualties it is scaled down by dividing its radius by 100000, whereas the casualties data point is scaled down by dividing its radius by 4500. 
+
+Since the cases data point is scaled down much more comparing the deaths data point to the cases data point to try and find a % of deaths relative to number cases is misleading. These data points (SVG circles in particular) should only be used as a visual representation to compare casualties of a country relative to casualties of another country, or cases of a country relative to cases of another country. None of the other numbers or other data on the map is scaled or manipulated
+

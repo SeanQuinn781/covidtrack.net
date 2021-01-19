@@ -1,8 +1,8 @@
 import React from "react";
-import { Button  } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import QuestionMark from './questionMark.png'
 
-function Instructions (props) {
+function Instructions(props) {
   const {
     countyMap,
     statesMap,
@@ -10,14 +10,14 @@ function Instructions (props) {
   } = props;
   return (
     <>
-      <div 
+      <div
         className="usMapControls"
         style={{ textAlign: 'center' }}
       >
         <Button
           id="countyMap"
           className="countyMapButton"
-          style={{ 
+          style={{
             opacity: countyMap ? 1 : .75,
             backgroundColor: countyMap ? '#0598ff' : '#ccc'
           }}
@@ -28,8 +28,8 @@ function Instructions (props) {
         <Button
           id="stateMap"
           className="stateMapButton"
-          style={{ 
-            opacity: statesMap ? 1 : .75,  
+          style={{
+            opacity: statesMap ? 1 : .75,
             backgroundColor: statesMap ? '#0598ff' : '#ccc'
           }}
           onClick={selectUsMap}
@@ -41,7 +41,7 @@ function Instructions (props) {
         <div className="helpWrap">
           <img id="helpIcon" alt="helpIcon" src={QuestionMark} />
           <h5>Usage</h5>
-        </div>	  
+        </div>
         <p>(Desktop only) Hover over Countries or U.S. States to view Covid Data by location</p>
         <p>Click Navigation Buttons to Add/Remove Data from the Map</p>
         <p>Scroll Down to view the United States Map</p>

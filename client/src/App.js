@@ -204,6 +204,9 @@ class App extends React.Component {
               renderConfirmedCount={renderConfirmedCount}
               renderCountryNames={renderCountryNames}
             />
+            <div id="buttonInstructionBackground">
+              <h3 className="buttonInstructions" id="buttonInstructions">Select a button to apply metrics</h3>
+            </div>
           </div>
         </nav>
 
@@ -261,6 +264,13 @@ class App extends React.Component {
 
                       return (
                         <>
+                          <WorldMapMarkers
+                            locationData={locationData}
+                            renderCasualties={renderCasualties}
+                            onClick={this.handleClick}
+                            onMouseEnter={this.handleClick}
+                            renderConfirmed={renderConfirmed}
+                          />
                           <Geography
                             className="locationData"
                             key={geo.rsmKey + locationData.country}
@@ -279,9 +289,7 @@ class App extends React.Component {
                             locationData={locationData}
                             onClick={this.handleClick}
                             onMouseEnter={this.handleClick}
-                            renderCasualties={renderCasualties}
                             renderCasualtiesCount={renderCasualtiesCount}
-                            renderConfirmed={renderConfirmed}
                             renderConfirmedCount={renderConfirmedCount}
                             renderCountryNames={renderCountryNames}
                           />

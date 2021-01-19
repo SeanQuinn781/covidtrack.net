@@ -29,8 +29,8 @@ class UnitedStatesMap extends React.Component {
       testData: usTestData,
     }
 
-    this.handleMouseMove   = this.handleMouseMove.bind(this);
-    this.handleMouseLeave  = this.handleMouseLeave.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
@@ -55,7 +55,7 @@ class UnitedStatesMap extends React.Component {
       this.setState(
         state => {
           const unitedStatesData = state.unitedStatesData.concat(testData);
-          return {unitedStatesData}
+          return { unitedStatesData }
         }
       )
     }
@@ -68,18 +68,18 @@ class UnitedStatesMap extends React.Component {
           this.setState(
             state => {
               const unitedStatesData = state.unitedStatesData.concat(data);
-              return {unitedStatesData}
+              return { unitedStatesData }
             }
           )
         })
-        .catch(function(error) {
+        .catch(function (error) {
           return error;
-      });
+        });
     }
   }
   // renders data in tooltip 
   handleMouseMove(evt, stateData) {
-    
+
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
 
     if (typeof stateData.state !== "string") {
@@ -89,25 +89,25 @@ class UnitedStatesMap extends React.Component {
       // TODO refactor
       this.tip.show(
         `
-        <key=${ stateData.id }>
-          State: ${ format(stateData.state)}
-          commercialScore: ${ format(stateData.commercialScore)}
-          death: ${ format(stateData.death)}
-          fips: ${ format(stateData.fips)}
-          Grade: ${ format(stateData.grade)} 
-          Hospitalized: ${  format(stateData.hospitalized)}
-          inIcuCumulative: ${  format(stateData.inIcuCumulative)}
-          inIcuCurrently: ${  format(stateData.inIcuCurrently)}
-          negative: ${  format(stateData.negative)}
-          onVentilatorCumulative: ${  format(stateData.onVentilatorCumulative)}
-          onVentilatorCurrently: ${  format(stateData.onVentilatorCurrently)}
-          pending: ${  format(stateData.pending)}
-          posNeg: ${  format(stateData.posNeg)}
-          positive: ${  format(stateData.positive)}
-          positiveScore: ${  format(stateData.positiveScore)}
-          recovered: ${  format(stateData.recovered)}
-          score: ${  format(stateData.score)}
-          totalTestResults: ${ stateData.totalTestResults}
+        <key=${stateData.id}>
+          State: ${format(stateData.state)}
+          commercialScore: ${format(stateData.commercialScore)}
+          death: ${format(stateData.death)}
+          fips: ${format(stateData.fips)}
+          Grade: ${format(stateData.grade)} 
+          Hospitalized: ${format(stateData.hospitalized)}
+          inIcuCumulative: ${format(stateData.inIcuCumulative)}
+          inIcuCurrently: ${format(stateData.inIcuCurrently)}
+          negative: ${format(stateData.negative)}
+          onVentilatorCumulative: ${format(stateData.onVentilatorCumulative)}
+          onVentilatorCurrently: ${format(stateData.onVentilatorCurrently)}
+          pending: ${format(stateData.pending)}
+          posNeg: ${format(stateData.posNeg)}
+          positive: ${format(stateData.positive)}
+          positiveScore: ${format(stateData.positiveScore)}
+          recovered: ${format(stateData.recovered)}
+          score: ${format(stateData.score)}
+          totalTestResults: ${stateData.totalTestResults}
         </>
         `
       )
@@ -117,7 +117,7 @@ class UnitedStatesMap extends React.Component {
   handleMouseLeave() {
     const {
       tip,
-    } =  this;
+    } = this;
     tip.hide()
   }
 
@@ -132,28 +132,28 @@ class UnitedStatesMap extends React.Component {
       renderConfirmed,
       renderConfirmedCount,
     } = this.props;
-    
-    if(unitedStatesData.length < 2) {
+
+    if (unitedStatesData.length < 2) {
       return (<p>Data Pending...</p>)
     }
 
     if (renderCasualtiesHeatmap) {
-      unitedStatesData.sort(function(a,b) {
+      unitedStatesData.sort(function (a, b) {
         return a.death - b.death;
       }).reverse()
     }
     else if (renderCasesHeatmap) {
-      unitedStatesData.sort(function(a,b) {
+      unitedStatesData.sort(function (a, b) {
         return a.positive - b.positive;
       }).reverse()
-    } 
+    }
 
     return (
-      <ComposableMap 
+      <ComposableMap
         projection="geoAlbersUsa"
         id="unitedStatesMap"
       >
-        <Geographies 
+        <Geographies
           geography="states-10m.json">
           {({ geographies }) => (
             <>
@@ -165,11 +165,11 @@ class UnitedStatesMap extends React.Component {
                 // match currentState with corresponding data 
                 const locationData = unitedStatesData.find(s => s.state === currentState.id);
 
-                if(!locationData) {
+                if (!locationData) {
                   return (
                     <Geography
-                      key={geo.rsmKey+centroid[0]}
-                      onMouseMove={(e,props) => this.handleMouseMove(e,locationData,geo.properties.name)}
+                      key={geo.rsmKey + centroid[0]}
+                      onMouseMove={(e, props) => this.handleMouseMove(e, locationData, geo.properties.name)}
                       onMouseLeave={this.handleMouseLeave}
                       style={{
                         hover: { fill: "#DDD", outline: "none" },
@@ -180,16 +180,16 @@ class UnitedStatesMap extends React.Component {
                     />
                   )
                 }
-                  
-                let relativeIndex; 
+
+                let relativeIndex;
                 let stateColor;
                 // assign the state a color based on the value of total cases or deaths heatmap
                 if (renderCasualtiesHeatmap) {
                   relativeIndex = relativeIndexScale('death', locationData.death, unitedStatesData)
-                  stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'death');
-                } else if(renderCasesHeatmap) {
+                  stateColor = geographyColorPalette(unitedStatesData, relativeIndex, 'death');
+                } else if (renderCasesHeatmap) {
                   relativeIndex = relativeIndexScale('positive', locationData.positive, unitedStatesData)
-                  stateColor   = geographyColorPalette(unitedStatesData, relativeIndex, 'positive')
+                  stateColor = geographyColorPalette(unitedStatesData, relativeIndex, 'positive')
                 } else {
                   stateColor = randomGeographyColor();
                 }
@@ -199,7 +199,7 @@ class UnitedStatesMap extends React.Component {
                     <Geography
                       className="locationData"
                       key={geo.rsmKey + locationData.state}
-                      onMouseMove={(e,props) => this.handleMouseMove(e,locationData)}
+                      onMouseMove={(e, props) => this.handleMouseMove(e, locationData)}
                       onMouseLeave={this.handleMouseLeave}
                       style={{
                         hover: { fill: "darkgray" },
@@ -209,24 +209,24 @@ class UnitedStatesMap extends React.Component {
                       stroke="#fff"
                       geography={geo}
                     />
-                    <g key={`${geo.rsmKey  + locationData.id}-name`}>
+                    <g key={`${geo.rsmKey + locationData.id}-name`}>
                       {currentState &&
-                          centroid[0] > -160 &&
-                          centroid[0] < -67 &&
-                      //  Render text marker or an annotation for each state
+                        centroid[0] > -160 &&
+                        centroid[0] < -67 &&
+                        //  Render text marker or an annotation for each state
 
-                          (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
-                            <USMapTextMarkers 
-                              currentState={currentState}
-                              locationData={locationData}
-                              centroid={centroid}
-                              renderCasualties={renderCasualties}
-                              renderCasualtiesCount={renderCasualtiesCount}
-                              renderConfirmed={renderConfirmed}
-                              renderConfirmedCount={renderConfirmedCount}
-                            />
-                          ) : (
-                            <USMapAnnotations 
+                        (Object.keys(offsets).indexOf(currentState.id) === -1 ? (
+                          <USMapTextMarkers
+                            currentState={currentState}
+                            locationData={locationData}
+                            centroid={centroid}
+                            renderCasualties={renderCasualties}
+                            renderCasualtiesCount={renderCasualtiesCount}
+                            renderConfirmed={renderConfirmed}
+                            renderConfirmedCount={renderConfirmedCount}
+                          />
+                        ) : (
+                            <USMapAnnotations
                               currentState={currentState}
                               locationData={locationData}
                               centroid={centroid}
@@ -241,7 +241,7 @@ class UnitedStatesMap extends React.Component {
                 );
               })}
             </>
-          )} 
+          )}
         </Geographies>
       </ComposableMap>
     )
