@@ -1,0 +1,8 @@
+[Unit]
+Description = flask python command to run app
+
+[Service]
+ExecStart = /var/www/html/react-maps-flask-covid/api/runFlask.sh
+
+[Install]
+WantedBy = multi-user.target

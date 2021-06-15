@@ -1,0 +1,8 @@
+[Unit]
+Description = bash script command to run react
+
+[Service]
+ExecStart = /var/www/html/react-maps-flask-covid/client/runReact.sh
+
+[Install]
+WantedBy = multi-user.target
