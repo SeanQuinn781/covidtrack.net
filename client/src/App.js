@@ -57,7 +57,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { state: { offline, testData } } = this;
+//    const { state: { offline, testData } } = this;
+    // force online mode
+    let { state: { offline, testData } } = this;
+    offline = false;
     this.tip = tooltip()
     this.tip.create()
     this.clearPreviousCovidData()

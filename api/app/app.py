@@ -1,36 +1,32 @@
 #!flask/bin/python
 from flask import Flask, request, jsonify, make_response, has_request_context
-from flask_caching import Cache
 from covid import Covid
 from contextlib import closing
 import requests
 from requests.exceptions import HTTPError
 from flask.logging import default_handler
-from flask_caching import Cache
 from . import sort
 
-config = {
-    "DEBUG": True,          # some Flask specific configs
-    "CACHE_TYPE": "simple", # Flask-Caching related configs
-    "CACHE_DEFAULT_TIMEOUT": 3000
-}
 app = Flask(__name__)
 # set up caching config
-app.config.from_mapping(config)
-cache = Cache(app)
 
 # Get global Covid data using Covid from Pip3
-@app.route("/locations/world", methods=["GET"])
+@app.route("/locations/world")
 def covid_get_data():
-    try:
-        covid = Covid()
-        return jsonify(covid.get_data())
+    # response = requests.get("https://disease.sh/v2/jhucsse")
+    # return response.text
 
+    covid = Covid()
+    data = covid.get_data()
+    return jsonify(data)
+   # return jsonify(data)
+    """
     except HTTPError as http_err:
         return jsonify(message='Error getting World Covid Data, Pip Covid API error', status=500),500
 
     except Exception as err:
         return jsonify(message='Error getting World Covid Data, Pip Covid API error', status=500),500
+    """
 
 @app.route("/locations/us", methods=["GET"])
 def covid_get_united_states_data():
