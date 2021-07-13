@@ -27,7 +27,7 @@
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
     "react-flash-message": "^1.0.5",
-    "react-path-tooltip": "^1.0.14",
+    "react-path-tooltip": "^1.0.17",
     "react-scripts": "^3.4.4",
     "react-simple-maps": "^1.0.0",
     "react-svg-tooltip": "0.0.11",
