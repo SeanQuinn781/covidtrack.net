@@ -13,4 +13,4 @@ updates:
   - package-ecosystem: "pip"
     directory: "/api"
     schedule:
-      intervale: "daily"
+      interval: "daily"
