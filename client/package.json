@@ -21,7 +21,7 @@
     "http-proxy-middleware": "^1.0.6",
     "jquery": "^3.5.1",
     "json-loader": "^0.5.7",
-    "novelcovid": "^1.2.7",
+    "novelcovid": "^3.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.3",
