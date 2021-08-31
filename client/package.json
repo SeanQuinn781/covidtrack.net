@@ -29,7 +29,7 @@
     "react-flash-message": "^1.0.5",
     "react-path-tooltip": "^1.0.17",
     "react-scripts": "^3.4.4",
-    "react-simple-maps": "^1.0.0",
+    "react-simple-maps": "^2.3.0",
     "react-svg-tooltip": "0.0.11",
     "react-test-renderer": "^16.14.0",
     "react-window": "^1.8.6",
