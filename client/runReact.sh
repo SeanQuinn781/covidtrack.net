@@ -1,2 +1,2 @@
 #!/bin/bash
-cd /var/www/html/react-maps-flask-covid/client && npm start
+cd /var/www/html/covidtrack/client && npm start

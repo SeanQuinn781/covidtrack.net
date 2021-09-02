@@ -9,17 +9,29 @@ server {
   listen 443 ssl default_server;
   listen [::]:443 ssl default_server;
   # ssl_protocols TLSv1.1 TLSv1.2;
-  root /var/www/html/react-maps-flask-covid/;
+  root /var/www/html/covidtrack/client/build;
   index index.html index.htm;
   server_name covidtrack.net;
 
   location / {
     # try_files $uri $uri/ =404;
-    proxy_pass http://127.0.0.1:3000;
+    proxy_pass http://127.0.0.1:3001;
   }
+
+  location /locations/world {
+    proxy_pass http://127.0.0.1:5000;
+  }
+
+  location /locations/uscounties {
+    proxy_pass http://127.0.0.1:5000;
+  }
+  
+  location /locations/us {
+    proxy_pass http://127.0.0.1:5000;
+  }
+
  
   ssl_certificate /etc/letsencrypt/live/covidtrack.net/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/covidtrack.net/privkey.pem;
-  
 }
 
