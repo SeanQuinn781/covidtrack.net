@@ -24,7 +24,7 @@
     "novelcovid": "^3.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.14.0",
-    "react-bootstrap": "^1.4.3",
+    "react-bootstrap": "^1.6.3",
     "react-dom": "^16.14.0",
     "react-flash-message": "^1.0.5",
     "react-path-tooltip": "^1.0.17",
