@@ -26,7 +26,7 @@
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
-    "react-flash-message": "^1.0.5",
+    "react-flash-message": "^1.0.7",
     "react-path-tooltip": "^1.0.17",
     "react-scripts": "^3.4.4",
     "react-simple-maps": "^2.3.0",
