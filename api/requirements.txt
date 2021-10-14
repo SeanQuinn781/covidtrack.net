@@ -1,4 +1,4 @@
-covid==2.5.0
+covid==2.5.1
 flask_caching
 flake8==3.9.2
 black==21.9b0
