@@ -16,7 +16,7 @@
     "d3-geo": "^3.0.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
-    "eslint": "^6.8.0",
+    "eslint": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "http-proxy-middleware": "^1.0.6",
     "jquery": "^3.5.1",
