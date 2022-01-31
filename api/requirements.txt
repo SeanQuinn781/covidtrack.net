@@ -1,6 +1,6 @@
 covid==2.5.0
 flask_caching
-flake8==3.9.2
+flake8==4.0.1
 black==22.1.0
 pytest==6.2.5
 flask==2.0.2
