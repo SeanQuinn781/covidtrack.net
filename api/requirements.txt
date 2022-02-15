@@ -3,7 +3,7 @@ flask_caching
 flake8==4.0.1
 black==22.1.0
 pytest==6.2.5
-flask==2.0.2
+flask==2.0.3
 python-dotenv==0.19.2
 requests==2.27.1
 pandas==1.4.0
