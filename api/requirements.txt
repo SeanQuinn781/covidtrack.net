@@ -2,7 +2,7 @@ covid==2.5.2
 flask_caching
 flake8==4.0.1
 black==22.1.0
-pytest==6.2.5
+pytest==7.0.1
 flask==2.0.3
 python-dotenv==0.19.2
 requests==2.27.1
