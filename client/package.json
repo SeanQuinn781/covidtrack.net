@@ -22,7 +22,7 @@
     "jquery": "^3.6.0",
     "json-loader": "^0.5.7",
     "novelcovid": "^3.0.2",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-bootstrap": "^2.1.1",
     "react-dom": "^16.14.0",
