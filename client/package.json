@@ -18,7 +18,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^8.10.0",
     "eslint-plugin-import": "^2.24.2",
-    "http-proxy-middleware": "^2.0.2",
+    "http-proxy-middleware": "^2.0.3",
     "jquery": "^3.6.0",
     "json-loader": "^0.5.7",
     "novelcovid": "^3.0.2",
