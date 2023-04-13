@@ -11,7 +11,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/d3-geo": "^3.0.2",
     "@types/react-simple-maps": "^1.0.8",
-    "bootstrap": "^5.1.0",
+    "bootstrap": "^5.2.3",
     "d3": "^7.6.1",
     "d3-geo": "^3.0.1",
     "enzyme": "^3.11.0",
