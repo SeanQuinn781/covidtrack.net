@@ -34,7 +34,7 @@
     "react-test-renderer": "^16.14.0",
     "react-window": "^1.8.6",
     "reactdom": "^2.0.0",
-    "weak-key": "^1.0.2",
+    "weak-key": "^1.0.3",
     "wsdm-tooltip": "^0.1.3"
   },
   "scripts": {
